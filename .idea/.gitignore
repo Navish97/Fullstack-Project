@@ -1,0 +1,28 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+.idea/
+*.iml
+# Maven build directory and files
+/target/
+*.log
+# Vue.js build directory
+/dist/
+/node_modules/
+# Environment-specific files
+.env
+.env.local
+# OS-specific files
+.DS_Store
+Thumbs.db
+# Logs and databases
+*.sql
+*.sqlite
+# Cache files
+*.cache
+*.bak
