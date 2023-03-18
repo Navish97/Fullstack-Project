@@ -1,5 +1,5 @@
 <template>
-  <div class="container" :class="listingType">
+  <div class="container" :class="listingType" @click="updateSelected()">
     <div class="item" :class="listingType">
       <div class="image-wrapper">
         <img :src="item.thumbnail[0]" alt="item.briefDescription"/>
@@ -16,6 +16,8 @@
 <script setup lang="ts">
 import { defineProps, computed } from 'vue';
 import type { Item } from '@/types/ItemType';
+import { useItemStore } from '@/stores/Items';
+const itemStore = useItemStore();
 
 const props = defineProps({
   item: {
@@ -27,6 +29,10 @@ const props = defineProps({
     default: 'thumbnail'
   }
 });
+
+function updateSelected() {
+  itemStore.setCurrentItem(props.item);
+}
 
 const formattedPrice = computed(() => {
   return `${props.item.price.toFixed(0)} Kr`;
