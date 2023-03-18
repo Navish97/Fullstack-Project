@@ -8,10 +8,10 @@
     </div>
     <div class="item-info">
       <h2>{{ item.title }}</h2>
+      <p>(DD): {{ item.latitude }}, {{ item.longitude }}</p>
       <p>Selger: {{ item.seller.name }}</p>
       <h3>Pris: {{ formattedPrice }}</h3>
       <h4>{{ item.description }}</h4>
-      <p>{{ item.location }}</p>
       <br>
     </div>
   </div>
