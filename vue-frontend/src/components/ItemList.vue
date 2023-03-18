@@ -36,6 +36,6 @@ const props = defineProps({
 .item-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin: 2rem;
+  margin: 32px;
 }
 </style>
