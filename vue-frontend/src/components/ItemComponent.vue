@@ -35,6 +35,10 @@ const formattedPrice = computed(() => {
 </script>
 
 <style scoped>
+.container:hover {
+  cursor: pointer;
+}
+
 .container.thumbnail:hover {
   width: 17rem;
   height: 17rem;
