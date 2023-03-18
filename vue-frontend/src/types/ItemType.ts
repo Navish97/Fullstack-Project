@@ -4,7 +4,7 @@ export interface Item {
     description: string;
     briefDescription: string;
     price: number;
-    thumbnail: string;
+    thumbnail: string[];
     category: string;
     latitude: number;
     longitude: number;
