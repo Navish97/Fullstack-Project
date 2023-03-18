@@ -1,12 +1,14 @@
 <template>
-  <div class="item" :class="listingType">
-    <div class="image-wrapper">
-      <img :src="item.thumbnail"  alt="item.briefDescription"/>
-      <div class="price"> {{ formattedPrice }} </div>
-    </div>
-    <div class="content-wrapper">
-      <h2>{{ item.title }}</h2>
-      <h3 v-if="listingType==='list'">{{ item.briefDescription }}</h3>
+  <div class="container" :class="listingType">
+    <div class="item" :class="listingType">
+      <div class="image-wrapper">
+        <img :src="item.thumbnail" alt="item.briefDescription"/>
+        <div class="price"> {{ formattedPrice }} </div>
+      </div>
+      <div class="content-wrapper">
+        <h2> {{ item.title }} </h2>
+        <h4 v-if="listingType==='list'"> {{ item.briefDescription }} </h4>
+      </div>
     </div>
   </div>
 </template>
@@ -33,6 +35,19 @@ const formattedPrice = computed(() => {
 </script>
 
 <style scoped>
+.container.thumbnail:hover {
+  width: 17rem;
+  height: 17rem;
+  background-color: #505050;
+  border-radius: 0.5rem;
+}
+
+.container.list:hover {
+  width: 30rem;
+  height: 12rem;
+  background-color: #505050;
+  border-radius: 0.5rem;
+}
 .item.thumbnail {
   width: 15rem;
   height: 15rem;
@@ -41,7 +56,6 @@ const formattedPrice = computed(() => {
   align-items: center;
   margin: 1rem;
   padding: 0 0 1rem;
-  border: 1px solid #ccc;
   border-radius: 0.5rem;
 }
 
@@ -51,8 +65,7 @@ const formattedPrice = computed(() => {
   display: grid;
   grid-template-columns: 1fr 2fr;
   margin: 1rem;
-  padding: 0 0 0rem;
-  border: 1px solid #ccc;
+  padding: 1rem 0 0;
   border-radius: 0.5rem;
 }
 
@@ -63,7 +76,14 @@ const formattedPrice = computed(() => {
 }
 
 .item.list .content-wrapper {
-  padding: 1rem;
+  padding-top: 0rem;
+  padding-left: 1rem;
+  padding-right: 2rem;
+  width: 100%;
+  word-wrap: normal;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  text-overflow: clip;
 }
 
 .item img {
