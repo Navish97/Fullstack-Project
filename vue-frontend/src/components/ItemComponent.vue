@@ -44,7 +44,7 @@ const formattedPrice = computed(() => {
 
 .container.list:hover {
   width: 30rem;
-  height: 12rem;
+  height: 11rem;
   background-color: #505050;
   border-radius: 0.5rem;
 }
