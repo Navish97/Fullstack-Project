@@ -4,7 +4,7 @@
       <ItemDetails :item="selectedItem" />
     </div>
     <div class="about">
-      <ItemList :items="itemStore.items" :listingType="'thumbnail'" />
+      <ItemList :items="itemStore.items" :listingType="'list'" />
     </div>
   </div>
 </template>

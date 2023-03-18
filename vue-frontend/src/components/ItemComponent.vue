@@ -53,7 +53,7 @@ const formattedPrice = computed(() => {
 }
 
 .container.list:hover {
-  width: 480px;
+  width: 600px;
   height: 176px;
   background-color: #505050;
   border-radius: 8px;
@@ -71,16 +71,22 @@ const formattedPrice = computed(() => {
 }
 
 .item.list {
-  width: 480px;
+  width: 600px;
   height: 160px;
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 180px 2fr;
   margin: 16px;
   padding: 16px 0 0;
   border-radius: 8px;
 }
 
-.item .image-wrapper {
+.item.list .image-wrapper {
+  width: 160px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item.thumbnail .image-wrapper {
   width: 100%;
   height: 100%;
   object-fit: cover;
