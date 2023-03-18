@@ -12,9 +12,9 @@
 <script setup lang="ts">
 import ItemList from '@/components/ItemList.vue';
 import ItemDetails from '@/components/ItemDetails.vue';
-import { ItemType } from '@/types/ItemType.ts';
+import type { Item } from '@/types/ItemType';
 
-const itemData: ItemType[] = [{
+const itemData: Item[] = [{
   id: 1,
   description: 'This is the full description of the item',
   briefDescription: 'This is a brief description of the item',

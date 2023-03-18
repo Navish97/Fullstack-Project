@@ -11,12 +11,12 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import { ItemType } from '@/types/ItemType.ts';
+import type { Item } from '@/types/ItemType';
 import ItemComponent from '@/components/ItemComponent.vue';
 
 const props = defineProps({
   items: {
-    type: Array as () => ItemType[],
+    type: Array as () => Item[],
     required: true
   },
   listingType: {

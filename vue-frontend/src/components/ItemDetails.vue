@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { defineProps, computed, ref } from 'vue';
-import { Item } from '@/types/ItemType.ts';
+import type { Item } from '@/types/ItemType';
 
 const props = defineProps({
   item: {
