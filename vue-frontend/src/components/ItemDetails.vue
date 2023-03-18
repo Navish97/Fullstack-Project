@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, ref } from 'vue';
+import { defineProps, computed, ref, watch } from 'vue';
 import type { Item } from '@/types/ItemType';
 
 const props = defineProps({
@@ -26,6 +26,10 @@ const props = defineProps({
     type: Object as () => Item,
     required: true
   },
+});
+
+watch(() => props.item, () => {
+  currentImageIndex.value = 0;
 });
 
 const currentImageIndex = ref(0);
