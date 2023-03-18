@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import { ItemType } from '@/types';
+import { ItemType } from '@/types/ItemType.ts';
 import ItemComponent from '@/components/ItemComponent.vue';
 
 const props = defineProps({
