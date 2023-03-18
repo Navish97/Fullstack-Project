@@ -1,10 +1,10 @@
 <template>
   <div class="content">
-    <div class="about">
-      <ItemDetails :item="itemData[0]" />
+    <div class="about" v-if="selectedItem">
+      <ItemDetails :item="selectedItem" />
     </div>
     <div class="about">
-      <ItemList :items="itemData" :listingType="'thumbnail'" />
+      <ItemList :items="itemStore.items" :listingType="'thumbnail'" />
     </div>
   </div>
 </template>
@@ -13,7 +13,14 @@
 import ItemList from '@/components/ItemList.vue';
 import ItemDetails from '@/components/ItemDetails.vue';
 import { useItemStore } from '@/stores/Items';
+import {computed} from "vue";
 
-const itemData = useItemStore().items;
+const itemStore = useItemStore();
+
+const selectedItem = computed(() => {
+  if (itemStore.currentItem !== undefined) {
+    return itemStore.currentItem;
+  }
+});
 </script>
 
