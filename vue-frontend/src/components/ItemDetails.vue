@@ -1,6 +1,6 @@
 <template>
-  <div class="item-details">
-    <div class="image-container">
+  <div class="item-details" v-if="props.item.thumbnail">
+    <div class="image-container" >
       <img :src="currentImage" class="item-image" alt="item-image" />
       <button class="image-btn prev" @click="prevImage">&lt;</button>
       <button class="image-btn next" @click="nextImage">&gt;</button>
@@ -28,7 +28,11 @@ const props = defineProps({
 });
 
 const currentImageIndex = ref(0);
-const currentImage = computed(() => props.item.thumbnail[currentImageIndex.value]);
+const currentImage = computed(() => {
+  if (props.item !== undefined && props.item.thumbnail !== undefined) {
+    return props.item.thumbnail[currentImageIndex.value];
+  }
+});
 
 const formattedPrice = computed(() => {
   return `${props.item.price.toFixed(0)} Kr`;
