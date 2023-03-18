@@ -1,0 +1,89 @@
+<template>
+  <div class="content">
+    <div class="about">
+      <ItemDetails :item="itemData[0]" />
+    </div>
+    <div class="about">
+      <ItemList :items="itemData" :listingType="'thumbnail'" />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import ItemList from '@/components/ItemList.vue';
+import ItemDetails from '@/components/ItemDetails.vue';
+import { ItemType } from '@/types/ItemType.ts';
+
+const itemData: ItemType[] = [{
+  id: 1,
+  description: 'This is the full description of the item',
+  briefDescription: 'This is a brief description of the item',
+  price: 10.99,
+  thumbnail: ['https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg', "https://images.unsplash.com/photo-1500964757637-c85e8a162699?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8YmVhdXRpZnVsJTIwbGFuZHNjYXBlfGVufDB8fDB8fA%3D%3D&w=1000&q=80"],
+  category: 'Electronics',
+  title: 'Landscape Portrait',
+  latitude: 37.7749,
+  longitude: -122.4194,
+  seller: {
+    name: 'John Doe',
+    email: 'johndoe@example.com'
+  }},
+  {
+  id: 2,
+  description: 'This is the full description of the item',
+  briefDescription: 'This is a brief description of the item',
+  price: 10.99,
+  thumbnail: ['https://images.unsplash.com/photo-1500964757637-c85e8a162699?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8YmVhdXRpZnVsJTIwbGFuZHNjYXBlfGVufDB8fDB8fA%3D%3D&w=1000&q=80'],
+  category: 'Electronics',
+  title: 'Landscape Portrait',
+  latitude: 37.7749,
+  longitude: -122.4194,
+  seller: {
+    name: 'John Doe',
+    email: 'johndoe@example.com'
+  }},
+  {
+    id: 2,
+    description: 'This is the full description of the item',
+    briefDescription: 'This is a brief description of the item',
+    price: 10.99,
+    thumbnail: ['https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'],
+    category: 'Electronics',
+    title: 'Landscape Portrait',
+    latitude: 37.7749,
+    longitude: -122.4194,
+    seller: {
+      name: 'John Doe',
+      email: 'johndoe@example.com'
+    }},
+  {
+    id: 2,
+    description: 'This is the full description of the item',
+    briefDescription: 'This is a brief description of the item',
+    price: 10.99,
+    thumbnail: ['https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'],
+    category: 'Electronics',
+    title: 'Landscape Portrait',
+    latitude: 37.7749,
+    longitude: -122.4194,
+    seller: {
+      name: 'John Doe',
+      email: 'johndoe@example.com'
+    }},
+  {
+    id: 2,
+    description: 'This is the full description of the item',
+    briefDescription: 'This is a brief description of the item',
+    price: 10.99,
+    thumbnail: ['https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'],
+    category: 'Electronics',
+    title: 'Landscape Portrait',
+    latitude: 37.7749,
+    longitude: -122.4194,
+    seller: {
+      name: 'John Doe',
+      email: 'johndoe@example.com'
+    }
+  }];
+</script>
+
