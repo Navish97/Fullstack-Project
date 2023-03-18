@@ -2,7 +2,7 @@
   <div class="container" :class="listingType" @click="updateSelected()">
     <div class="item" :class="listingType">
       <div class="image-wrapper">
-        <img :src="item.thumbnail[0]" alt="item.briefDescription"/>
+        <img :src="item.imageURLs[0]" alt="item.briefDescription"/>
         <div class="price"> {{ formattedPrice }} </div>
       </div>
       <div class="content-wrapper">

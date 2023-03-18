@@ -1,17 +1,18 @@
 <template>
-  <div class="item-details" v-if="props.item.thumbnail">
+  <div class="item-details" v-if="props.item.imageURLs">
     <div class="image-container" >
       <img :src="currentImage" class="item-image" alt="item-image" />
       <button class="image-btn prev" @click="prevImage">&lt;</button>
       <button class="image-btn next" @click="nextImage">&gt;</button>
-      <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.thumbnail.length }}</div>
+      <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.imageURLs.length }}</div>
     </div>
     <div class="item-info">
       <h2>{{ item.title }}</h2>
+      <p>Selger: {{ item.seller.name }}</p>
       <h3>Pris: {{ formattedPrice }}</h3>
       <h4>{{ item.description }}</h4>
       <p>{{ item.location }}</p>
-      <p>{{ item.contact }}</p>
+      <br>
     </div>
   </div>
 </template>
@@ -29,8 +30,8 @@ const props = defineProps({
 
 const currentImageIndex = ref(0);
 const currentImage = computed(() => {
-  if (props.item !== undefined && props.item.thumbnail !== undefined) {
-    return props.item.thumbnail[currentImageIndex.value];
+  if (props.item !== undefined && props.item.imageURLs !== undefined) {
+    return props.item.imageURLs[currentImageIndex.value];
   }
 });
 
@@ -43,12 +44,12 @@ function prevImage() {
     currentImageIndex.value -= 1;
   }
   else {
-    currentImageIndex.value = props.item.thumbnail.length - 1;
+    currentImageIndex.value = props.item.imageURLs.length - 1;
   }
 }
 
 function nextImage() {
-  if (currentImageIndex.value < props.item.thumbnail.length - 1) {
+  if (currentImageIndex.value < props.item.imageURLs.length - 1) {
     currentImageIndex.value += 1;
   }
   else {
