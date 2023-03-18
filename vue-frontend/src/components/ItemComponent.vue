@@ -40,37 +40,38 @@ const formattedPrice = computed(() => {
 }
 
 .container.thumbnail:hover {
-  width: 17rem;
-  height: 17rem;
+  width: 272px;
+  height: 272px;
   background-color: #505050;
-  border-radius: 0.5rem;
+  border-radius: 8px;
 }
 
 .container.list:hover {
-  width: 30rem;
-  height: 11rem;
+  width: 480px;
+  height: 176px;
   background-color: #505050;
-  border-radius: 0.5rem;
+  border-radius: 8px;
 }
+
 .item.thumbnail {
-  width: 15rem;
-  height: 15rem;
+  width: 240px;
+  height: 240px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1rem;
-  padding: 0 0 1rem;
-  border-radius: 0.5rem;
+  margin: 16px;
+  padding: 0 0 16px;
+  border-radius: 8px;
 }
 
 .item.list {
-  width: 30rem;
-  height: 10rem;
+  width: 480px;
+  height: 160px;
   display: grid;
   grid-template-columns: 1fr 2fr;
-  margin: 1rem;
-  padding: 1rem 0 0;
-  border-radius: 0.5rem;
+  margin: 16px;
+  padding: 16px 0 0;
+  border-radius: 8px;
 }
 
 .item .image-wrapper {
@@ -80,9 +81,9 @@ const formattedPrice = computed(() => {
 }
 
 .item.list .content-wrapper {
-  padding-top: 0rem;
-  padding-left: 1rem;
-  padding-right: 2rem;
+  padding-top: 0;
+  padding-left: 16px;
+  padding-right: 32px;
   width: 100%;
   word-wrap: normal;
   overflow: hidden;
@@ -97,18 +98,18 @@ const formattedPrice = computed(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 0.5rem;
+  border-radius: 8px;
 }
 
 .item .price {
   position: absolute;
   bottom: 0;
   right: 0;
-  padding: 0.5rem;
+  padding: 8px;
   background-color: rgba(0, 0, 0, 0.44);
   color: #fff;
-  font-size: 1rem;
-  border-bottom-left-radius: 0.5rem;
-  border-top-left-radius: 0.5rem;
+  font-size: 16px;
+  border-bottom-left-radius: 8px;
+  border-top-left-radius: 8px;
 }
 </style>
