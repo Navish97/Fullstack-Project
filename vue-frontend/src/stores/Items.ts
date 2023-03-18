@@ -2,13 +2,13 @@ import { defineStore } from 'pinia'
 import type {Item} from "@/types/ItemType";
 
 export const useItemStore = defineStore({
-  id: 'item',
+  id: 'items',
   state: () => ({
     currentItem: {} as Item,
     items : [{
       id: 1,
-      description: 'This is the full description of the item',
-      briefDescription: 'This is a brief description of the item',
+      description: 'This is the full description of the item of item id 1',
+      briefDescription: 'This is the full description of the item of item id 1',
       price: 10.99,
       thumbnail: ['https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg', "https://images.unsplash.com/photo-1500964757637-c85e8a162699?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8YmVhdXRpZnVsJTIwbGFuZHNjYXBlfGVufDB8fDB8fA%3D%3D&w=1000&q=80"],
       category: 'Electronics',
