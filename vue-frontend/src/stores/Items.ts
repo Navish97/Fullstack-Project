@@ -80,9 +80,26 @@ export const useItemStore = defineStore({
       }
    ] as Item[],
   }),
+  getters: {
+    getCurrentItem: (state) => {
+      return state.currentItem;
+    },
+    getCurrentListingType: (state) => {
+      return state.currentListingType;
+    },
+    getListingTypes: (state) => {
+      return state.listingTypes;
+    },
+    getItems: (state) => {
+      return state.items;
+    },
+  },
   actions: {
     setCurrentItem(item: Item) {
       this.currentItem = item;
+    },
+    setCurrentListingType(listingType: string) {
+      this.currentListingType = listingType;
     },
   },
 });
