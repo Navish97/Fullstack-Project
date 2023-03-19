@@ -3,8 +3,8 @@
     <div class="flex-container">
       <div class="image-container">
         <img :src="currentImage" class="item-image" alt="item-image" />
-        <button class="image-btn prev" @click="prevImage">&lt;</button>
-        <button class="image-btn next" @click="nextImage">&gt;</button>
+          <button class="image-btn prev" @click="prevImage" v-if="props.item.imageURLs.length>1">&lt;</button>
+          <button class="image-btn next" @click="nextImage" v-if="props.item.imageURLs.length>1">&gt;</button>
         <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.imageURLs.length }}</div>
       </div>
       <div class="item-info">
