@@ -10,7 +10,7 @@
       <div class="item-info">
         <h2>{{ item.title }}</h2>
         <p>(DD): {{ item.latitude }}, {{ item.longitude }}</p>
-        <p>Selger: {{ item.seller.name }}</p>
+        <p>Selger Id: {{ item.userId }}</p>
         <h3>Pris: {{ formattedPrice }}</h3>
         <h4>{{ item.description }}</h4>
         <br>
