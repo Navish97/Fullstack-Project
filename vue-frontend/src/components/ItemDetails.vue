@@ -67,6 +67,7 @@ function nextImage() {
 <style>
 
 .flex-container {
+  padding-top: 24px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
