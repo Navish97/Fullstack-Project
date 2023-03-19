@@ -100,12 +100,13 @@ function nextImage() {
   bottom: 0;
   font-size: 18px;
   padding: 2px 16px 2px 16px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.37);
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
 
 .item-image {
+  border-radius: 24px;
   width: 100%;
   height: 100%;
 }
@@ -119,6 +120,16 @@ function nextImage() {
   color: #fff;
   border: none;
   font-size: 50px;
+}
+
+.image-btn.next {
+  border-top-right-radius: 24px;
+  border-bottom-right-radius: 24px;
+}
+
+.image-btn.prev {
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
 }
 
 .prev {
