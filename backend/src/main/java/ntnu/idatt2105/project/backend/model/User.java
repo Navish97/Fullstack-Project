@@ -19,7 +19,7 @@ public class User {
     @Schema(description = "The name of the user")
     private String name;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @Schema(description = "The email of the user")
     private String email;
 
