@@ -25,5 +25,14 @@ const currentListingType = computed(() => {
 </script>
 
 <style>
+.content {
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: 125px 100%;
+  justify-items: start;
+}
 
+.items {
+
+}
 </style>
