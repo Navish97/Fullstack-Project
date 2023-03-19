@@ -4,6 +4,8 @@ import type {Item} from "@/types/ItemType";
 export const useItemStore = defineStore({
   id: 'items',
   state: () => ({
+    listingTypes: ['thumbnail', 'list'] as string[],
+    currentListingType: 'thumbnail' as string,
     currentItem: {} as Item,
     items : [{
       id: 1,
