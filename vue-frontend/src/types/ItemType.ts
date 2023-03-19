@@ -5,11 +5,8 @@ export interface Item {
     briefDescription: string;
     price: number;
     imageURLs: string[];
-    category: string;
+    categoryId: number;
     latitude: number;
     longitude: number;
-    seller: {
-        name: string;
-        email: string;
-    };
+    userId: number;
 }
