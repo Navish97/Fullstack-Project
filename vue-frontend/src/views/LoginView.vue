@@ -1,17 +1,19 @@
 <template>
   <div class="container">
+    <div class="content-wrapper">
     <h1>Login</h1>
-    <form>
-      <div class="input">
-        <label for="email">Email:</label>
-        <input type="email" id="email" v-model="email" required>
-      </div>
-      <div class="input">
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="password" required>
-      </div>
-      <button type="submit">Login</button>
-    </form>
+      <form>
+        <div class="input">
+          <label for="email">Email:</label>
+          <input type="email" id="email" v-model="email" required>
+        </div>
+        <div class="input">
+          <label for="password">Password:</label>
+          <input type="password" id="password" v-model="password" required>
+        </div>
+        <button type="submit">Login</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -24,17 +26,24 @@ const password = ref('');
 
 <style scoped>
 .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.content-wrapper {
   max-width: 500px;
   margin: 0 auto;
-  padding: 2rem 3rem;
+  padding: 32px 48px;
   border: 1px solid #ccc;
-  border-radius: 0.5rem;
+  border-radius: 8px;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
 }
 
 label {
@@ -43,10 +52,10 @@ label {
 
 input[type="email"],
 input[type="password"] {
-  padding: 0.6rem;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 0.25rem;
-  font-size: 1rem;
+  border-radius: 8px;
+  font-size: 16px;
   color: #e3e3e3;
   background-color: #575757;
   display: flex;
@@ -54,12 +63,12 @@ input[type="password"] {
 }
 
 button {
-  padding: 0.5rem;
+  padding: 8px;
   background-color: #cd570b;
   color: #fff;
   border: none;
-  border-radius: 0.25rem;
-  font-size: 1rem;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
 }
 
