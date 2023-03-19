@@ -48,6 +48,7 @@ const formattedPrice = computed(() => {
 }
 
 .container.thumbnail:hover {
+  padding-top: 1px;
   width: 272px;
   height: 272px;
   background-color: #505050;
