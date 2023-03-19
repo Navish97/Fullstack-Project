@@ -1,16 +1,18 @@
 <template>
-  <div class="container" :class="listingType" @click="updateSelected()">
-    <div class="item" :class="listingType">
-      <div class="image-wrapper">
-        <img :src="item.imageURLs[0]" alt="item.briefDescription"/>
-        <div class="price"> {{ formattedPrice }} </div>
-      </div>
-      <div class="content-wrapper">
-        <h2> {{ item.title }} </h2>
-        <h4 v-if="listingType==='list'"> {{ item.briefDescription }} </h4>
+  <router-link class="item-link" :to="{ name: 'item-details', params: { id: item.id } }">
+    <div class="container" :class="listingType" @click="updateSelected()">
+      <div class="item" :class="listingType">
+        <div class="image-wrapper">
+          <img :src="item.imageURLs[0]" alt="item.briefDescription"/>
+          <div class="price"> {{ formattedPrice }} </div>
+        </div>
+        <div class="content-wrapper">
+          <h2> {{ item.title }} </h2>
+          <h4 v-if="listingType==='list'"> {{ item.briefDescription }} </h4>
+        </div>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script setup lang="ts">
