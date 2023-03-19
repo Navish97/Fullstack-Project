@@ -1,18 +1,20 @@
 <template>
   <div class="item-details" v-if="props.item.imageURLs">
-    <div class="image-container" >
-      <img :src="currentImage" class="item-image" alt="item-image" />
-      <button class="image-btn prev" @click="prevImage">&lt;</button>
-      <button class="image-btn next" @click="nextImage">&gt;</button>
-      <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.imageURLs.length }}</div>
-    </div>
-    <div class="item-info">
-      <h2>{{ item.title }}</h2>
-      <p>(DD): {{ item.latitude }}, {{ item.longitude }}</p>
-      <p>Selger: {{ item.seller.name }}</p>
-      <h3>Pris: {{ formattedPrice }}</h3>
-      <h4>{{ item.description }}</h4>
-      <br>
+    <div class="flex-container">
+      <div class="image-container">
+        <img :src="currentImage" class="item-image" alt="item-image" />
+        <button class="image-btn prev" @click="prevImage">&lt;</button>
+        <button class="image-btn next" @click="nextImage">&gt;</button>
+        <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.imageURLs.length }}</div>
+      </div>
+      <div class="item-info">
+        <h2>{{ item.title }}</h2>
+        <p>(DD): {{ item.latitude }}, {{ item.longitude }}</p>
+        <p>Selger: {{ item.seller.name }}</p>
+        <h3>Pris: {{ formattedPrice }}</h3>
+        <h4>{{ item.description }}</h4>
+        <br>
+      </div>
     </div>
   </div>
 </template>
@@ -63,6 +65,25 @@ function nextImage() {
 </script>
 
 <style>
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+}
+
+.item-info {
+  padding-top: 16px;
+}
+
 .image-container {
   display: flex;
   align-items: center;
@@ -73,12 +94,9 @@ function nextImage() {
 
 .image-index {
   position: absolute;
-  max-width: 100%;
-  max-height: 100%;
   object-fit: contain;
   bottom: 0;
   font-size: 18px;
-  text-align: center;
   padding: 2px 16px 2px 16px;
   background-color: rgba(0, 0, 0, 0.3);
   border-top-left-radius: 8px;
@@ -87,7 +105,7 @@ function nextImage() {
 
 .item-image {
   max-width: 100%;
-  max-height: 50vh;
+  max-height: 100%;
 }
 
 .image-btn {
