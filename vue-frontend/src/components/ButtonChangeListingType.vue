@@ -12,16 +12,16 @@ const itemStore = useItemStore();
 let listingIndex = 0;
 
 function changeListingIndex() {
-  if (listingIndex === 0) {
-    listingIndex = 1;
+  if (listingIndex+1 < itemStore.getListingTypes.length) {
+    listingIndex++;
   } else {
     listingIndex = 0;
   }
-  itemStore.currentListingType = itemStore.listingTypes[listingIndex];
+  itemStore.setCurrentListingType(itemStore.getListingTypes[listingIndex]);
 }
 
 const currentListingType = computed(() => {
-  return itemStore.currentListingType;
+  return itemStore.getCurrentListingType;
 });
 
 </script>
