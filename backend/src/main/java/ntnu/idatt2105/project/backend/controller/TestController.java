@@ -1,4 +1,4 @@
-package ntnu.idatt2105.project.backend.Controller;
+package ntnu.idatt2105.project.backend.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
