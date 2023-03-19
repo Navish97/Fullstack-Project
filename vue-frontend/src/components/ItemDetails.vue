@@ -75,6 +75,7 @@ function nextImage() {
 .item-details {
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin: 0 auto;
   width: 100%;
   height: 100%;
@@ -89,7 +90,8 @@ function nextImage() {
   align-items: center;
   justify-content: center;
   position: relative;
-  margin: 0 auto;
+  width: 60vw;
+  height: 80vh;
 }
 
 .image-index {
@@ -104,8 +106,8 @@ function nextImage() {
 }
 
 .item-image {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .image-btn {
