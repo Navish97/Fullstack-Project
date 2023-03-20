@@ -3,12 +3,25 @@ package ntnu.idatt2105.project.backend.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 @Schema(description = "A registered user of the application")
 @Entity
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,47 +40,49 @@ public class User {
     @Schema(description = "The password of the user")
     private String password;
 
+    /*
     @Column(name = "is_admin")
     @Schema(description = "The admin status of the user")
     private boolean isAdmin;
 
-    public Long getId() {
-        return id;
-    }
+     */
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "role")
+    @Schema(description = "The role of the user")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

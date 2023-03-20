@@ -3,6 +3,7 @@ package ntnu.idatt2105.project.backend.service;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,7 +23,8 @@ public class UserService {
     }
 
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 
     public User save(User user) {
