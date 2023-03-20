@@ -6,15 +6,15 @@ import type {Item} from "@/types/ItemType";
 export const useUserStore = defineStore({
     id: 'user',
     state: () => ({
-        loggedInUser: {} as User,
+        loggedInUserEmail: "" as string,
         bookmarks: [] as Bookmark[],
     }),
     persist: {
         storage: sessionStorage,
     },
     getters: {
-        getLoggedInUser: (state) => {
-            return state.loggedInUser;
+        getLoggedInUserEmail: (state) => {
+            return state.loggedInUserEmail;
         },
         getBookmarks: (state) => {
             return state.bookmarks
@@ -28,11 +28,11 @@ export const useUserStore = defineStore({
 
     },
     actions: {
-        setLoggedInUser(user: User) {
-            this.loggedInUser = user;
+        setLoggedInUserEmail(userEmail: string) {
+            this.loggedInUserEmail = userEmail;
         },
         setBookmarks(bookmarks: Bookmark[]) {
             this.bookmarks = bookmarks;
-        }
+        },
     }
 })
