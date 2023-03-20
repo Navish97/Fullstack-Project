@@ -7,7 +7,9 @@ export const useUserStore = defineStore({
         loggedInUser: "" as string,
         bookmarks: [] as Bookmark[],
     }),
-
+    persist: {
+        storage: sessionStorage,
+    },
     getters: {
         getLoggedInUser: (state) => {
             return state.loggedInUser;
@@ -15,6 +17,9 @@ export const useUserStore = defineStore({
         getBookmarks: (state) => {
             return state.bookmarks
         },
+        isItemBookmarked: (state) => (itemId: number) => {
+            return state.bookmarks.some(bookmark => bookmark.itemId === itemId);
+        }
     },
     actions: {
         setLoggedInUser(userEmail: string) {
