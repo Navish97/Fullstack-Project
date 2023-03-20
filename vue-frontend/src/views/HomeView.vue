@@ -3,15 +3,12 @@
     <div class="content">
       <div class="listing-type">
         <ListingTypeButton />
+        <FilterComponent />
       </div>
       <div class="items">
         <ItemList :items="itemStore.items" :listingType="currentListingType"/>
       </div>
-      <div class ="filter">
-        <FilterComponent />
-      </div>
     </div>
-  
   </div>
 </template>
 
@@ -33,11 +30,13 @@ const currentListingType = computed(() => {
 .content {
   margin-top: 25px;
   display: grid;
-  grid-template-columns: 125px 100%;
+  grid-template-columns: 225px 100%;
   justify-items: start;
 }
 
-.items {
-
+.listing-type {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
