@@ -12,8 +12,8 @@ import jakarta.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "bookmark")
-@Schema(description = "A bookmark table for keeping track of which user has bookmarked what item")
+@Table(name = "bookmarks")
+@Schema(description = "A bookmark for keeping track of which user has bookmarked what item")
 public class Bookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

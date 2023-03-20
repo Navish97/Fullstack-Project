@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS items (
     FOREIGN KEY (category_id) REFERENCES category(id)
     );
 
-CREATE TABLE IF NOT EXISTS bookmark (
+CREATE TABLE IF NOT EXISTS bookmarks (
     id BIGINT AUTO_INCREMENT,
     user_id BIGINT,
     item_id BIGINT,
