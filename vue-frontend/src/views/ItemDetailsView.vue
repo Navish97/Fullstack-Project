@@ -1,5 +1,4 @@
 <template>
-  <bookmark-component />
   <div class="items" v-if="selectedItem">
     <ItemDetails :item="selectedItem" />
   </div>
@@ -9,7 +8,6 @@
 import ItemDetails from '@/components/ItemDetails.vue';
 import { useItemStore } from '@/stores/Item';
 import {computed} from "vue";
-import BookmarkComponent from "@/components/BookmarkComponent.vue";
 
 const itemStore = useItemStore();
 
