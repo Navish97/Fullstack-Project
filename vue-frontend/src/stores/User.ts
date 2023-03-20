@@ -1,22 +1,27 @@
 import { defineStore } from 'pinia'
-import type { User } from "@/types/UserType";
+import type { Bookmark } from "@/types/BookmarkType";
 
 export const useUserStore = defineStore({
     id: 'user',
     state: () => ({
-        user: {} as User,
-        bookmarks: [] as number[],
+        loggedInUser: "" as string,
+        bookmarks: [] as Bookmark[],
     }),
 
     getters: {
         getLoggedInUser: (state) => {
-            return state.user
-        }
-    },
-
-    actions: {
-        setLoggedInUser(user: User) {
-            this.user = user
+            return state.loggedInUser;
         },
+        getBookmarks: (state) => {
+            return state.bookmarks
+        },
+    },
+    actions: {
+        setLoggedInUser(userEmail: string) {
+            this.loggedInUser = userEmail;
+        },
+        setBookmarks(bookmarks: Bookmark[]) {
+            this.bookmarks = bookmarks;
+        }
     }
 })
