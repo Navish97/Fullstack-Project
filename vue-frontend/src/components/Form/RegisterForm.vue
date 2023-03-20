@@ -5,6 +5,7 @@
       <BaseInput id="inpName" class="input-container" type="text" label="Name" v-model="form.name"/>
       <BaseInput id="inpEmail" class="input-container" type="text" label="Email" v-model="form.email"/>
       <BaseInput id="inpPassword" class="input-container" type="password" label="Password" v-model="form.password"/>
+      <span class="text">Already have an account?</span> <router-link class="link" to="/login">Login</router-link>
       <button id="button">Register</button>
     </form>
   </div>
@@ -13,6 +14,7 @@
 <script>
 import BaseInput from "@/components/Form/BaseInput.vue";
 import router from "@/router";
+import {postRegister} from "@/service/Authentication/AuthenticationService";
 
 
 
@@ -33,13 +35,17 @@ export default {
       // eslint-disable-next-line no-undef
       postRegister(this.form)
           .then((response) => {
-            this.$store.state.token = response.data.token;
-            router.push({name: "calculator"});
+            if (response.status === 200) {
+              this.form.name = "";
+              this.form.email = "";
+              this.form.password = "";
+              router.push("/");
+            }
+
           })
           .catch((error) => {
-            if (error.response.data.errorMessage === "Username already exists") {
-              alert("Username already exists");
-            }
+            alert(error.response.data.errorMessage); //todo: make a nice error message
+
             // Handle registration error, e.g., show an error message
           });
     }
@@ -224,4 +230,22 @@ textarea{
   from {opacity: 0;}
   to {opacity:1 ;}
 }
+
+.text{
+  color: white;
+  font-size: 15px;
+}
+
+.link{
+  color: white;
+  font-size: 15px;
+}
+
+.link:hover{
+  color: white;
+  font-size: 15px;
+  text-decoration: underline;
+}
+
+
 </style>
