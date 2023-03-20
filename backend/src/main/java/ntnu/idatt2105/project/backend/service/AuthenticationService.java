@@ -35,7 +35,6 @@ public class AuthenticationService {
                 .role(Role.USER)
                 .build();
 
-        System.out.println(user);
         if (repository.findByEmail(user.getEmail()).isPresent())
             throw new UserAlreadyExistsException("Email is already in use");
         repository.save(user);
