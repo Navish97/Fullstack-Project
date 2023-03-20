@@ -8,11 +8,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import ntnu.idatt2105.project.backend.enums.AuthenticationState;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +24,16 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private String SECRET_KEY = System.getenv("MY_JWT_SECRET_KEY");
+    private final String SECRET_KEY;
 
+    //Uses constructor injection to inject the environment object, check if active spring boot profile is dev.
+    //If the profile is dev that means the project is run locally, it then sets the key to the local key,
+    // otherwise it is running on server and uses the key from the environment variable stored in server.
+    @Autowired
+    public JwtService(Environment environment, @Value("${MY_JWT_SECRET_KEY:}") String secretKey) {
+        String LOCAL_SECRET_KEY = "THIS KEY IS ONLY USED LOCALLY";
+        this.SECRET_KEY = Arrays.asList(environment.getActiveProfiles()).contains("dev") ? LOCAL_SECRET_KEY : secretKey;
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
