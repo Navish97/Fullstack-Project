@@ -15,7 +15,7 @@
 import ItemList from '@/components/ItemList.vue';
 import ListingTypeButton from '@/components/ButtonChangeListingType.vue';
 import {computed} from "vue";
-import { useItemStore } from '@/stores/Items';
+import { useItemStore } from '@/stores/Item';
 
 const itemStore = useItemStore();
 

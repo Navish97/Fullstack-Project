@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { defineProps, computed } from 'vue';
 import type { Item } from '@/types/ItemType';
-import { useItemStore } from '@/stores/Items';
+import { useItemStore } from '@/stores/Item';
 const itemStore = useItemStore();
 
 const props = defineProps({
