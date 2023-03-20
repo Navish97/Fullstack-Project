@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type {Item} from "@/types/ItemType";
+import type { Item } from "@/types/ItemType";
 
 export const useItemStore = defineStore({
   id: 'items',
