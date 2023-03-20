@@ -29,6 +29,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) throws UserAlreadyExistsException {
         var user = User.builder()
+                .id(String.valueOf(java.util.UUID.randomUUID()))
                 .email(request.getEmail())
                 .name(request.getName())
                 .password(passwordEncoder.encode(request.getPassword()))

@@ -32,7 +32,6 @@ export default {
   },
   methods: {
     sendForm() {
-      // eslint-disable-next-line no-undef
       postRegister(this.form)
           .then((response) => {
             if (response.status === 200) {

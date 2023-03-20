@@ -24,9 +24,9 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "The id of the user, automatically generated")
-    private Long id;
+    private String id;
 
     @Column(name = "name")
     @Schema(description = "The name of the user")
