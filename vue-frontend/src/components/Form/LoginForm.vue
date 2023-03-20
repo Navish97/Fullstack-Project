@@ -10,40 +10,33 @@
   </div>
 </template>
 
-<script>
-import BaseInput from "@/components/Form/BaseInput.vue";
+<script setup lang="ts">
+import BaseInput from '@/components/Form/BaseInput.vue';
+import { postLogin } from '@/service/Authentication/AuthenticationService';
+import router from '@/router/index';
+import { useUserStore } from '@/stores/User';
+import { reactive } from 'vue';
 
-import { postLogin } from "@/service/Authentication/AuthenticationService";
-import router from "@/router/index.ts";
+const userStore = useUserStore();
 
-export default {
-  name: 'ContactForm',
-  components: {BaseInput},
-  data() {
-    return {
-      form: {
-        email: "",
-        password: "",
-      }
+const form = reactive({
+  email: '',
+  password: '',
+});
+
+const sendForm = async () => {
+  try {
+    const response = await postLogin(form);
+
+    if (response.status === 200) {
+      userStore.setLoggedInUserEmail(form.email);
+      form.email = '';
+      form.password = '';
+      await router.push('/');
     }
-  },
-  methods: {
-    sendForm() {
-      postLogin(this.form)
-          .then(response => {
-            if (response.status === 200){
-              this.form.email = "";
-              this.form.password = "";
-
-              router.push("/");
-            }
-
-          })
-          .catch(error => {
-            console.log(error);
-          });
-    }
-  },
+  } catch (error) {
+    console.log(error);
+  }
 };
 </script>
 
