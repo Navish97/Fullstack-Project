@@ -73,6 +73,9 @@ export const useItemStore = defineStore({
     getCurrentItem: (state) => {
       return state.currentItem;
     },
+    getCurrentItemId: (state) => {
+        return state.currentItem.id;
+    },
     getCurrentListingType: (state) => {
       return state.currentListingType;
     },
