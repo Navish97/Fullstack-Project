@@ -14,6 +14,7 @@
 import BaseInput from "@/components/Form/BaseInput.vue";
 
 import { postLogin } from "@/service/Authentication/AuthenticationService";
+import router from "@/router/index.ts";
 
 export default {
   name: 'ContactForm',
@@ -34,7 +35,7 @@ export default {
               this.form.email = "";
               this.form.password = "";
 
-              this.$router.push({name: "/"});
+              router.push("/");
             }
 
           })
