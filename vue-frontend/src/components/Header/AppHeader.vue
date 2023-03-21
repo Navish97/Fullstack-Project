@@ -4,12 +4,20 @@
   <li><a href="/">Home</a></li>
   <li><a href="#">About</a></li>
   <li><a href="#">Contact</a></li>
-  <li><RouterLink to="/my-profile">My Profile</RouterLink></li>
+  <li><RouterLink to="/my-profile" v-if="loggedIn">My Profile</RouterLink></li>
 </ul>
 </nav>
 </template>
 
 <script setup lang="ts">
+import {useUserStore} from "@/stores/User";
+import {computed} from "vue";
+
+const userStore = useUserStore();
+
+const loggedIn = computed(() => {
+  return userStore.isLoggedIn();
+});
 </script>
 
 <style>
