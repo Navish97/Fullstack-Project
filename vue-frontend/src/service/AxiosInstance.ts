@@ -13,14 +13,14 @@ const axiosInstance: AxiosInstance = axios.create({
     }
 });
 
-const userStore = useUserStore();
+
 axiosInstance.interceptors.response.use(
     (response) => {
         return response;
     },
     (error) => {
-        if (error.response.status === 401 && userStore.isLoggedIn()) {
-            userStore.logOut()
+        if (error.response.status === 401 && useUserStore().isLoggedIn()) {
+            useUserStore().logOut()
             alert("Session expired, please login again")
         }
 
