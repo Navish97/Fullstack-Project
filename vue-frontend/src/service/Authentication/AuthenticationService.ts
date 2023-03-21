@@ -4,11 +4,11 @@ import type {RegisterData} from "@/types/RegisterData";
 import type {User} from "@/types/UserType";
 import axiosInstance from "@/service/AxiosInstance";
 
-export const postLogin = (login: LoginData): Promise<AxiosResponse> => {
+export const postLogin = async (login: LoginData): Promise<AxiosResponse> => {
     return axiosInstance.post('/api/auth/login', login);
 };
 
-export const postRegister = (registerData: RegisterData): Promise<AxiosResponse> => {
+export const postRegister = async (registerData: RegisterData): Promise<AxiosResponse> => {
     return axiosInstance.post('/api/auth/register', registerData);
 };
 
