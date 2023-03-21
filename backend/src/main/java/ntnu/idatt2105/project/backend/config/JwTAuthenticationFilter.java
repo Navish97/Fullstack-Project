@@ -65,7 +65,7 @@ public class JwTAuthenticationFilter extends OncePerRequestFilter {
 
         logger.info("Username: " + username);
         logger.info(String.valueOf(SecurityContextHolder.getContext().getAuthentication()));
-        if (username != null && !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+        if (username != null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             logger.info("User " + username + " is loaded");
 
