@@ -4,7 +4,7 @@
   <li><a href="/">Home</a></li>
   <li><a href="#">About</a></li>
   <li><a href="#">Contact</a></li>
-  <li><RouterLink to="/login">Login</RouterLink></li>
+  <li><RouterLink to="/my-profile">My Profile</RouterLink></li>
 </ul>
 </nav>
 </template>
