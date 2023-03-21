@@ -35,7 +35,6 @@ public class ItemController {
     public ResponseEntity<?> getPersonsPageable(
             @RequestParam(defaultValue = "0") final Integer pageNumber,
             @RequestParam(defaultValue = "15") final Integer size) {
-        System.out.println(pageNumber + size);
         return ResponseEntity.ok(generateResponse(itemService.getItemPage(pageNumber, size)));
     }
 }
