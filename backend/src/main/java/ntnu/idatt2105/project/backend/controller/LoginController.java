@@ -3,26 +3,20 @@ package ntnu.idatt2105.project.backend.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import ntnu.idatt2105.project.backend.authentication.AuthenticationRequest;
-import ntnu.idatt2105.project.backend.authentication.AuthenticationResponse;
-import ntnu.idatt2105.project.backend.authentication.RegisterRequest;
+import ntnu.idatt2105.project.backend.model.AuthenticationRequest;
+import ntnu.idatt2105.project.backend.dto.AuthenticationResponse;
+import ntnu.idatt2105.project.backend.model.RegisterRequest;
 import ntnu.idatt2105.project.backend.exceptions.UserAlreadyExistsException;
-import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.service.AuthenticationService;
-import ntnu.idatt2105.project.backend.service.UserService;
 import org.apache.http.auth.InvalidCredentialsException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Operation;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8081"})
+@CrossOrigin(origins = "http://localhost:3000")
 @Tag(name = "Login Controller", description = "Controller to handle user login")
 public class LoginController {
 

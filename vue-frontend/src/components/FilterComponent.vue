@@ -5,11 +5,11 @@
             <label>Price</label>
             <div class = "price-input">
                 <div>
-                    <input type="number" id="min-price" name ="min-price">
+                    <input type="number" id="min-price" name ="min-price" v-model="minPrice">
                     <label for="min-price">From</label>
                 </div>
                 <div>
-                    <input type="number" id="max-price" name ="max-price">
+                    <input type="number" id="max-price" name ="max-price" v-model="maxPrice">
                     <label for="max-price">To</label>
                 </div>
             </div>
@@ -17,19 +17,50 @@
         <div class = "condition">
             <div>Condition</div>
             <div class = "condition-state">
-                <input type ="checkbox" id="used-box">
+                <input type ="checkbox" id="used-box" v-model="usedBox">
                 <label for="used-box">Used</label>
             </div>
             <div class = "condition-state">
-                <input type ="checkbox" id="new-box">
+                <input type ="checkbox" id="new-box" v-model="newBox">
                 <label for="new-box">New</label>
             </div>
         </div>
-        <button class="apply">Apply</button>
+        <button class="apply" @click = "applyFilters">Apply</button>
     </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { getItems } from '@/service/ItemService';
+import { useItemStore } from '@/stores/Item';
+
+const itemStore = useItemStore();
+
+async function loadPage(filter : object){
+    await getItems(0, 15, filter)
+    .then((response) => {
+        itemStore.setLists(response.data.items);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+}
+
+    const minPrice = ref<number | null>(null);
+    const maxPrice = ref<number | null>(null);
+    const usedBox = ref<boolean>(true);
+    const newBox = ref<boolean>(true);
+
+    const applyFilters = () => {
+        const minPriceValue = minPrice.value;
+        const maxPriceValue = maxPrice.value;
+        const usedValue = usedBox.value;
+        const newValue = newBox.value;
+
+        loadPage({
+            minPrice:minPriceValue, maxPrice:maxPriceValue, usedValue:usedValue, newValue:newValue
+        });
+    };
 
 </script>
 

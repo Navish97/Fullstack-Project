@@ -1,4 +1,4 @@
-package ntnu.idatt2105.project.backend.response;
+package ntnu.idatt2105.project.backend.dto;
 
 public class ErrorResponse {
     private String message;

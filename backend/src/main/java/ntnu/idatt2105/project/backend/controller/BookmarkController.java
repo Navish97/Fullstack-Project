@@ -29,17 +29,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/bookmarks")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8081"})
+@CrossOrigin(origins = "http://localhost:3000")
 public class BookmarkController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private BookmarkRepository bookmarkRepository;
+    private final BookmarkRepository bookmarkRepository;
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
     Logger logger = LoggerFactory.getLogger(BookmarkController.class);
 

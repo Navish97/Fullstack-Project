@@ -3,35 +3,24 @@ package ntnu.idatt2105.project.backend.controller;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import ntnu.idatt2105.project.backend.authentication.AuthenticationRequest;
-import ntnu.idatt2105.project.backend.authentication.AuthenticationResponse;
-import ntnu.idatt2105.project.backend.authentication.RegisterRequest;
+import ntnu.idatt2105.project.backend.dto.ErrorResponse;
 import ntnu.idatt2105.project.backend.enums.AuthenticationState;
-import ntnu.idatt2105.project.backend.exceptions.UserAlreadyExistsException;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.service.AuthenticationService;
 import ntnu.idatt2105.project.backend.service.JwtService;
 import ntnu.idatt2105.project.backend.service.UserService;
-import org.apache.http.auth.InvalidCredentialsException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import ntnu.idatt2105.project.backend.response.*;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Date;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8081"})
+@CrossOrigin(origins = "http://localhost:3000")
 @Tag(name = "Login Controller", description = "Controller to handle user login")
 public class ProfileController {
 

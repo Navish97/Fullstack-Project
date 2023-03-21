@@ -1,4 +1,4 @@
-package ntnu.idatt2105.project.backend.authentication;
+package ntnu.idatt2105.project.backend.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
