@@ -24,6 +24,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 public class SecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,7 +36,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/**")
                 .permitAll()
                 .requestMatchers("/h2-ui/**").permitAll()
-                .requestMatchers("/my-profile").permitAll()
+                //.requestMatchers("/my-profile").permitAll()
                 .requestMatchers(toH2Console()).permitAll()// Add this line if you want to access H2 console without authentication
                 .anyRequest()
                 .authenticated()
@@ -43,7 +44,9 @@ public class SecurityConfig {
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            .authenticationProvider(authenticationProvider);
+            .authenticationProvider(authenticationProvider)
+            .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
+        ;
         return http.build();
     }
 

@@ -31,7 +31,7 @@ public class ProfileController {
 
 
     @GetMapping("/my-profile")
-    @PreAuthorize("isAuthenticated()") // Add this line
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getMyProfile(HttpServletRequest request) {
         try {
             String jwt = extractTokenFromCookie(request); // Extract the token from the cookie
