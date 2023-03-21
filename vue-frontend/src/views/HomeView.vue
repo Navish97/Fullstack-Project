@@ -35,7 +35,12 @@ onMounted(() => {
 });
 
 async function loadPage(){
-  await getItems(0,15)
+  await getItems(0,15, {
+    minPrice:null,
+    maxPrice:null,
+    usedValue:true,
+    newValue:true,
+  })
   .then((response) => {
     itemStore.setLists(response.data.items);
   })

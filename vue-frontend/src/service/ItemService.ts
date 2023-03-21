@@ -9,11 +9,12 @@ const itemAPI = axios.create({
     }
 })
 
-export async function getItems(pageNr : number, pageSize : number): Promise<any> {
+export async function getItems(pageNr : number, pageSize : number, filter : object): Promise<any> {
     const response = await itemAPI.get('/page', {
         params: {
             pageNumber:pageNr,
             size:pageSize,
+            filter:filter,
         }
     })
     return response
