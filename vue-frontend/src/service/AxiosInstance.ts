@@ -6,6 +6,7 @@ const baseURL = window.location.hostname === "localhost" ? "http://localhost:808
 const axiosInstance: AxiosInstance = axios.create({
     baseURL,
     withCredentials:true,
+    timeout: 5000,
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
