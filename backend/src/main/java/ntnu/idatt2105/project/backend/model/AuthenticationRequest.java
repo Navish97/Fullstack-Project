@@ -1,6 +1,4 @@
-package ntnu.idatt2105.project.backend.authentication;
-
-
+package ntnu.idatt2105.project.backend.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +8,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
+public class AuthenticationRequest {
 
-    private String name;
     private String email;
     private String password;
 }

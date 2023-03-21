@@ -21,7 +21,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/items")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8081"})
+@CrossOrigin(origins = "http://localhost:3000")
 @Tag(name = "Item Controller", description = "Controller to handle items")
 public class ItemController {
     Logger logger = LoggerFactory.getLogger(ItemController.class);
