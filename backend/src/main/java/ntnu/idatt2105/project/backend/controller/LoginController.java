@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://mymarketplace-xt5ws57jza-lz.a.run.app"})
 @Tag(name = "Login Controller", description = "Controller to handle user login")
 public class LoginController {
 
