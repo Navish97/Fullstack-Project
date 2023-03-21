@@ -26,13 +26,16 @@ ul {
   display: flex;
   list-style: none;
   margin: auto 0;
-
-
   padding: 0;
+  justify-content: center;
+  width: 50%;
 }
 
 li {
-  margin-right: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
 }
 
 a {
