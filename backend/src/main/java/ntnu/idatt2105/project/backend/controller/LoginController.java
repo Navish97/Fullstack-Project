@@ -42,7 +42,7 @@ public class LoginController {
             Cookie cookie = getCookie(authResponse);
             cookie.setDomain(request.getServerName());
 
-            response.addCookie(cookie);
+            response.addHeader("Set-Cookie", cookieToHeaderWithSameSite(response, cookie, "strict"));
 
             return ResponseEntity.ok(authResponse);
         } catch (InvalidCredentialsException e) {
@@ -59,7 +59,9 @@ public class LoginController {
         return accessTokenCookie;
     }
 
-
+    private String cookieToHeaderWithSameSite(HttpServletResponse response, Cookie cookie, String sameSite) {
+        return cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; Max-Age=" + cookie.getMaxAge() + "; HttpOnly; SameSite=" + sameSite;
+    }
     /*
     @PostMapping
     @Operation(summary = "User login", description = "Authenticates a user and returns the user object if successful")
