@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import type { Bookmark } from "@/types/BookmarkType";
 import type {Item} from "@/types/ItemType";
+import router from "@/router";
 
 export const useUserStore = defineStore({
     id: 'user',
@@ -31,6 +32,7 @@ export const useUserStore = defineStore({
     },
     actions: {
         logOut() {
+            router.push("/")
             this.loggedInUserEmail = "";
             this.bookmarks = [];
         },
