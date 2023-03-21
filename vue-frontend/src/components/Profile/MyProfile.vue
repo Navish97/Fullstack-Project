@@ -12,10 +12,9 @@
 import { getUserData } from '@/service/Authentication/AuthenticationService';
 import type { User } from "@/types/UserType";
 import router from '@/router/index';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
-
-let user = {} as User;
+const user = ref({} as User);
 
 onMounted(() => {
   loadData();
@@ -25,7 +24,7 @@ async function loadData() {
   try {
     const response = await getUserData();
     if (response) {
-      user = response;
+      user.value = response;
       console.log(response);
     } else {
       await router.push('/login');
