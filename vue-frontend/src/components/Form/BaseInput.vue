@@ -14,7 +14,7 @@
 
 
 
-<script>
+<script lang="ts">
 export default {
   props: {
     id:{

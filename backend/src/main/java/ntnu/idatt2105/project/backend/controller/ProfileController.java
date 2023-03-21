@@ -12,6 +12,7 @@ import ntnu.idatt2105.project.backend.service.JwtService;
 import ntnu.idatt2105.project.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -29,7 +30,23 @@ public class ProfileController {
     private final UserService userService;
 
 
+    @GetMapping("/my-profile")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> getMyProfile(HttpServletRequest request) {
+        try {
+            String jwt = extractTokenFromCookie(request); // Extract the token from the cookie
+            if (jwt == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Unauthorized"));
+            }
+            User user = userService.findByEmail(jwtService.extractUsername(jwt)); // Pass the JWT token instead of the request
+            return ResponseEntity.ok(user);
+        } catch (TokenExpiredException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Token expired"));
+        }
+    }
 
+
+    /*
     @GetMapping("/my-profile")
     public ResponseEntity<?> getMyProfile(HttpServletRequest request) {
         Optional<Cookie> maybeAccessToken = extractTokenFromCookie(request);
@@ -68,17 +85,20 @@ public class ProfileController {
         return ResponseEntity.ok(user);
     }
 
-    private Optional<Cookie> extractTokenFromCookie(HttpServletRequest request) {
+     */
+
+    private String extractTokenFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("myMarketPlaceAccessToken".equals(cookie.getName())) {
-                    return Optional.of(cookie);
+                    return cookie.getValue();
                 }
             }
         }
-        return Optional.empty();
+        return null;
     }
+
 
 
 
