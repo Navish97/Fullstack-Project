@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import type { Bookmark } from "@/types/BookmarkType";
-import type {User} from "@/types/UserType";
 import type {Item} from "@/types/ItemType";
 
 export const useUserStore = defineStore({
