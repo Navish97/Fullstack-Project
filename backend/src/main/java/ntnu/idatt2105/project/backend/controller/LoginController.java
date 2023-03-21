@@ -40,7 +40,7 @@ public class LoginController {
         try {
             AuthenticationResponse authResponse = authenticationService.authenticate(request);
 
-
+            response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000, https://mymarketplace-xt5ws57jza-lz.a.run.app");
             response.addCookie(getCookie(authResponse));
 
             return ResponseEntity.ok(authResponse);
