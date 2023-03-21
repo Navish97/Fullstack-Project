@@ -43,7 +43,7 @@ export default {
 
           })
           .catch((error) => {
-            alert(error.response.data.errorMessage); //todo: make a nice error message
+            alert(error.response); //todo: make a nice error message
 
             // Handle registration error, e.g., show an error message
           });
