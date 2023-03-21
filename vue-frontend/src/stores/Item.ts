@@ -96,5 +96,8 @@ export const useItemStore = defineStore({
     setCurrentListingType(listingType: string) {
       this.currentListingType = listingType;
     },
+    setLists(list : []){
+      this.items = list;
+    },
   },
 });
