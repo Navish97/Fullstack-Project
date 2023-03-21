@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class BookmarkController {
 
     Logger logger = LoggerFactory.getLogger(BookmarkController.class);
 
+    @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Get a user's bookmarks",
             description = "Returns a list of bookmark objects for the user with the given email address.",
             parameters = {
@@ -52,20 +54,15 @@ public class BookmarkController {
                             schema = @Schema(implementation = BookmarkDTO.class)))
             })
     @GetMapping("/user")
-    public ResponseEntity<?> getUserBookmarks(@RequestBody Map<String, String> requestBody,
-                                              @CookieValue(value = "myMarketPlaceAccessToken") String jwtToken) throws UserNotFoundException, UnauthorizedException {
+    public ResponseEntity<?> getUserBookmarks(@CookieValue(value = "myMarketPlaceAccessToken") String jwtToken) throws UserNotFoundException, UnauthorizedException {
+        logger.info("Received get bookmark request");
+        String email = jwtService.extractUsername(jwtToken);
+        logger.info("Getting bookmarks for user with email: " + email + "jwtToken: " + jwtToken);
 
-        logger.info("Getting bookmarks for user with email: " + requestBody.get("email"));
-
-        String email = requestBody.get("email");
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {
             logger.info("User with email: " + email + " not found");
             throw new UserNotFoundException("User with email: " + email + " not found");
-        }
-
-        if (!jwtService.isTokenValid(jwtToken, user.get())) {
-            throw new UnauthorizedException("JWT token does not belong to user with email: " + email);
         }
 
         List<Bookmark> bookmarks = bookmarkRepository.findByUser(user);
