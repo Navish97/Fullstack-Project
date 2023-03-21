@@ -1,16 +1,14 @@
 <template>
-<nav>
-<ul>
-  <li><a href="/">Home</a></li>
-  <li><a href="#">About</a></li>
-  <li><a href="#">Contact</a></li>
-  <div>
-    <li><RouterLink to="/my-profile" v-if="loggedIn">My Profile</RouterLink></li>
-    <li><RouterLink to="/login" v-if="!loggedIn">Login</RouterLink></li>
-  </div>
-
-</ul>
-</nav>
+  <nav>
+    <ul>
+      <li><RouterLink to="/my-profile" v-if="loggedIn">My Profile</RouterLink></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+      <li v-if="loggedIn" @click="userStore.logOut()"><a href="/">Log Out</a></li>
+      <li><RouterLink to="/login" v-if="!loggedIn">Login</RouterLink></li>
+    </ul>
+  </nav>
 </template>
 
 <script setup lang="ts">
