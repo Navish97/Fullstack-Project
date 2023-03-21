@@ -24,10 +24,17 @@ export const useUserStore = defineStore({
         },
         addBookmark: (state) => (item: Item) => {
             //Axios call for adding bookmark to database
+        },
+        isLoggedIn: (state) => () => {
+            return state.loggedInUserEmail !== "";
         }
 
     },
     actions: {
+        logOut() {
+            this.loggedInUserEmail = "";
+            this.bookmarks = [];
+        },
         setLoggedInUserEmail(userEmail: string) {
             this.loggedInUserEmail = userEmail;
         },
