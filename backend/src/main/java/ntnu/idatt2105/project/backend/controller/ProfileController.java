@@ -40,7 +40,7 @@ public class ProfileController {
 
         String accessToken = maybeAccessToken.get().getValue();
 
-        User user = null;
+        User user;
         try{
             user = userService.findByEmail(jwtService.extractUsername(accessToken));
             AuthenticationState state = jwtService.getAuthenticationState(accessToken, user);

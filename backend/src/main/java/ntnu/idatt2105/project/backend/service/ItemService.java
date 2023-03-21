@@ -18,4 +18,9 @@ public class ItemService {
         return itemRepository.getItems(PageRequest.of(pageNr, pageSize));
     }
 
+
+    public Item createItem(Item item){
+        return itemRepository.save(item);
+    }
+
 }

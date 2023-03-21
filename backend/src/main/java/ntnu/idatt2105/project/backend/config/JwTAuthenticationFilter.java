@@ -48,6 +48,9 @@ public class JwTAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         final String jwt = extractTokenFromCookie(request);
 
+        Logger logger = LoggerFactory.getLogger(JwTAuthenticationFilter.class);
+        logger.info("authentication requested");
+
         String username = null;
         AuthenticationState authState = AuthenticationState.UNAUTHENTICATED;
 

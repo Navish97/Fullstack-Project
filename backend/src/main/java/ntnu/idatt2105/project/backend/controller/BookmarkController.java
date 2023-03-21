@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,7 +52,10 @@ public class BookmarkController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = BookmarkDTO.class)))
             })
+
+
     @GetMapping("/user")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getUserBookmarks(@RequestBody Map<String, String> requestBody,
                                               @CookieValue(value = "myMarketPlaceAccessToken") String jwtToken) throws UserNotFoundException, UnauthorizedException {
 

@@ -7,6 +7,7 @@ import ntnu.idatt2105.project.backend.model.Item;
 import ntnu.idatt2105.project.backend.repository.ItemRepository;
 import ntnu.idatt2105.project.backend.service.ItemService;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,5 +37,11 @@ public class ItemController {
             @RequestParam(defaultValue = "0") final Integer pageNumber,
             @RequestParam(defaultValue = "15") final Integer size) {
         return ResponseEntity.ok(generateResponse(itemService.getItemPage(pageNumber, size)));
+    }
+
+    @PostMapping
+    public ResponseEntity<Item> createItem(@RequestBody Item item) {
+        Item createdItem = itemService.createItem(item);
+        return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
     }
 }
