@@ -5,7 +5,13 @@
         placeholder=" "
         class="input"
         :value="modelValue"
+<<<<<<< Updated upstream
         @input="$emit('update:modelValue', $event.target.value)"
+=======
+        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+
+
+>>>>>>> Stashed changes
     >
     <div class="cut"></div>
     <label for="firstname" class="placeholder">{{ label }}</label>
@@ -14,7 +20,12 @@
 
 
 
+<<<<<<< Updated upstream
 <script>
+=======
+<script lang="ts">
+
+>>>>>>> Stashed changes
 export default {
   props: {
     id:{
