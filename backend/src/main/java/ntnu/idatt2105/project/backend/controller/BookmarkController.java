@@ -5,13 +5,16 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import ntnu.idatt2105.project.backend.dto.BookmarkDTO;
+import ntnu.idatt2105.project.backend.exceptions.UnauthorizedException;
 import ntnu.idatt2105.project.backend.exceptions.UserNotFoundException;
 import ntnu.idatt2105.project.backend.model.Bookmark;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.repository.BookmarkRepository;
 import ntnu.idatt2105.project.backend.repository.UserRepository;
+import ntnu.idatt2105.project.backend.service.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,9 @@ public class BookmarkController {
     @Autowired
     private BookmarkRepository bookmarkRepository;
 
+    @Autowired
+    private JwtService jwtService;
+
     Logger logger = LoggerFactory.getLogger(BookmarkController.class);
 
     @Operation(summary = "Get a user's bookmarks",
@@ -49,14 +55,22 @@ public class BookmarkController {
                             schema = @Schema(implementation = BookmarkDTO.class)))
             })
     @GetMapping("/user")
-    public ResponseEntity<?> getUserBookmarks(@RequestBody Map<String, String> requestBody) throws UserNotFoundException {
+    public ResponseEntity<?> getUserBookmarks(@RequestBody Map<String, String> requestBody,
+                                              @CookieValue(value = "myMarketPlaceAccessToken") String jwtToken) throws UserNotFoundException, UnauthorizedException {
+
         logger.info("Getting bookmarks for user with email: " + requestBody.get("email"));
+
         String email = requestBody.get("email");
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {
             logger.info("User with email: " + email + " not found");
             throw new UserNotFoundException("User with email: " + email + " not found");
         }
+
+        if (!jwtService.isTokenValid(jwtToken, user.get())) {
+            throw new UnauthorizedException("JWT token does not belong to user with email: " + email);
+        }
+
         List<Bookmark> bookmarks = bookmarkRepository.findByUser(user);
         List<BookmarkDTO> bookmarkDTO = bookmarks.stream()
                 .map(bookmark -> new BookmarkDTO(bookmark.getId(), bookmark.getUser().getId(), bookmark.getItem().getId()))
