@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/**")
                 .permitAll()
                 .requestMatchers("/h2-ui/**").permitAll()
+                .requestMatchers("/my-profile").permitAll()
                 .requestMatchers(toH2Console()).permitAll()// Add this line if you want to access H2 console without authentication
                 .anyRequest()
                 .authenticated()
