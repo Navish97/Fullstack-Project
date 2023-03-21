@@ -1,20 +1,11 @@
-import axios from "axios";
-
-const itemAPI = axios.create({
-    baseURL: 'http://localhost:8080/api/items',
-    withCredentials:true,
-    headers: {
-        Accept:'application/json',
-        'Content-Type':'application/json',
-    }
-})
+import axiosInstance from "@/service/AxiosInstance";
 
 export async function getItems(pageNr : number, pageSize : number, filter : object): Promise<any> {
-    const response = await itemAPI.get('/page', {
+    const response = await axiosInstance.get('/api/items/page', {
         params: {
             pageNumber:pageNr,
             size:pageSize,
-            filter:filter,
+            filter:JSON.stringify(filter)
         }
     })
     return response

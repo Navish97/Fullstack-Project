@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import BaseInput from "@/components/Form/BaseInput.vue";
 import router from "@/router";
 import {postRegister} from "@/service/Authentication/AuthenticationService";

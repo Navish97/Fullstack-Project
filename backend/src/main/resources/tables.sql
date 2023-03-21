@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS users (
-    id UUID,
+    id VARCHAR(36),
     name VARCHAR(255),
     email VARCHAR(255),
     password VARCHAR(255),
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS category (
 
 CREATE TABLE IF NOT EXISTS items (
     id BIGINT AUTO_INCREMENT,
-    user_id UUID,
+    user_id VARCHAR(36),
     category_id BIGINT,
     title VARCHAR(255),
     brief_description VARCHAR(255),
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS items (
 
 CREATE TABLE IF NOT EXISTS bookmarks (
     id BIGINT AUTO_INCREMENT,
-    user_id UUID,
+    user_id VARCHAR(36),
     item_id BIGINT,
 
     PRIMARY KEY (id),
@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS bookmarks (
 
 CREATE TABLE IF NOT EXISTS messages (
     id BIGINT AUTO_INCREMENT,
-    sender_id UUID,
-    receiver_id UUID,
+    sender_id VARCHAR(36),
+    receiver_id VARCHAR(36),
     item_id BIGINT,
     message TEXT,
 

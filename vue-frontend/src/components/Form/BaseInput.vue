@@ -5,27 +5,15 @@
         placeholder=" "
         class="input"
         :value="modelValue"
-<<<<<<< Updated upstream
-        @input="$emit('update:modelValue', $event.target.value)"
-=======
+
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-
-
->>>>>>> Stashed changes
     >
     <div class="cut"></div>
     <label for="firstname" class="placeholder">{{ label }}</label>
   </div>
 </template>
 
-
-
-<<<<<<< Updated upstream
-<script>
-=======
 <script lang="ts">
-
->>>>>>> Stashed changes
 export default {
   props: {
     id:{
@@ -44,7 +32,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .input-container {
   margin-top: 40px;
   height: 50px;

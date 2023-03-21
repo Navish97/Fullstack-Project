@@ -13,6 +13,9 @@ import { getUserData } from '@/service/Authentication/AuthenticationService';
 import type { User } from "@/types/UserType";
 import router from '@/router/index';
 import { onMounted, ref } from 'vue';
+import { useUserStore } from '@/stores/User';
+
+const userStore = useUserStore();
 
 const user = ref({} as User);
 
@@ -27,7 +30,7 @@ async function loadData() {
       user.value = response;
       console.log(response);
     } else {
-      await router.push('/login');
+      await userStore.logOut();
     }
   } catch (error) {
     console.error(error);

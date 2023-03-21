@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="userStore.getLoggedInUser">
+  <div class="container" v-if="isLoggedIn">
     <button class="bookmark-button" :class="{ 'bookmarked': bookmarked }" @click="toggleBookmark">
       <span class="bookmark-icon"></span>
       <span class="bookmark-text">{{ bookmarked ? 'Bookmarked' : 'Bookmark' }}</span>
@@ -15,6 +15,12 @@ import {useUserStore} from "@/stores/User";
 const itemStore = useItemStore();
 const userStore = useUserStore();
 
+const isLoggedIn = computed(() => {
+  return userStore.getLoggedInUserEmail;
+});
+const toggleBookmark = () => {
+  return true;
+};
 const bookmarked = computed(() => {
   return userStore.isItemBookmarked(itemStore.getCurrentItem);
 });
