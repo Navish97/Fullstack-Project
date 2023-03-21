@@ -66,7 +66,7 @@ function nextImage() {
 }
 </script>
 
-<style>
+<style scoped>
 
 .flex-container {
   padding-top: 24px;

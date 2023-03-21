@@ -30,9 +30,12 @@ public class LoginController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request, HttpServletResponse response){
         try {
-            return ResponseEntity.ok(authenticationService.register(request));
+            AuthenticationResponse authResponse = authenticationService.register(request);
+            response.addCookie(getCookie(authResponse));
+
+            return ResponseEntity.ok(authResponse);
         } catch (UserAlreadyExistsException e) {
             return ResponseEntity.badRequest().body(AuthenticationResponse.builder().errorMessage(e.getMessage()).build());
         }
@@ -43,17 +46,22 @@ public class LoginController {
         try {
             AuthenticationResponse authResponse = authenticationService.authenticate(request);
 
-            // Set access token as an HttpOnly cookie
-            Cookie accessTokenCookie = new Cookie("myMarketPlaceAccessToken", authResponse.getToken());
-            accessTokenCookie.setHttpOnly(true);
-            accessTokenCookie.setPath("/");
-            accessTokenCookie.setMaxAge(5 * 60); // 5 minutes
-            response.addCookie(accessTokenCookie);
+
+            response.addCookie(getCookie(authResponse));
 
             return ResponseEntity.ok(authResponse);
         } catch (InvalidCredentialsException e) {
             return ResponseEntity.badRequest().body(AuthenticationResponse.builder().errorMessage(e.getMessage()).build());
         }
+    }
+
+    public Cookie getCookie(AuthenticationResponse authResponse){
+        // Set access token as an HttpOnly cookie
+        Cookie accessTokenCookie = new Cookie("myMarketPlaceAccessToken", authResponse.getToken());
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setMaxAge(5 * 60); // 5 minutes
+        return accessTokenCookie;
     }
 
 
