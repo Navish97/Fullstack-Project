@@ -7,6 +7,7 @@
           <button class="image-btn next" @click="nextImage" v-if="props.item.imageURLs.length>1">&gt;</button>
         <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.imageURLs.length }}</div>
       </div>
+      <bookmark-component />
       <div class="item-info">
         <h2>{{ item.title }}</h2>
         <p>(DD): {{ item.latitude }}, {{ item.longitude }}</p>
@@ -22,6 +23,7 @@
 <script setup lang="ts">
 import { defineProps, computed, ref, watch } from 'vue';
 import type { Item } from '@/types/ItemType';
+import BookmarkComponent from "@/components/BookmarkComponent.vue";
 
 const props = defineProps({
   item: {
@@ -64,7 +66,7 @@ function nextImage() {
 }
 </script>
 
-<style>
+<style scoped>
 
 .flex-container {
   padding-top: 24px;

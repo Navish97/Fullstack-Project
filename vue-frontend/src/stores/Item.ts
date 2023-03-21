@@ -1,8 +1,11 @@
 import { defineStore } from 'pinia'
-import type {Item} from "@/types/ItemType";
+import type { Item } from "@/types/ItemType";
 
 export const useItemStore = defineStore({
   id: 'items',
+  persist: {
+    storage: sessionStorage,
+  },
   state: () => ({
     listingTypes: ['thumbnail', 'list'] as string[],
     currentListingType: 'thumbnail' as string,
@@ -32,7 +35,7 @@ export const useItemStore = defineStore({
         userId: 1,
       },
       {
-        id: 2,
+        id: 3,
         description: 'This is the full description of the item',
         briefDescription: 'This is a brief description of the item',
         price: 449,
@@ -44,7 +47,7 @@ export const useItemStore = defineStore({
         userId: 1,
       },
       {
-        id: 2,
+        id: 4,
         description: 'This is the full description of the item',
         briefDescription: 'This is a brief description of the item',
         price: 129,
@@ -56,7 +59,7 @@ export const useItemStore = defineStore({
         userId: 1,
       },
       {
-        id: 2,
+        id: 5,
         description: 'This is the full description of the item',
         briefDescription: 'This is a brief description of the item',
         price: 159,
@@ -66,12 +69,27 @@ export const useItemStore = defineStore({
         latitude: 37.7749,
         longitude: -122.4194,
         userId: 1,
+      },
+      {
+        id: 6,
+        description: 'This is the full description of the item',
+        briefDescription: 'This is a brief description of the item',
+        price: 159,
+        imageURLs: ['https://merriam-webster.com/assets/mw/images/gallery/gal-wap-slideshow-slide/aurora-borealis-7071-bb1ac685e1fecf3a7b7bcd8abac175e6@1x.jpg'],
+        categoryId: 1,
+        title: 'Landscape Portraitddd',
+        latitude: 37.7749,
+        longitude: -122.4194,
+        userId: 1,
       }
    ] as Item[],
   }),
   getters: {
     getCurrentItem: (state) => {
       return state.currentItem;
+    },
+    getCurrentItemId: (state) => {
+        return state.currentItem.id;
     },
     getCurrentListingType: (state) => {
       return state.currentListingType;
@@ -89,6 +107,9 @@ export const useItemStore = defineStore({
     },
     setCurrentListingType(listingType: string) {
       this.currentListingType = listingType;
+    },
+    setLists(list : []){
+      this.items = list;
     },
   },
 });

@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS users (
-    id BIGINT AUTO_INCREMENT,
+    id UUID,
     name VARCHAR(255),
     email VARCHAR(255),
     password VARCHAR(255),
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS category (
 
 CREATE TABLE IF NOT EXISTS items (
     id BIGINT AUTO_INCREMENT,
-    user_id BIGINT,
+    user_id UUID,
     category_id BIGINT,
     title VARCHAR(255),
     brief_description VARCHAR(255),
@@ -32,9 +32,9 @@ CREATE TABLE IF NOT EXISTS items (
     FOREIGN KEY (category_id) REFERENCES category(id)
     );
 
-CREATE TABLE IF NOT EXISTS bookmark (
+CREATE TABLE IF NOT EXISTS bookmarks (
     id BIGINT AUTO_INCREMENT,
-    user_id BIGINT,
+    user_id UUID,
     item_id BIGINT,
 
     PRIMARY KEY (id),
@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS bookmark (
 
 CREATE TABLE IF NOT EXISTS messages (
     id BIGINT AUTO_INCREMENT,
-    sender_id BIGINT,
-    receiver_id BIGINT,
+    sender_id UUID,
+    receiver_id UUID,
     item_id BIGINT,
     message TEXT,
 

@@ -5,7 +5,7 @@ import ntnu.idatt2105.project.backend.authentication.AuthenticationRequest;
 import ntnu.idatt2105.project.backend.authentication.AuthenticationResponse;
 import ntnu.idatt2105.project.backend.authentication.RegisterRequest;
 import ntnu.idatt2105.project.backend.exceptions.UserAlreadyExistsException;
-import ntnu.idatt2105.project.backend.model.Role;
+import ntnu.idatt2105.project.backend.enums.Role;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.repository.UserRepository;
 import org.apache.http.auth.InvalidCredentialsException;
@@ -29,13 +29,13 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) throws UserAlreadyExistsException {
         var user = User.builder()
+                .id(String.valueOf(java.util.UUID.randomUUID()))
                 .email(request.getEmail())
                 .name(request.getName())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
 
-        System.out.println(user);
         if (repository.findByEmail(user.getEmail()).isPresent())
             throw new UserAlreadyExistsException("Email is already in use");
         repository.save(user);
