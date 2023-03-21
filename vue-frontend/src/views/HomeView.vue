@@ -64,8 +64,8 @@ async function loadPage(){
 .listing-type {
   width: 250px;
   padding: 20px;
-  background-color: #f0f0f0;
 }
+
 
 .items {
   padding: 20px;
@@ -73,7 +73,6 @@ async function loadPage(){
 
 .right-sidebar {
   width: 250px;
-  background-color: #f0f0f0;
   padding: 20px;
 }
 </style>
