@@ -1,6 +1,7 @@
 package ntnu.idatt2105.project.backend.controller;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import ntnu.idatt2105.project.backend.model.AuthenticationRequest;
@@ -35,10 +36,13 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request, HttpServletResponse response) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response, HttpServletRequest request){
         try {
-            AuthenticationResponse authResponse = authenticationService.authenticate(request);
-            response.addCookie(getCookie(authResponse));
+            AuthenticationResponse authResponse = authenticationService.authenticate(authenticationRequest);
+            Cookie cookie = getCookie(authResponse);
+            cookie.setDomain(request.getServerName());
+
+            response.addCookie(cookie);
 
             return ResponseEntity.ok(authResponse);
         } catch (InvalidCredentialsException e) {
