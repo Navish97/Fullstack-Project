@@ -15,7 +15,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+//import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @Configuration
 @EnableWebSecurity
@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .permitAll()
                 .requestMatchers("/h2-ui/**").permitAll()
                 //.requestMatchers("/my-profile").permitAll()
-                .requestMatchers(toH2Console()).permitAll()// Add this line if you want to access H2 console without authentication
+                //.requestMatchers(toH2Console()).permitAll()// Add this line if you want to access H2 console without authentication
                 .anyRequest()
                 .authenticated()
             .and()
