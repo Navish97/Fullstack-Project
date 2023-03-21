@@ -21,7 +21,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "https://mymarketplace-xt5ws57jza-lz.a.run.app"})
 @Tag(name = "Login Controller", description = "Controller to handle user login")
 public class ProfileController {
 
