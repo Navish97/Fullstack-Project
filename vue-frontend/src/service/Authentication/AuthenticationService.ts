@@ -1,10 +1,8 @@
-
 import type { AxiosResponse } from 'axios';
 import type {LoginData} from "@/types/LoginData";
 import type {RegisterData} from "@/types/RegisterData";
 import type {User} from "@/types/UserType";
 import axiosInstance from "@/service/AxiosInstance";
-import axios from "axios";
 
 export const postLogin = (login: LoginData): Promise<AxiosResponse> => {
     return axiosInstance.post('/api/auth/login', login);
