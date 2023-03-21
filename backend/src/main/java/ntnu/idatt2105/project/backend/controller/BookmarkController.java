@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/bookmarks")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "https://mymarketplace-xt5ws57jza-lz.a.run.app"})
 public class BookmarkController {
 
     private final UserRepository userRepository;
