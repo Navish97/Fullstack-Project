@@ -42,7 +42,7 @@ public class LoginController {
             Cookie cookie = getCookie(authResponse);
             cookie.setDomain(request.getServerName());
 
-            response.addHeader("Set-Cookie", cookieToHeaderWithSameSite(response, cookie, "strict"));
+            response.addHeader("Set-Cookie", cookieToHeaderWithSameSite(response, cookie));
 
             return ResponseEntity.ok(authResponse);
         } catch (InvalidCredentialsException e) {
@@ -59,8 +59,8 @@ public class LoginController {
         return accessTokenCookie;
     }
 
-    private String cookieToHeaderWithSameSite(HttpServletResponse response, Cookie cookie, String sameSite) {
-        return cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; Max-Age=" + cookie.getMaxAge() + "; HttpOnly; SameSite=" + sameSite;
+    private String cookieToHeaderWithSameSite(HttpServletResponse response , Cookie cookie) {
+        return cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; Max-Age=" + cookie.getMaxAge() + "; HttpOnly; Secure; SameSite=" + "none";
     }
     /*
     @PostMapping
@@ -71,8 +71,5 @@ public class LoginController {
             return ResponseEntity.ok(existingUser);
         }
         return ResponseEntity.status(401).build();
-    }
-
-
-     */
+    }*/
 }
