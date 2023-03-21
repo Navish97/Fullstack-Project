@@ -33,7 +33,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .input-container {
   margin-top: 40px;
   height: 50px;

@@ -1,9 +1,9 @@
 package ntnu.idatt2105.project.backend.service;
 
 import lombok.RequiredArgsConstructor;
-import ntnu.idatt2105.project.backend.authentication.AuthenticationRequest;
-import ntnu.idatt2105.project.backend.authentication.AuthenticationResponse;
-import ntnu.idatt2105.project.backend.authentication.RegisterRequest;
+import ntnu.idatt2105.project.backend.model.AuthenticationRequest;
+import ntnu.idatt2105.project.backend.dto.AuthenticationResponse;
+import ntnu.idatt2105.project.backend.model.RegisterRequest;
 import ntnu.idatt2105.project.backend.exceptions.UserAlreadyExistsException;
 import ntnu.idatt2105.project.backend.enums.Role;
 import ntnu.idatt2105.project.backend.model.User;

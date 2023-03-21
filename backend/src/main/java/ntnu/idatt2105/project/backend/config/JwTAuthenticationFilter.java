@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -62,11 +63,15 @@ public class JwTAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        logger.info("Username: " + username);
+        logger.info(String.valueOf(SecurityContextHolder.getContext().getAuthentication()));
+        if (username != null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+            logger.info("User " + username + " is loaded");
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 authState = AuthenticationState.AUTHENTICATED;
+                logger.info("User " + username + " is authenticated");
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -76,6 +81,8 @@ public class JwTAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
+
+        logger.info("Authentication state: " + authState);
 
         // Set AuthenticationState as a request attribute
         request.setAttribute("authState", authState);

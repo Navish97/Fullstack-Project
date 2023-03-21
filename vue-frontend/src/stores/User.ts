@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { Bookmark } from "@/types/BookmarkType";
-import type {User} from "@/types/UserType";
 import type {Item} from "@/types/ItemType";
+import router from "@/router";
 
 export const useUserStore = defineStore({
     id: 'user',
@@ -24,10 +24,18 @@ export const useUserStore = defineStore({
         },
         addBookmark: (state) => (item: Item) => {
             //Axios call for adding bookmark to database
+        },
+        isLoggedIn: (state) => () => {
+            return state.loggedInUserEmail !== "";
         }
 
     },
     actions: {
+        logOut() {
+            router.push("/")
+            this.loggedInUserEmail = "";
+            this.bookmarks = [];
+        },
         setLoggedInUserEmail(userEmail: string) {
             this.loggedInUserEmail = userEmail;
         },

@@ -21,7 +21,7 @@ import ListingTypeButton from '@/components/ButtonChangeListingType.vue';
 import FilterComponent from '@/components/FilterComponent.vue';
 import {computed, onMounted} from "vue";
 import { useItemStore } from '@/stores/Item';
-import {getItems} from '@/service/ItemService';
+import { getItems } from '@/service/ItemService';
 
 
 const itemStore = useItemStore();
@@ -35,9 +35,13 @@ onMounted(() => {
 });
 
 async function loadPage(){
-  await getItems(0,1)
+  await getItems(0,15, {
+    minPrice:null,
+    maxPrice:null,
+    usedValue:true,
+    newValue:true,
+  })
   .then((response) => {
-    console.log(response);
     itemStore.setLists(response.data.items);
   })
   .catch((error) => {
@@ -65,17 +69,15 @@ async function loadPage(){
 .listing-type {
   width: 250px;
   padding: 20px;
-  background-color: #f0f0f0;
 }
 
-=======
+
 .items {
   padding: 20px;
 }
 
 .right-sidebar {
   width: 250px;
-  background-color: #f0f0f0;
   padding: 20px;
 }
 </style>
