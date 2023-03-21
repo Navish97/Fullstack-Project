@@ -4,7 +4,11 @@
   <li><a href="/">Home</a></li>
   <li><a href="#">About</a></li>
   <li><a href="#">Contact</a></li>
-  <li><RouterLink to="/my-profile" v-if="loggedIn">My Profile</RouterLink></li>
+  <div>
+    <li><RouterLink to="/my-profile" v-if="loggedIn">My Profile</RouterLink></li>
+    <li><RouterLink to="/login" v-if="!loggedIn">Login</RouterLink></li>
+  </div>
+
 </ul>
 </nav>
 </template>
@@ -20,7 +24,7 @@ const loggedIn = computed(() => {
 });
 </script>
 
-<style>
+<style scoped>
 nav {
   background-color: #333;
   color: #fff;
