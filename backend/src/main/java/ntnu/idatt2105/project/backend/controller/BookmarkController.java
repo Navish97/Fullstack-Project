@@ -36,6 +36,7 @@ public class BookmarkController {
     private BookmarkRepository bookmarkRepository;
 
     Logger logger = LoggerFactory.getLogger(BookmarkController.class);
+
     @Operation(summary = "Get a user's bookmarks",
             description = "Returns a list of bookmark objects for the user with the given email address.",
             parameters = {
@@ -49,15 +50,18 @@ public class BookmarkController {
             })
     @GetMapping("/user")
     public ResponseEntity<?> getUserBookmarks(@RequestBody Map<String, String> requestBody) throws UserNotFoundException {
+        logger.info("Getting bookmarks for user with email: " + requestBody.get("email"));
         String email = requestBody.get("email");
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {
+            logger.info("User with email: " + email + " not found");
             throw new UserNotFoundException("User with email: " + email + " not found");
         }
         List<Bookmark> bookmarks = bookmarkRepository.findByUser(user);
         List<BookmarkDTO> bookmarkDTO = bookmarks.stream()
                 .map(bookmark -> new BookmarkDTO(bookmark.getId(), bookmark.getUser().getId(), bookmark.getItem().getId()))
                 .collect(Collectors.toList());
+        logger.info("User found, returning bookmarks for user with email: " + email);
         return ResponseEntity.ok(bookmarkDTO);
     }
 }
