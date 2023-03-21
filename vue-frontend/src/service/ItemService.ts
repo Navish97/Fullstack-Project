@@ -5,7 +5,7 @@ export async function getItems(pageNr : number, pageSize : number, filter : obje
         params: {
             pageNumber:pageNr,
             size:pageSize,
-            filter:filter,
+            filter:JSON.stringify(filter)
         }
     })
     return response
