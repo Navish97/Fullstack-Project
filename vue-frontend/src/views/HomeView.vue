@@ -21,7 +21,7 @@ import ListingTypeButton from '@/components/ButtonChangeListingType.vue';
 import FilterComponent from '@/components/FilterComponent.vue';
 import {computed, onMounted} from "vue";
 import { useItemStore } from '@/stores/Item';
-import {getItems} from '@/service/ItemService';
+import { getItems } from '@/service/ItemService';
 
 
 const itemStore = useItemStore();
@@ -35,9 +35,8 @@ onMounted(() => {
 });
 
 async function loadPage(){
-  await getItems(0,1)
+  await getItems(0,15)
   .then((response) => {
-    console.log(response);
     itemStore.setLists(response.data.items);
   })
   .catch((error) => {
@@ -66,6 +65,8 @@ async function loadPage(){
   width: 250px;
   padding: 20px;
 }
+
+
 .items {
   padding: 20px;
 }
