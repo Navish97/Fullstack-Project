@@ -1,12 +1,15 @@
 <template>
-  <div class="container">
-    <div class="content">
+  <div class="wrapper">
+    <div class="grid-container">
       <div class="listing-type">
-        <ListingTypeButton />
         <FilterComponent />
       </div>
       <div class="items">
         <ItemList :items="itemStore.items" :listingType="currentListingType"/>
+      </div>
+      <div class="right-sidebar">
+        <ListingTypeButton />
+        <div>test</div>
       </div>
     </div>
   </div>
@@ -27,16 +30,38 @@ const currentListingType = computed(() => {
 </script>
 
 <style>
-.content {
-  margin-top: 25px;
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.grid-container {
   display: grid;
-  grid-template-columns: 225px 100%;
-  justify-items: start;
+  grid-template-columns: auto 60% auto;
+  grid-gap: 20px;
+  justify-content: center;
+  width: 80%;
 }
 
 .listing-type {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 250px;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.items {
+  padding: 20px;
+}
+
+.right-sidebar {
+  width: 250px;
+  background-color: #f0f0f0;
+  padding: 20px;
 }
 </style>
+
+
+
+
