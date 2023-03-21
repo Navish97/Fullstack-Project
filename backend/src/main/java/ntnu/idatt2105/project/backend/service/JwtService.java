@@ -11,6 +11,8 @@ import ntnu.idatt2105.project.backend.enums.AuthenticationState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.PropertySource;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +36,6 @@ public class JwtService {
         String LOCAL_SECRET_KEY = "THISKEYISONLYUSEDLOCALLYTHISKEYISONLYUSEDLOCALLYTHISKEYISONLYUSEDLOCALLY";
         this.SECRET_KEY = Arrays.asList(environment.getActiveProfiles()).contains("dev") ? LOCAL_SECRET_KEY : secretKey;
     }
-
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }

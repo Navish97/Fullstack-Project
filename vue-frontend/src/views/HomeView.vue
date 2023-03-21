@@ -19,14 +19,31 @@
 import ItemList from '@/components/ItemList.vue';
 import ListingTypeButton from '@/components/ButtonChangeListingType.vue';
 import FilterComponent from '@/components/FilterComponent.vue';
-import {computed} from "vue";
+import {computed, onMounted} from "vue";
 import { useItemStore } from '@/stores/Item';
+import {getItems} from '@/service/ItemService';
+
 
 const itemStore = useItemStore();
 
 const currentListingType = computed(() => {
   return itemStore.currentListingType;
 });
+
+onMounted(() => {
+  loadPage();
+});
+
+async function loadPage(){
+  await getItems(0,1)
+  .then((response) => {
+    console.log(response);
+    itemStore.setLists(response.data.items);
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+}
 </script>
 
 <style>
@@ -51,6 +68,7 @@ const currentListingType = computed(() => {
   background-color: #f0f0f0;
 }
 
+=======
 .items {
   padding: 20px;
 }
@@ -61,7 +79,3 @@ const currentListingType = computed(() => {
   padding: 20px;
 }
 </style>
-
-
-
-
