@@ -46,16 +46,6 @@ const router = createRouter({
       name: 'item-details',
       component: ItemDetailsView
     },
-    {
-      path:'/items',
-      name:'item-search',
-      component: HomeView,
-      beforeEnter: async (to, from, next) =>{
-        const { query } = to;
-        next();
-      },
-    
-    }
   ]
 })
 

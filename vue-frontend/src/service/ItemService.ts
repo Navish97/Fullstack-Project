@@ -1,6 +1,5 @@
 import axiosInstance from "@/service/AxiosInstance";
 
-
 export async function getItems(pageNr : number, pageSize : number, filter : object): Promise<any> {
     const response = await axiosInstance.get('/api/items/page', {
         params: {

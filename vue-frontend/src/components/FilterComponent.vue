@@ -34,7 +34,6 @@ import { ref, computed, onMounted } from 'vue';
 import { getItems } from '@/service/ItemService';
 import { useItemStore } from '@/stores/Item';
 import router from '@/router';
-import { useRoute } from 'vue-router';
 
 const itemStore = useItemStore();
 
@@ -80,9 +79,6 @@ onMounted(() => {
     if(queryParams.has("oldValue")){
         usedBox.value = JSON.parse(queryParams.get("usedValue")!);
     }
-
-
-
 
 })
 
