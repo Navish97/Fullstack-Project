@@ -4,19 +4,24 @@ package ntnu.idatt2105.project.backend.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.model.dto.Filter;
 import ntnu.idatt2105.project.backend.service.ItemService;
+import ntnu.idatt2105.project.backend.service.JwtService;
+import ntnu.idatt2105.project.backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ntnu.idatt2105.project.backend.service.BookmarkService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,12 +36,45 @@ import java.util.Map;
 @Tag(name = "Item Controller", description = "Controller to handle items")
 public class ItemController {
     Logger logger = LoggerFactory.getLogger(ItemController.class);
+
+    private final JwtService jwtService;
+    private final BookmarkService bookmarkService;
+    private final UserService userService;
     private final ItemService itemService;
+
+    @GetMapping("/details/{itemId}")
+    @Operation(summary = "Get item details",
+            description = "This retrieves item details by itemId. If the user is logged in, the response will also include whether the item is bookmarked by the user. If the user is unauthenticated, it defaults to false",
+            parameters = {
+                    @Parameter(name = "itemId", description = "Item ID", required = true),
+                    @Parameter(name = "myMarketPlaceAccessToken", description = "JWT Access Token (from myMarketPlaceAccessToken cookie)", required = false)
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Returns the ItemDTO with an additional isBookmarked field.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ItemDTO.class)))
+            })
+    public ResponseEntity<?> getItemDetails(@PathVariable Long itemId, @CookieValue(value = "myMarketPlaceAccessToken", required = false) String jwtToken) throws JsonProcessingException {
+        logger.info("Received get item details request");
+        ItemDTO item = itemService.getItemById(itemId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("item", item);
+
+        if (jwtToken != null) {
+            User user = userService.findByEmail(jwtService.extractUsername(jwtToken));
+            boolean isBookmarked = bookmarkService.isItemBookmarkedByUser(user.getId() , itemId);
+            response.put("isBookmarked", isBookmarked);
+        } else {
+            response.put("isBookmarked", false);
+        }
+
+        return ResponseEntity.ok(response);
+    }
 
     /**
      * Generates a response containing information about the page being returned. It maps them to a hashmap.
      * @param page
-     * @return
+     * @return response containing information about the page being returned.
      */
     private Map<String, Object> generateResponse(final Page<ItemDTO> page){
         Map<String, Object> response = new HashMap<>();
@@ -53,7 +91,7 @@ public class ItemController {
      * @param pageNumber
      * @param size
      * @param filter
-     * @return
+     * @return response to user containing the page of items.
      * @throws JsonProcessingException
      */
     @Operation(summary = "Retrieve a page of items filtered according to provided filter. ", description = "Retrieves a page of items based on the given page number, page size, and filter. The filter should be provided as a JSON string.")
@@ -71,8 +109,8 @@ public class ItemController {
 
     /**
      * Method maps a String of a json filter object, into a object of the Filter class.
-     * @param json
-     * @return
+     * @param json String of a json filter object.
+     * @return Filter object.
      * @throws JsonProcessingException
      */
     private Filter parseFilter(String json) throws JsonProcessingException {

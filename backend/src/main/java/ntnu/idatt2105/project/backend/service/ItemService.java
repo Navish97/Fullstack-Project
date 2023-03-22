@@ -18,6 +18,14 @@ import org.springframework.stereotype.Service;
 public class ItemService {
     private final ItemRepository itemRepository;
 
+    public ItemDTO getItemById(Long id){
+        Item item = itemRepository.findById(id).orElse(null);
+        if(item == null){
+            return null;
+        }
+        return new ItemDTO(item);
+    }
+
     /**
      * Gets an item page, using the filter specified in the parameter. The method first gets the filtered
      * items from the database, then creates a Data Transfer Object for each of the items and maps them to a Page.
@@ -39,13 +47,9 @@ public class ItemService {
             itemPage = itemRepository
                     .getItemsByPrice(minPrice, maxPrice, PageRequest.of(pageNr, pageSize));
         }
-        Page<ItemDTO> copyPage = itemPage.map(item -> {
-            ItemDTO itemDTO = new ItemDTO(item);
-            return itemDTO;
-        });
-        Page<ItemDTO> pageDTO = new PageImpl<>(copyPage.getContent(), copyPage.getPageable(), copyPage.getTotalElements());
+        Page<ItemDTO> copyPage = itemPage.map(ItemDTO::new);
 
-        return pageDTO;
+        return new PageImpl<>(copyPage.getContent(), copyPage.getPageable(), copyPage.getTotalElements());
 
 
 
