@@ -35,7 +35,7 @@ public class SecurityConfig {
             .authorizeHttpRequests()
                 .requestMatchers("/api/**")
                 .permitAll()
-                .requestMatchers("/h2-ui/**").permitAll()
+                .requestMatchers("/h2-ui/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 //.requestMatchers("/my-profile").permitAll()
                 //.requestMatchers(toH2Console()).permitAll()// Add this line if you want to access H2 console without authentication
                 .anyRequest()
