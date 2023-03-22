@@ -6,7 +6,9 @@
           <div class="icon-container">
             <font-awesome-icon :icon="category.iconUrl" />
           </div>
-          <span>{{ category.type }}</span>
+          <div class="text-container">
+            <span>{{ category.type }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -58,7 +60,7 @@ onMounted(async () => {
 
 .categories-grid {
   display: grid;
-  //grid-template-columns: 1fr 3fr; /* create two columns, one for the icons and the other for the category names */
+//grid-template-columns: 1fr 3fr; /* create two columns, one for the icons and the other for the category names */
   gap: 1rem;
 }
 
@@ -74,7 +76,11 @@ onMounted(async () => {
   text-align: center; /* Center the icon within the container */
 }
 
-.category > span {
+.text-container {
+  width: 100%; /* Set a fixed width for the text container */
+}
+
+.category > .text-container > span {
   margin-left: 1rem; /* add some space between the icon and the category name */
 }
 </style>
