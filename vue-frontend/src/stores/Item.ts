@@ -49,11 +49,11 @@ export const useItemStore = defineStore({
           briefDescription: data.briefDescription,
           price: data.price,
           imageURLs: [data.imageUrls],
-          categoryId: data.category.id,
+          categoryId: data.categoryid,
           title: data.title,
           latitude: parseFloat(data.latitude),
           longitude: parseFloat(data.longitude),
-          userId: data.user.id,
+          userId: data.userid,
         }
         newItems.push(newItem);
       });
