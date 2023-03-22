@@ -39,7 +39,7 @@ export const useItemStore = defineStore({
     }
   },
   actions: {
-    setBookmarked(bookmarked: boolean) {
+    setCurrentItemBookmarked(bookmarked: boolean) {
         this.currentItemBookmarked = bookmarked;
     },
     setCurrentItem(item: Item) {

@@ -20,16 +20,15 @@ const props = defineProps({
 const itemStore = useItemStore();
 const isLoading = ref(true);
 onMounted(async () => {
+  isLoading.value = true;
   try {
-    isLoading.value = true;
     const response = await getItemDetails(props.id);
     itemStore.setCurrentItem(itemStore.responseToItem(response.data.item));
-    itemStore.setBookmarked(response.data.isBookmarked);
-    isLoading.value = false;
+    itemStore.setCurrentItemBookmarked(response.data.isBookmarked);
   } catch (error) {
     console.error(error)
-    isLoading.value = false;
   }
+  isLoading.value = false;
 })
 
 const selectedItem = computed(() => {
