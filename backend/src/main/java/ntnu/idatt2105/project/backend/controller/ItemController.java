@@ -49,7 +49,6 @@ public class ItemController {
 
     private Filter parseFilter(String json) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Filter filter = objectMapper.readValue(json, Filter.class);
-        return filter;
+        return objectMapper.readValue(json, Filter.class);
     }
 }
