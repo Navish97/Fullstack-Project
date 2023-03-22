@@ -2,9 +2,10 @@
   <div class="item-details" v-if="props.item.imageURLs">
     <div class="flex-container">
       <div class="image-container">
+        <img :src="bookmark" alt="bookmarked" class="bookmark-icon" v-if="itemIsBookmarked"/>
         <img :src="currentImage" class="item-image" alt="item-image" />
-          <button class="image-btn prev" @click="prevImage" v-if="props.item.imageURLs.length>1">&lt;</button>
-          <button class="image-btn next" @click="nextImage" v-if="props.item.imageURLs.length>1">&gt;</button>
+        <button class="image-btn prev" @click="prevImage" v-if="props.item.imageURLs.length>1">&lt;</button>
+        <button class="image-btn next" @click="nextImage" v-if="props.item.imageURLs.length>1">&gt;</button>
         <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.imageURLs.length }}</div>
       </div>
       <bookmark-component />
@@ -24,6 +25,10 @@
 import { defineProps, computed, ref, watch } from 'vue';
 import type { Item } from '@/types/ItemType';
 import BookmarkComponent from "@/components/Items/BookmarkButton.vue";
+import {useItemStore} from "@/stores/Item";
+import bookmark from '@/assets/bookmark.png';
+
+const itemStore = useItemStore();
 
 const props = defineProps({
   item: {
@@ -37,6 +42,11 @@ watch(() => props.item, () => {
 });
 
 const currentImageIndex = ref(0);
+
+const itemIsBookmarked = computed(() => {
+  return itemStore.isCurrentItemBookmarked;
+});
+
 const currentImage = computed(() => {
   if (props.item !== undefined && props.item.imageURLs !== undefined) {
     return props.item.imageURLs[currentImageIndex.value];
@@ -67,6 +77,17 @@ function nextImage() {
 </script>
 
 <style scoped>
+
+.bookmark-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 60px;
+  height: 100px;
+  opacity: 0.5;
+  border-top-right-radius: 24px;
+}
 
 .flex-container {
   padding-top: 24px;

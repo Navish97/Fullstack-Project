@@ -20,12 +20,12 @@ async function toggleBookmark() {
   if (itemStore.isCurrentItemBookmarked) {
     const response = await deleteBookmark(itemStore.getCurrentItemId);
     if (response.status === 200) {
-      itemStore.setBookmarked(false);
+      itemStore.setCurrentItemBookmarked(false);
     }
   } else {
     const response = await addBookmark(itemStore.getCurrentItemId);
     if (response.status === 200) {
-      itemStore.setBookmarked(true);
+      itemStore.setCurrentItemBookmarked(true);
     }
   }
 }
