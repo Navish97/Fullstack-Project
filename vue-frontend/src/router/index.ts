@@ -7,6 +7,7 @@ import FilterComponent from '@/components/FilterComponent.vue'
 import ItemDetailsView from '../views/ItemDetailsView.vue'
 import NewListingView from "../views/NewListingView.vue";
 import { getItems } from '@/service/ItemService';
+import { useUserStore } from '@/stores/User';
 
 
 const router = createRouter({
