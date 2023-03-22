@@ -1,5 +1,5 @@
 <template>
-  <div class="items" v-if="selectedItem">
+  <div class="items" v-if="selectedItem&&!isLoading">
     <ItemDetails :item="itemStore.getCurrentItem"/>
   </div>
 </template>
@@ -9,7 +9,6 @@ import ItemDetails from '@/components/Items/ItemDetails.vue';
 import { useItemStore } from '@/stores/Item';
 import {computed, defineProps, onMounted, ref} from "vue";
 import {getItemDetails} from "@/service/ItemService";
-import {useUserStore} from "@/stores/User";
 
 const props = defineProps({
   id: {
@@ -19,14 +18,17 @@ const props = defineProps({
 })
 
 const itemStore = useItemStore();
-
+const isLoading = ref(true);
 onMounted(async () => {
   try {
+    isLoading.value = true;
     const response = await getItemDetails(props.id);
     itemStore.setCurrentItem(itemStore.responseToItem(response.data.item));
     itemStore.setBookmarked(response.data.isBookmarked);
+    isLoading.value = false;
   } catch (error) {
     console.error(error)
+    isLoading.value = false;
   }
 })
 
