@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import ItemList from '@/components/ItemList.vue';
+import ItemList from '@/components/Items/ItemList.vue';
 import ListingTypeButton from '@/components/ButtonChangeListingType.vue';
 import FilterComponent from '@/components/FilterComponent.vue';
 import {computed, onMounted} from "vue";
@@ -34,7 +34,6 @@ const currentListingType = computed(() => {
 
 onMounted(() => {
   loadPage();
-  console.log(userStore.isLoggedIn());
 });
 
 

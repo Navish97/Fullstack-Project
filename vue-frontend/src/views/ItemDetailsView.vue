@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang = "ts">
-import ItemDetails from '@/components/ItemDetails.vue';
+import ItemDetails from '@/components/Items/ItemDetails.vue';
 import { useItemStore } from '@/stores/Item';
 import {computed} from "vue";
 
@@ -14,6 +14,9 @@ const itemStore = useItemStore();
 const selectedItem = computed(() => {
   if (itemStore.getCurrentItem !== undefined) {
     return itemStore.getCurrentItem;
+  }
+  else{
+    return null;
   }
 });
 </script>
