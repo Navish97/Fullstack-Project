@@ -15,6 +15,9 @@ const selectedItem = computed(() => {
   if (itemStore.getCurrentItem !== undefined) {
     return itemStore.getCurrentItem;
   }
+  else{
+    return null;
+  }
 });
 </script>
 
