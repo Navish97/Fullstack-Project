@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
-import type { Item } from "@/types/ItemType";
+import {defineStore} from 'pinia'
+import type {Item} from "@/types/ItemType";
 
 export const useItemStore = defineStore({
   id: 'items',
@@ -7,6 +7,7 @@ export const useItemStore = defineStore({
     listingTypes: ['thumbnail', 'list'] as string[],
     currentListingType: 'thumbnail' as string,
     currentItem: {} as Item,
+    currentItemBookmarked: false as boolean,
     persist: {
       storage: sessionStorage,
     },
@@ -15,6 +16,9 @@ export const useItemStore = defineStore({
     NewListingCategory: 0 as number,
   }),
   getters: {
+    isCurrentItemBookmarked: (state): boolean => {
+      return state.currentItemBookmarked;
+    },
     getCurrentItem: (state) => {
       return state.currentItem;
     },
@@ -35,6 +39,9 @@ export const useItemStore = defineStore({
     }
   },
   actions: {
+    setBookmarked(bookmarked: boolean) {
+        this.currentItemBookmarked = bookmarked;
+    },
     setCurrentItem(item: Item) {
       this.currentItem = item;
     },
@@ -46,22 +53,25 @@ export const useItemStore = defineStore({
       const updatedItems = [...currentItems, item];
       this.items = updatedItems;
     },
+    responseToItem(response: any){
+      const data = JSON.parse(JSON.stringify(response));
+        return {
+            id: data.id,
+            description: data.description,
+            briefDescription: data.briefDescription,
+            price: data.price,
+            imageURLs: [data.imageUrls],
+            categoryId: data.categoryid,
+            title: data.title,
+            latitude: parseFloat(data.latitude),
+            longitude: parseFloat(data.longitude),
+            userId: data.userid,
+          };
+    },
     setLists(list : []){
       const newItems:Item[] = [];
       list.forEach((element) => {
-        const data = JSON.parse(JSON.stringify(element));
-        const newItem = {
-          id: data.id,
-          description: data.description,
-          briefDescription: data.briefDescription,
-          price: data.price,
-          imageURLs: [data.imageUrls],
-          categoryId: data.categoryid,
-          title: data.title,
-          latitude: parseFloat(data.latitude),
-          longitude: parseFloat(data.longitude),
-          userId: data.userid,
-        }
+        const newItem = this.responseToItem(element);
         newItems.push(newItem);
       });
       this.items = newItems;

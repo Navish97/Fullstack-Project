@@ -1,8 +1,8 @@
 <template>
-  <div class="container" v-if="isLoggedIn">
-    <button class="bookmark-button" :class="{ 'bookmarked': bookmarked }" @click="toggleBookmark">
+  <div class="container" v-if="isLoggedIn" >
+    <button class="bookmark-button" :class="{ 'bookmarked': isBookmarked }" @click="toggleBookmark">
       <span class="bookmark-icon"></span>
-      <span class="bookmark-text">{{ bookmarked ? 'Bookmarked' : 'Bookmark' }}</span>
+      <span class="bookmark-text">{{ isBookmarked ? 'Remove Bookmark' : 'Add Bookmark' }}</span>
     </button>
   </div>
 </template>
@@ -16,7 +16,11 @@ const itemStore = useItemStore();
 const userStore = useUserStore();
 
 const isLoggedIn = computed(() => {
-  return userStore.getLoggedInUserEmail;
+  return userStore.isLoggedIn();
+});
+
+const isBookmarked = computed(() => {
+  return itemStore.isCurrentItemBookmarked;
 });
 const toggleBookmark = () => {
   return true;
@@ -54,6 +58,9 @@ const bookmarked = computed(() => {
   background: #425432;
 }
 
+.bookmark-button.bookmarked:hover {
+  background: #1a6e27;
+}
 
 
 .bookmark-text {
