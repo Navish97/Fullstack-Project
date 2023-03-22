@@ -47,7 +47,7 @@ const router = createRouter({
     {
       path:'/items',
       name:'item-search',
-      component: FilterComponent,
+      component: HomeView,
       beforeEnter: async (to, from, next) =>{
         const { query } = to;
         getItems(0, 15, query);

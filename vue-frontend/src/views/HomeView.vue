@@ -25,6 +25,7 @@ import { useUserStore } from '@/stores/User';
 import { getItems } from '@/service/ItemService';
 
 
+
 const itemStore = useItemStore();
 const userStore = useUserStore();
 
@@ -32,19 +33,7 @@ const currentListingType = computed(() => {
   return itemStore.currentListingType;
 });
 
-onMounted(() => {
-  loadPage();
-});
 
-
-function loadPage(){
-  getItems(0,15, {
-    minPrice:null,
-    maxPrice:null,
-    usedValue:true,
-    newValue:true,
-  })
-}
 </script>
 
 <style>

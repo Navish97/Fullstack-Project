@@ -7,6 +7,9 @@ export const useItemStore = defineStore({
     listingTypes: ['thumbnail', 'list'] as string[],
     currentListingType: 'thumbnail' as string,
     currentItem: {} as Item,
+    persist: {
+      storage: sessionStorage,
+    },
     items : [
    ] as Item[],
   }),
