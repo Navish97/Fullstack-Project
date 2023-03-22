@@ -34,14 +34,14 @@ const currentListingType = computed(() => {
 
 onBeforeRouteUpdate(async (to, from) => {
   console.log("route updated");
-    getItems(0, 15, to.query)
+    getItems(0, 9, to.query)
     .then((response) => {
       itemStore.setLists(response.data.items);
     });
 })
 
 onMounted(() => {
-  getItems(0, 15, useRoute().query)
+  getItems(0, 9, useRoute().query)
     .then((response) => {
       itemStore.setLists(response.data.items);
     });
