@@ -36,4 +36,10 @@ public class CategoryController {
         }
         return ResponseEntity.ok(categories);
     }
+
+    @GetMapping("{id}/icon-url")
+    @PreAuthorize("isAuthenticated()")
+    public String findIconUrlById(@PathVariable Long id) {
+        return categoryService.findIconUrlById(id);
+    }
 }

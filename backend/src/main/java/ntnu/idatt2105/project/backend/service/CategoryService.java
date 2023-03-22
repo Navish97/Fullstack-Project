@@ -18,5 +18,9 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+    public String findIconUrlById(Long id) {
+        return categoryRepository.findIconUrlById(id);
+    }
+
 
 }
