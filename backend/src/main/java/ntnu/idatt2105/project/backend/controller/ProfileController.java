@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api")
@@ -27,6 +28,8 @@ public class ProfileController {
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
     private final UserService userService;
+
+    Logger logger = Logger.getLogger(ProfileController.class.getName());
 
 
     @GetMapping("/my-profile")
@@ -39,6 +42,26 @@ public class ProfileController {
             }
             User user = userService.findByEmail(jwtService.extractUsername(jwt)); // Pass the JWT token instead of the request
             return ResponseEntity.ok(user);
+        } catch (TokenExpiredException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Token expired"));
+        }
+    }
+
+    @GetMapping("/user-status")
+    public ResponseEntity<?> getUserStatus(HttpServletRequest request) {
+        try {
+            String jwt = extractTokenFromCookie(request); // Extract the token from the cookie
+            logger.info("JWT: " + jwt);
+            if (jwt == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Unauthorized"));
+            }
+            User user = userService.findByEmail(jwtService.extractUsername(jwt)); // Pass the JWT token instead of the request
+            logger.info("User: " + user);
+            AuthenticationState state = jwtService.getAuthenticationState(jwt, user);
+
+            logger.info("User status: " + state);
+
+            return ResponseEntity.ok(state);
         } catch (TokenExpiredException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Token expired"));
         }

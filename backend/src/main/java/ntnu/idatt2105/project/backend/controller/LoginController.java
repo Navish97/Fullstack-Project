@@ -3,6 +3,7 @@ package ntnu.idatt2105.project.backend.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import ntnu.idatt2105.project.backend.model.AuthenticationRequest;
 import ntnu.idatt2105.project.backend.dto.AuthenticationResponse;
@@ -14,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.Date;
+import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class LoginController {
 
     private final AuthenticationService authenticationService;
+    Logger logger = Logger.getLogger(LoginController.class.getName());
 
 
     @PostMapping("/register")
@@ -41,9 +46,12 @@ public class LoginController {
             AuthenticationResponse authResponse = authenticationService.authenticate(authenticationRequest);
             Cookie cookie = getCookie(authResponse);
             cookie.setDomain(request.getServerName());
-
-            response.addHeader("Set-Cookie", cookieToHeaderWithSameSite(response, cookie));
-
+            if (!request.getServerName().equals("localhost")){
+                response.addHeader("Set-Cookie", cookieToHeaderWithSameSite(cookie));
+            }
+            else{
+                response.addCookie(cookie);
+            }
             return ResponseEntity.ok(authResponse);
         } catch (InvalidCredentialsException e) {
             return ResponseEntity.badRequest().body(AuthenticationResponse.builder().errorMessage(e.getMessage()).build());
@@ -56,20 +64,29 @@ public class LoginController {
         accessTokenCookie.setHttpOnly(true);
         accessTokenCookie.setPath("/");
         accessTokenCookie.setMaxAge(5 * 60); // 5 minutes
+
+        //cookie expires at "date"
+        logger.info("Cookie expires at: " + new Date(System.currentTimeMillis() + 5 * 60 * 1000));
         return accessTokenCookie;
     }
 
-    private String cookieToHeaderWithSameSite(HttpServletResponse response , Cookie cookie) {
-        return cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; Max-Age=" + cookie.getMaxAge() + "; HttpOnly; Secure; SameSite=" + "none";
+    private String cookieToHeaderWithSameSite(Cookie cookie) {
+        return cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; Max-Age=" + cookie.getMaxAge() + "; Secure; HttpOnly; SameSite=" + "none";
     }
-    /*
-    @PostMapping
-    @Operation(summary = "User login", description = "Authenticates a user and returns the user object if successful")
-    public ResponseEntity<User> login(@RequestBody User user) {
-        User existingUser = userService.findByEmail(user.getEmail());
-        if (existingUser != null && existingUser.getPassword().equals(user.getPassword())) {
-            return ResponseEntity.ok(existingUser);
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if(cookie.getName().equals("myMarketPlaceAccessToken")){
+                    cookie.setValue("");
+                    cookie.setPath("/");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
         }
-        return ResponseEntity.status(401).build();
-    }*/
+        return ResponseEntity.ok("Logged out");
+    }
 }

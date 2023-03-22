@@ -5,6 +5,7 @@
       <p>Name: {{ user.name }}</p>
       <p>Email: {{ user.email }}</p>
     </div>
+    <button @click="handleLogOut">Log Out</button>
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import type { User } from "@/types/UserType";
 import router from '@/router/index';
 import { onMounted, ref } from 'vue';
 import { useUserStore } from '@/stores/User';
+import axiosInstance from "@/service/AxiosInstance";
 
 const userStore = useUserStore();
 
@@ -23,12 +25,25 @@ onMounted(() => {
   loadData();
 });
 
+async function logOut() {
+  try{
+    await axiosInstance.post('/api/auth/logout');
+    userStore.logOut();
+  }
+  catch (error) {
+    console.error(error);
+  }
+}
+
+async function handleLogOut() {
+  await logOut();
+}
+
 async function loadData() {
   try {
     const response = await getUserData();
     if (response) {
       user.value = response;
-      console.log(response);
     } else {
       await userStore.logOut();
     }
