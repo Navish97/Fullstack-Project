@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "serve": "serve -s dist -l 8080",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "test:unit": "vitest",
