@@ -28,7 +28,6 @@ export const useUserStore = defineStore({
             //Axios call for adding bookmark to database
         },
         isLoggedIn: (state) => () => {
-            console.log("Is logged in: " + state.authenticated)
             return state.authenticated;
         }
 

@@ -34,7 +34,6 @@ const currentListingType = computed(() => {
 
 onMounted(() => {
   loadPage();
-  console.log(userStore.isLoggedIn());
 });
 
 
