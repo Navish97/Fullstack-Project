@@ -30,10 +30,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { getItems } from '@/service/ItemService';
 import { useItemStore } from '@/stores/Item';
 import router from '@/router';
+import { useRoute } from 'vue-router';
 
 const itemStore = useItemStore();
 
@@ -60,10 +61,30 @@ const filterState = computed(() => {
 })
 function sendQuery(){
     router.push({
-        path:'/items',
+        path:'/',
         query: filterState.value,
     })
 }
+
+onMounted(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    if(queryParams.has("minPrice") && queryParams.get("minPrice") !== ""){
+        minPrice.value = parseInt(queryParams.get("minPrice")!);
+    }
+    if(queryParams.has("maxPrice") && queryParams.get("maxPrice") !== ""){
+        maxPrice.value = parseInt(queryParams.get("maxPrice")!);
+    }
+    if(queryParams.has("newValue")){
+        usedBox.value = JSON.parse(queryParams.get("usedValue")!);
+    }
+    if(queryParams.has("oldValue")){
+        usedBox.value = JSON.parse(queryParams.get("usedValue")!);
+    }
+
+
+
+
+})
 
     const minPrice = ref<number | null>(null);
     const maxPrice = ref<number | null>(null);

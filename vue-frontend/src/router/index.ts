@@ -18,8 +18,10 @@ const router = createRouter({
       beforeEnter: async (to, from, next) => {
         const userStore = useUserStore();
         await userStore.checkAuthStatus();
+        const { query } = to;
+        getItems(0, 15, query);
         next();
-      }
+      },
     },
     {
       path: '/my-profile',
@@ -50,9 +52,9 @@ const router = createRouter({
       component: HomeView,
       beforeEnter: async (to, from, next) =>{
         const { query } = to;
-        getItems(0, 15, query);
         next();
       },
+    
     }
   ]
 })

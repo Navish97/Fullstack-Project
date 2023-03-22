@@ -23,7 +23,7 @@ import {computed, onMounted} from "vue";
 import { useItemStore } from '@/stores/Item';
 import { useUserStore } from '@/stores/User';
 import { getItems } from '@/service/ItemService';
-
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
 
 
 const itemStore = useItemStore();
@@ -33,6 +33,20 @@ const currentListingType = computed(() => {
   return itemStore.currentListingType;
 });
 
+onBeforeRouteUpdate(async (to, from) => {
+  console.log("route updated");
+    getItems(0, 15, to.query)
+    .then((response) => {
+      itemStore.setLists(response.data.items);
+    });
+})
+
+onMounted(() => {
+  getItems(0, 15, useRoute().query)
+    .then((response) => {
+      itemStore.setLists(response.data.items);
+    });
+})
 
 </script>
 
