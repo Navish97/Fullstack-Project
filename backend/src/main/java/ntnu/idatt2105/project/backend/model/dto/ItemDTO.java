@@ -6,6 +6,9 @@ import ntnu.idatt2105.project.backend.model.Item;
 
 import java.math.BigDecimal;
 
+/**
+ * Data Transfer Object for the Item class.
+ */
 @Getter
 @Setter
 public class ItemDTO {
@@ -20,6 +23,18 @@ public class ItemDTO {
     private String latitude;
     private String imageUrls;
 
+    /**
+     * Constructor with every parameter given.
+     * @param id
+     * @param userId
+     * @param title
+     * @param briefDescription
+     * @param description
+     * @param price
+     * @param longitude
+     * @param latitude
+     * @param imageUrls
+     */
     public ItemDTO(long id, String userId, String title, String briefDescription, String description, BigDecimal price, String longitude, String latitude, String imageUrls) {
         this.id = id;
         this.userId = userId;
@@ -31,6 +46,11 @@ public class ItemDTO {
         this.latitude = latitude;
         this.imageUrls = imageUrls;
     }
+
+    /**
+     * Copy constructor to construct an ItemDTO from an Item object. 
+     * @param item
+     */
     public ItemDTO(Item item){
         this.id = item.getId();
         this.userId = item.getUser().getId();
