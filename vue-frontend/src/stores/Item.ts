@@ -9,6 +9,7 @@ export const useItemStore = defineStore({
     currentItem: {} as Item,
     items : [
    ] as Item[],
+    currentCategory: "" as string,
   }),
   getters: {
     getCurrentItem: (state) => {
@@ -26,6 +27,9 @@ export const useItemStore = defineStore({
     getItems: (state) => {
       return state.items;
     },
+    getCurrentCategory: (state) => {
+      return state.currentCategory;
+    }
   },
   actions: {
     setCurrentItem(item: Item) {
@@ -59,5 +63,8 @@ export const useItemStore = defineStore({
       });
       this.items = newItems;
     },
+    setCurrentCategory(category: string) {
+      this.currentCategory = category;
+    }
   },
 });
