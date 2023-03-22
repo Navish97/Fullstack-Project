@@ -16,7 +16,6 @@ public class ItemDTO {
     private String userId;
     private long categoryId;
     private String title;
-    private String briefDescription;
     private String description;
     private BigDecimal price;
     private String longitude;
@@ -28,18 +27,16 @@ public class ItemDTO {
      * @param id
      * @param userId
      * @param title
-     * @param briefDescription
      * @param description
      * @param price
      * @param longitude
      * @param latitude
      * @param imageUrls
      */
-    public ItemDTO(long id, String userId, String title, String briefDescription, String description, BigDecimal price, String longitude, String latitude, String imageUrls) {
+    public ItemDTO(long id, String userId, String title, String description, BigDecimal price, String longitude, String latitude, String imageUrls) {
         this.id = id;
         this.userId = userId;
         this.title = title;
-        this.briefDescription = briefDescription;
         this.description = description;
         this.price = price;
         this.longitude = longitude;
@@ -55,7 +52,6 @@ public class ItemDTO {
         this.id = item.getId();
         this.userId = item.getUser().getId();
         this.title = item.getTitle();
-        this.briefDescription = item.getBriefDescription();
         this.description = item.getDescription();
         this.price = item.getPrice();
         this.longitude = item.getLongitude();

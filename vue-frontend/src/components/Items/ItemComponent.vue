@@ -4,12 +4,12 @@
       <div class="item" :class="listingType">
         <div class="image-wrapper">
           <img :src="bookmark" alt="bookmarked" class="bookmark-icon" v-if="itemIsBookmarked"/>
-          <img :src="item.imageURLs[0]" alt="item.briefDescription" class="image"/>
+          <img :src="item.imageURLs[0]" alt="thumbnail image" class="image"/>
           <div class="price"> {{ formattedPrice }} </div>
         </div>
         <div class="content-wrapper">
           <h2> {{ item.title }} </h2>
-          <h4 v-if="listingType==='list'"> {{ item.briefDescription }} </h4>
+          <h4 v-if="listingType==='list'"> {{ item.description }} </h4>
         </div>
       </div>
     </div>
@@ -21,9 +21,11 @@ import { defineProps, computed } from 'vue';
 import type { Item } from '@/types/ItemType';
 import { useItemStore } from '@/stores/Item';
 import {useUserStore} from "@/stores/User";
+import bookmark from '@/assets/bookmark.png';
+
 const itemStore = useItemStore();
 const userStore = useUserStore();
-import bookmark from '@/assets/bookmark.png';
+
 
 const props = defineProps({
   item: {

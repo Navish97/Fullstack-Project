@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS items (
     user_id VARCHAR(36),
     category_id BIGINT,
     title VARCHAR(255),
-    brief_description VARCHAR(255),
     description TEXT,
     price DECIMAL,
     longitude VARCHAR(255),
