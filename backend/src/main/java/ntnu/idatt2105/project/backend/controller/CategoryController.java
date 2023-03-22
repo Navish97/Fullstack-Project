@@ -44,17 +44,4 @@ public class CategoryController {
         }
         return ResponseEntity.ok(categories);
     }
-
-
-    private String extractTokenFromCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("myMarketPlaceAccessToken".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
-    }
 }
