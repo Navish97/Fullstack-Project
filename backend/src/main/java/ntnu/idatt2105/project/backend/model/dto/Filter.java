@@ -1,4 +1,4 @@
-package ntnu.idatt2105.project.backend.model;
+package ntnu.idatt2105.project.backend.model.dto;
 
 public class Filter {
     int minPrice;

@@ -1,18 +1,14 @@
 package ntnu.idatt2105.project.backend.service;
 
 import lombok.RequiredArgsConstructor;
-import ntnu.idatt2105.project.backend.dto.ItemDTO;
-import ntnu.idatt2105.project.backend.model.Filter;
+import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
+import ntnu.idatt2105.project.backend.model.dto.Filter;
 import ntnu.idatt2105.project.backend.model.Item;
 import ntnu.idatt2105.project.backend.repository.ItemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

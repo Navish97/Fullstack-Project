@@ -5,10 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import ntnu.idatt2105.project.backend.dto.ItemDTO;
-import ntnu.idatt2105.project.backend.model.Filter;
-import ntnu.idatt2105.project.backend.model.Item;
-import ntnu.idatt2105.project.backend.repository.ItemRepository;
+import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
+import ntnu.idatt2105.project.backend.model.dto.Filter;
 import ntnu.idatt2105.project.backend.service.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +47,6 @@ public class ItemController {
 
     private Filter parseFilter(String json) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Filter filter = objectMapper.readValue(json, Filter.class);
-        return filter;
+        return objectMapper.readValue(json, Filter.class);
     }
 }

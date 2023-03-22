@@ -2,12 +2,15 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 RUN npm run build
 
 # production stage
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-EXPOSE 3000
-CMD ["nginx", "-g", "daemon off;"]
+FROM node:lts-alpine as production-stage
+WORKDIR /app
+COPY --from=build-stage /app/dist /app/dist
+RUN npm install -g serve
+ENV PORT=80
+EXPOSE 80
+CMD ["serve", "-s", "dist", "-l", "80"]

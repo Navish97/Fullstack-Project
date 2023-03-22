@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { defineProps, computed, ref, watch } from 'vue';
 import type { Item } from '@/types/ItemType';
-import BookmarkComponent from "@/components/BookmarkComponent.vue";
+import BookmarkComponent from "@/components/Items/BookmarkButton.vue";
 
 const props = defineProps({
   item: {

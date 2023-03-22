@@ -1,4 +1,4 @@
-package ntnu.idatt2105.project.backend.enums;
+package ntnu.idatt2105.project.backend.model.enums;
 
 public enum AuthenticationState {
     AUTHENTICATED,
