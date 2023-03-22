@@ -13,4 +13,4 @@ COPY --from=build-stage /app/dist /app/dist
 RUN npm install -g serve
 ENV PORT=3000
 EXPOSE 3000
-CMD ["serve", "-s", "dist", "-l", "8080"]
+CMD ["serve", "-s", "dist", "-l", "3000"]
