@@ -20,4 +20,8 @@ public class Category {
     @Column(name = "type")
     @Schema(description = "The type of the category")
     private String type;
+
+    @Column(name = "icon_url")
+    @Schema(description = "The URL to the icon of the category")
+    private String iconUrl;
 }

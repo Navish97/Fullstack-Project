@@ -1,11 +1,21 @@
-package ntnu.idatt2105.project.backend.model;
+package ntnu.idatt2105.project.backend.model.dto;
 
+/**
+ * Class represents a filter used to filter searches in the item repository.
+ */
 public class Filter {
     int minPrice;
     int maxPrice;
     boolean usedValue;
     boolean newValue;
 
+    /**
+     * Default constructor for the Filter class.
+     * @param minPrice
+     * @param maxPrice
+     * @param usedValue
+     * @param newValue
+     */
     public Filter(int minPrice, int maxPrice, boolean usedValue, boolean newValue) {
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
@@ -13,6 +23,9 @@ public class Filter {
         this.newValue = newValue;
     }
 
+    /**
+     * Empty constructor, used by the ObjectMapper.
+     */
     public Filter() {
     }
 

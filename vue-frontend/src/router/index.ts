@@ -3,8 +3,12 @@ import LoginView from '../views/LoginView.vue'
 import MyProfile from '../views/MyProfile.vue'
 import RegisterView from '../views/RegisterView.vue'
 import HomeView from '../views/HomeView.vue'
+import FilterComponent from '@/components/FilterComponent.vue'
 import ItemDetailsView from '../views/ItemDetailsView.vue'
-import { useUserStore } from '../stores/User'
+import NewListingView from "../views/NewListingView.vue";
+import { getItems } from '@/service/ItemService';
+import { useUserStore } from '@/stores/User';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,7 +20,17 @@ const router = createRouter({
       beforeEnter: async (to, from, next) => {
         const userStore = useUserStore();
         await userStore.checkAuthStatus();
+        const { query } = to;
+        getItems(0, 15, query);
         next();
+      },
+    },
+    {
+      path: '/new-listing',
+      name: 'new-listing',
+      component: NewListingView,
+      meta: {
+        requiresAuth: true
       }
     },
     {
@@ -40,7 +54,8 @@ const router = createRouter({
     {
       path: '/item/:id',
       name: 'item-details',
-      component: ItemDetailsView
+      component: ItemDetailsView,
+      props: true
     },
   ]
 })

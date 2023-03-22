@@ -23,7 +23,8 @@ import {computed, onMounted} from "vue";
 import { useItemStore } from '@/stores/Item';
 import { useUserStore } from '@/stores/User';
 import { getItems } from '@/service/ItemService';
-
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+import {getUserBookmarks} from "@/service/BookmarkService";
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
@@ -32,30 +33,26 @@ const currentListingType = computed(() => {
   return itemStore.currentListingType;
 });
 
+onBeforeRouteUpdate(async (to, from) => {
+  console.log("route updated");
+    getItems(0, 15, to.query)
+    .then((response) => {
+      itemStore.setLists(response.data.items);
+    });
+})
+
 onMounted(() => {
-  loadPage();
-});
+  getItems(0, 15, useRoute().query)
+    .then((response) => {
+      itemStore.setLists(response.data.items);
+    }).catch((error) => {
+      console.error(error);
+    });
+  if (userStore.isLoggedIn()) {
+    userStore.fetchBookmarks();
+  }
+})
 
-
-async function loadPage(){
-  await getItems(0,15, {
-    minPrice:null,
-    maxPrice:null,
-    usedValue:true,
-    newValue:true,
-  })
-  .then((response) => {
-    console.log(response);
-    console.log(response.data);
-    console.log(response.data.items)
-    itemStore.setLists(response.data.items);
-  })
-  .catch((error) => {
-    console.log(error);
-    console.log('Error loading items:', error.message);
-    console.log('Error details:', error.response.data);
-  })
-}
 </script>
 
 <style>

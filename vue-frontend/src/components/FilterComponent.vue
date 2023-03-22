@@ -25,14 +25,15 @@
                 <label for="new-box">New</label>
             </div>
         </div>
-        <button class="apply" @click = "applyFilters">Apply</button>
+        <button class="apply" @click = "sendQuery()">Apply</button>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { getItems } from '@/service/ItemService';
 import { useItemStore } from '@/stores/Item';
+import router from '@/router';
 
 const itemStore = useItemStore();
 
@@ -45,6 +46,41 @@ async function loadPage(filter : object){
         console.log(error);
     });
 }
+const filterState = computed(() => {
+    const query: {[key: string]: string} = {};
+    if(minPrice.value !== null) {
+        query.minPrice = minPrice.value.toString();
+    }
+    if(maxPrice.value !== null) {
+        query.maxPrice = maxPrice.value.toString();
+    }
+    query.usedValue = usedBox.value.toString();
+    query.newValue = newBox.value.toString();
+    return query;
+})
+function sendQuery(){
+    router.push({
+        path:'/',
+        query: filterState.value,
+    })
+}
+
+onMounted(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    if(queryParams.has("minPrice") && queryParams.get("minPrice") !== ""){
+        minPrice.value = parseInt(queryParams.get("minPrice")!);
+    }
+    if(queryParams.has("maxPrice") && queryParams.get("maxPrice") !== ""){
+        maxPrice.value = parseInt(queryParams.get("maxPrice")!);
+    }
+    if(queryParams.has("newValue")){
+        usedBox.value = JSON.parse(queryParams.get("usedValue")!);
+    }
+    if(queryParams.has("oldValue")){
+        usedBox.value = JSON.parse(queryParams.get("usedValue")!);
+    }
+
+})
 
     const minPrice = ref<number | null>(null);
     const maxPrice = ref<number | null>(null);

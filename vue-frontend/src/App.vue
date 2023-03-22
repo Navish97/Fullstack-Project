@@ -11,7 +11,6 @@ onMounted(async () => {
   await userStore.checkAuthStatus();
 });
 
-
 </script>
 
 <template>
