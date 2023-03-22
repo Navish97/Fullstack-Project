@@ -35,12 +35,8 @@ public class Item {
     @Schema(description = "The title of the item")
     private String title;
 
-    @Column(name = "brief_description")
-    @Schema(description = "Brief description of the item")
-    private String briefDescription;
-
     @Column(name = "description", columnDefinition = "TEXT")
-    @Schema(description = "Full description of the item")
+    @Schema(description = "Description of the item")
     private String description;
 
     @Column(name = "price")
