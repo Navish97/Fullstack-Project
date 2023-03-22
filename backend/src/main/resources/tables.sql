@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS category (
     id BIGINT AUTO_INCREMENT,
     type VARCHAR(255),
+    icon_url VARCHAR(255),
 
     PRIMARY KEY (id)
     );

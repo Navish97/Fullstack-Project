@@ -5,8 +5,9 @@ import RegisterView from '../views/RegisterView.vue'
 import HomeView from '../views/HomeView.vue'
 import FilterComponent from '@/components/FilterComponent.vue'
 import ItemDetailsView from '../views/ItemDetailsView.vue'
-import { useUserStore } from '../stores/User'
+import NewListingView from "../views/NewListingView.vue";
 import { getItems } from '@/service/ItemService';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +23,14 @@ const router = createRouter({
         getItems(0, 15, query);
         next();
       },
+    },
+    {
+      path: '/new-listing',
+      name: 'new-listing',
+      component: NewListingView,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/my-profile',
