@@ -7,3 +7,7 @@ export async function deleteBookmark(itemId: number): Promise<any> {
 export async function addBookmark(itemId: number): Promise<any> {
     return await axiosInstance.post(`/api/bookmarks/add/${itemId}`);
 }
+
+export async function getUserBookmarks(): Promise<any> {
+    return await axiosInstance.get(`/api/bookmarks/user`);
+}
