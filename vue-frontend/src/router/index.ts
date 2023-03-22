@@ -3,8 +3,10 @@ import LoginView from '../views/LoginView.vue'
 import MyProfile from '../views/MyProfile.vue'
 import RegisterView from '../views/RegisterView.vue'
 import HomeView from '../views/HomeView.vue'
+import FilterComponent from '@/components/FilterComponent.vue'
 import ItemDetailsView from '../views/ItemDetailsView.vue'
 import { useUserStore } from '../stores/User'
+import { getItems } from '@/service/ItemService';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +44,16 @@ const router = createRouter({
       name: 'item-details',
       component: ItemDetailsView
     },
+    {
+      path:'/items',
+      name:'item-search',
+      component: FilterComponent,
+      beforeEnter: async (to, from, next) =>{
+        const { query } = to;
+        getItems(0, 15, query);
+        next();
+      },
+    }
   ]
 })
 

@@ -37,23 +37,12 @@ onMounted(() => {
 });
 
 
-async function loadPage(){
-  await getItems(0,15, {
+function loadPage(){
+  getItems(0,15, {
     minPrice:null,
     maxPrice:null,
     usedValue:true,
     newValue:true,
-  })
-  .then((response) => {
-    console.log(response);
-    console.log(response.data);
-    console.log(response.data.items)
-    itemStore.setLists(response.data.items);
-  })
-  .catch((error) => {
-    console.log(error);
-    console.log('Error loading items:', error.message);
-    console.log('Error details:', error.response.data);
   })
 }
 </script>

@@ -25,14 +25,15 @@
                 <label for="new-box">New</label>
             </div>
         </div>
-        <button class="apply" @click = "applyFilters">Apply</button>
+        <button class="apply" @click = "sendQuery()">Apply</button>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { getItems } from '@/service/ItemService';
 import { useItemStore } from '@/stores/Item';
+import router from '@/router';
 
 const itemStore = useItemStore();
 
@@ -44,6 +45,24 @@ async function loadPage(filter : object){
     .catch((error) => {
         console.log(error);
     });
+}
+const filterState = computed(() => {
+    const query: {[key: string]: string} = {};
+    if(minPrice.value !== null) {
+        query.minPrice = minPrice.value.toString();
+    }
+    if(maxPrice.value !== null) {
+        query.maxPrice = maxPrice.value.toString();
+    }
+    query.usedValue = usedBox.value.toString();
+    query.newValue = newBox.value.toString();
+    return query;
+})
+function sendQuery(){
+    router.push({
+        path:'/items',
+        query: filterState.value,
+    })
 }
 
     const minPrice = ref<number | null>(null);
