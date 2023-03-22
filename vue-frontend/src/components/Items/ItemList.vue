@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
 import type { Item } from '@/types/ItemType';
-import ItemComponent from '@/components/ItemComponent.vue';
+import ItemComponent from '@/components/Items/ItemComponent.vue';
 
 const props = defineProps({
   items: {

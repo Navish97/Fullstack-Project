@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang = "ts">
-import ItemDetails from '@/components/ItemDetails.vue';
+import ItemDetails from '@/components/Items/ItemDetails.vue';
 import { useItemStore } from '@/stores/Item';
 import {computed} from "vue";
 
