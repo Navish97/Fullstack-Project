@@ -2,7 +2,7 @@
   <nav>
     <ul>
       <li><a href="/">Home</a></li>
-      <li><a href="#">About</a></li>
+      <li><a href="#">New listing</a></li>
       <li><a href="#">Contact</a></li>
       <li v-if="loggedIn">
         <RouterLink to="/my-profile">My Profile</RouterLink>
