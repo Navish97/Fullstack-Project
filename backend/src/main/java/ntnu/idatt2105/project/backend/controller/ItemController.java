@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import ntnu.idatt2105.project.backend.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.model.Filter;
 import ntnu.idatt2105.project.backend.model.Item;
 import ntnu.idatt2105.project.backend.repository.ItemRepository;
@@ -26,7 +27,7 @@ public class ItemController {
     Logger logger = LoggerFactory.getLogger(ItemController.class);
     private final ItemService itemService;
 
-    private Map<String, Object> generateResponse(final Page<Item> page){
+    private Map<String, Object> generateResponse(final Page<ItemDTO> page){
         Map<String, Object> response = new HashMap<>();
         response.put("items", page.getContent());
         response.put("current-page", page.getNumber());
