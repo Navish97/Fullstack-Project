@@ -11,6 +11,6 @@ FROM node:lts-alpine as production-stage
 WORKDIR /app
 COPY --from=build-stage /app/dist /app/dist
 RUN npm install -g serve
-ENV PORT=3000
-EXPOSE 3000
+ENV PORT=80
+EXPOSE 80
 CMD ["serve", "-s", "dist", "-l", "3000"]
