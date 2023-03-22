@@ -56,7 +56,6 @@ export const useItemStore = defineStore({
         return {
             id: data.id,
             description: data.description,
-            briefDescription: data.briefDescription,
             price: data.price,
             imageURLs: [data.imageUrls],
             categoryId: data.categoryid,
