@@ -21,9 +21,11 @@ import { defineProps, computed } from 'vue';
 import type { Item } from '@/types/ItemType';
 import { useItemStore } from '@/stores/Item';
 import {useUserStore} from "@/stores/User";
+import bookmark from '@/assets/bookmark.png';
+
 const itemStore = useItemStore();
 const userStore = useUserStore();
-import bookmark from '@/assets/bookmark.png';
+
 
 const props = defineProps({
   item: {
