@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import ntnu.idatt2105.project.backend.exceptions.BookmarkAlreadyExistsException;
 import ntnu.idatt2105.project.backend.model.dto.BookmarkDTO;
 import ntnu.idatt2105.project.backend.exceptions.UnauthorizedException;
 import ntnu.idatt2105.project.backend.exceptions.UserNotFoundException;
@@ -66,6 +67,23 @@ public class BookmarkController {
         } else {
             logger.info("Bookmark not found, returning 404 (Not Found)");
             return new ResponseEntity<>("Bookmark not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/add/{itemId}")
+    public ResponseEntity<String> addBookmark(@PathVariable Long itemId, @CookieValue(value = "myMarketPlaceAccessToken") String jwtToken) throws UserNotFoundException, BookmarkAlreadyExistsException {
+        logger.info("Received add bookmark request for item with id: " + itemId + " jwtToken: " + jwtToken);
+
+        User user = userRepository.findByEmail(jwtService.extractUsername(jwtToken))
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (bookmarkService.isItemBookmarkedByUser(user.getId(), itemId)) {
+            logger.info("Bookmark already exists, returning 409 (Conflict)");
+            return new ResponseEntity<>("Bookmark already exists", HttpStatus.CONFLICT);
+        } else {
+            logger.info("Bookmark not found, adding bookmark for item with id: " + itemId);
+            bookmarkService.addBookmark(user.getId(), itemId);
+            return ResponseEntity.ok("Bookmark successfully added");
         }
     }
 
