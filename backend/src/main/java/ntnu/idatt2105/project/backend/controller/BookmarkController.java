@@ -13,6 +13,7 @@ import ntnu.idatt2105.project.backend.model.Bookmark;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.repository.BookmarkRepository;
 import ntnu.idatt2105.project.backend.repository.UserRepository;
+import ntnu.idatt2105.project.backend.service.BookmarkService;
 import ntnu.idatt2105.project.backend.service.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,7 @@ public class BookmarkController {
 
     private final UserRepository userRepository;
 
-    private final BookmarkRepository bookmarkRepository;
+    private final BookmarkService bookmarkService;
 
     private final JwtService jwtService;
 
@@ -61,11 +62,8 @@ public class BookmarkController {
             throw new UserNotFoundException("User with email: " + email + " not found");
         }
 
-        List<Bookmark> bookmarks = bookmarkRepository.findByUser(user);
-        List<BookmarkDTO> bookmarkDTO = bookmarks.stream()
-                .map(bookmark -> new BookmarkDTO(bookmark.getId(), bookmark.getUser().getId(), bookmark.getItem().getId()))
-                .collect(Collectors.toList());
+        List<BookmarkDTO> bookmarks = bookmarkService.getAllBookmarksForUser(user);
         logger.info("User found, returning bookmarks for user with email: " + email);
-        return ResponseEntity.ok(bookmarkDTO);
+        return ResponseEntity.ok(bookmarks);
     }
 }
