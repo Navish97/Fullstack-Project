@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import ntnu.idatt2105.project.backend.model.dto.ErrorResponse;
 import ntnu.idatt2105.project.backend.model.dto.UserProfileDTO;
-import ntnu.idatt2105.project.backend.enums.AuthenticationState;
+import ntnu.idatt2105.project.backend.model.enums.AuthenticationState;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.service.AuthenticationService;
 import ntnu.idatt2105.project.backend.service.JwtService;
