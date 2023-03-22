@@ -11,9 +11,19 @@
 import {computed} from "vue";
 import {useItemStore} from "@/stores/Item";
 import {useUserStore} from "@/stores/User";
+import {deleteBookmark} from "@/service/BookmarkService";
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
+
+async function toggleBookmark() {
+  if (itemStore.isCurrentItemBookmarked) {
+    const response = await deleteBookmark(itemStore.getCurrentItemId);
+    if (response.status === 200) {
+      itemStore.setBookmarked(false);
+    }
+  } else {}
+}
 
 const isLoggedIn = computed(() => {
   return userStore.isLoggedIn();
@@ -22,13 +32,6 @@ const isLoggedIn = computed(() => {
 const isBookmarked = computed(() => {
   return itemStore.isCurrentItemBookmarked;
 });
-const toggleBookmark = () => {
-  return true;
-};
-const bookmarked = computed(() => {
-  return userStore.isItemBookmarked(itemStore.getCurrentItem);
-});
-
 </script>
 
 <style scoped>
