@@ -17,6 +17,7 @@ import ntnu.idatt2105.project.backend.service.BookmarkService;
 import ntnu.idatt2105.project.backend.service.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,24 @@ public class BookmarkController {
     private final JwtService jwtService;
 
     Logger logger = LoggerFactory.getLogger(BookmarkController.class);
+
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/delete/{itemId}")
+    public ResponseEntity<String> removeBookmark(@PathVariable Long itemId, @CookieValue(value = "myMarketPlaceAccessToken") String jwtToken) throws UserNotFoundException {
+        logger.info("Received remove bookmark request for item with id: " + itemId + " jwtToken: " + jwtToken);
+
+        User user = userRepository.findByEmail(jwtService.extractUsername(jwtToken))
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (bookmarkService.isItemBookmarkedByUser(user.getId(), itemId)) {
+            logger.info("Bookmark found, removing bookmark for item with id: " + itemId);
+            bookmarkService.removeBookmark(user.getId(), itemId);
+            return ResponseEntity.ok("Bookmark successfully removed");
+        } else {
+            logger.info("Bookmark not found, returning 404 (Not Found)");
+        return new ResponseEntity<>("Bookmark not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Get a user's bookmarks",

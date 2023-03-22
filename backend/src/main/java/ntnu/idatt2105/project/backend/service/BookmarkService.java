@@ -1,6 +1,7 @@
 package ntnu.idatt2105.project.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import ntnu.idatt2105.project.backend.model.Bookmark;
 import ntnu.idatt2105.project.backend.model.dto.BookmarkDTO;
 import ntnu.idatt2105.project.backend.repository.BookmarkRepository;
 import org.springframework.stereotype.Service;
@@ -20,5 +21,10 @@ public class BookmarkService {
 
     public List<BookmarkDTO> getAllBookmarksForUser(Optional<User> user) {
         return bookmarkRepository.findAllBookmarksByUser(user);
+    }
+
+    public void removeBookmark(String userId, Long itemId) {
+        Optional<Bookmark> bookmark = bookmarkRepository.findByUserIdAndItemId(userId, itemId);
+        bookmark.ifPresent(bookmarkRepository::delete);
     }
 }
