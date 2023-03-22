@@ -2,7 +2,7 @@
   <div class="categories-container">
     <div class="categories-wrapper">
       <div class="categories-grid">
-        <div v-for="category in categories" :key="category.id" class="category">
+        <div v-for="category in categories" :key="category.id" class="category" @click="selectCategory(category.id)">
           <div class="icon-container">
             <font-awesome-icon :icon="category.iconUrl" />
           </div>
@@ -18,6 +18,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import axiosInstance from '@/service/AxiosInstance';
+import { useItemStore } from '@/stores/Item';
+import router from '@/router/index';
 
 
 import { computed } from 'vue';
@@ -29,6 +31,13 @@ interface Category {
 }
 
 const categories = ref<Category[]>([]);
+
+const itemStore = useItemStore();
+
+const selectCategory = (categoryId: number) => {
+  itemStore.setNewListingCategory(categoryId);
+  router.push('/new-listing');
+};
 
 onMounted(async () => {
   try {

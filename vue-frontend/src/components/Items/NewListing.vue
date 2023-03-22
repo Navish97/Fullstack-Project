@@ -1,12 +1,16 @@
 <template>
-  <AllCategories></AllCategories>
+  <h1 style="text-align: center; font-size: 75px">Chosen category id: {{ chosenCategory }}</h1>
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from 'vue';
-import type { Item } from '@/types/ItemType';
-import { useItemStore } from '@/stores/Item';
-import AllCategories from "@/components/Items/AllCategories.vue";
+
+
+import {useItemStore} from "@/stores/Item";
+import {computed} from "vue";
+
+const itemStore = useItemStore();
+
+const chosenCategory = computed(() => itemStore.getNewListingCategory);
 
 
 

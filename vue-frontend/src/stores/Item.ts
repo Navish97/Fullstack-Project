@@ -9,6 +9,7 @@ export const useItemStore = defineStore({
     currentItem: {} as Item,
     items : [
    ] as Item[],
+    NewListingCategory: 0 as number,
   }),
   getters: {
     getCurrentItem: (state) => {
@@ -26,6 +27,9 @@ export const useItemStore = defineStore({
     getItems: (state) => {
       return state.items;
     },
+    getNewListingCategory: (state) => {
+      return state.NewListingCategory;
+    }
   },
   actions: {
     setCurrentItem(item: Item) {
@@ -40,7 +44,7 @@ export const useItemStore = defineStore({
       this.items = updatedItems;
     },
     setLists(list : []){
-      let newItems:Item[] = [];
+      const newItems:Item[] = [];
       list.forEach((element) => {
         const data = JSON.parse(JSON.stringify(element));
         const newItem = {
@@ -59,5 +63,8 @@ export const useItemStore = defineStore({
       });
       this.items = newItems;
     },
+    setNewListingCategory(categoryId: number){
+      this.NewListingCategory = categoryId;
+    }
   },
 });
