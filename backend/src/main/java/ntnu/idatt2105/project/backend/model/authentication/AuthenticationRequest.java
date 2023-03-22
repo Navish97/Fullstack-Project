@@ -1,15 +1,15 @@
-package ntnu.idatt2105.project.backend.dto;
-
-
+package ntnu.idatt2105.project.backend.model.authentication;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserProfileDTO {
+public class AuthenticationRequest {
 
-    private String name;
     private String email;
+    private String password;
 }

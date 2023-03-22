@@ -1,17 +1,10 @@
 package ntnu.idatt2105.project.backend.controller;
 
-import com.auth0.jwt.exceptions.TokenExpiredException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import ntnu.idatt2105.project.backend.dto.ErrorResponse;
-import ntnu.idatt2105.project.backend.enums.AuthenticationState;
+import ntnu.idatt2105.project.backend.model.dto.ErrorResponse;
 import ntnu.idatt2105.project.backend.model.Category;
-import ntnu.idatt2105.project.backend.model.User;
-import ntnu.idatt2105.project.backend.service.AuthenticationService;
 import ntnu.idatt2105.project.backend.service.CategoryService;
-import ntnu.idatt2105.project.backend.service.JwtService;
-import ntnu.idatt2105.project.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController

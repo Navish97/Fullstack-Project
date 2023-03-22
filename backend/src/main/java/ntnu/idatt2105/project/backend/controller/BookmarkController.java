@@ -5,9 +5,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import ntnu.idatt2105.project.backend.dto.BookmarkDTO;
+import ntnu.idatt2105.project.backend.model.dto.BookmarkDTO;
 import ntnu.idatt2105.project.backend.exceptions.UnauthorizedException;
 import ntnu.idatt2105.project.backend.exceptions.UserNotFoundException;
 import ntnu.idatt2105.project.backend.model.Bookmark;
@@ -17,13 +16,11 @@ import ntnu.idatt2105.project.backend.repository.UserRepository;
 import ntnu.idatt2105.project.backend.service.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
