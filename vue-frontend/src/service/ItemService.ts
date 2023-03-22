@@ -11,3 +11,10 @@ export async function getItems(pageNr : number, pageSize : number, filter : obje
     return response
 }
 
+export async function getItemDetails(itemid: string): Promise<any> {
+    return await axiosInstance.get('/api/item/details', {
+        params: {
+            id: itemid,
+        }
+    })
+}
