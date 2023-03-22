@@ -3,6 +3,7 @@ import type { Bookmark } from "@/types/BookmarkType";
 import type {Item} from "@/types/ItemType";
 import router from "@/router";
 import axiosInstance from "@/service/AxiosInstance";
+import {getUserBookmarks} from "@/service/BookmarkService";
 
 export const useUserStore = defineStore({
     id: 'user',
@@ -45,7 +46,15 @@ export const useUserStore = defineStore({
         setBookmarks(bookmarks: Bookmark[]) {
             this.bookmarks = bookmarks;
         },
-
+        async fetchBookmarks() {
+            try {
+                const response = await getUserBookmarks();
+                const bookmarks: Bookmark[] = response.data;
+                this.setBookmarks(bookmarks);
+            } catch (error) {
+                console.error('Error fetching bookmarks:', error);
+            }
+        },
         async checkAuthStatus() {
             try {
                 const response = await axiosInstance.get('/api/user-status');

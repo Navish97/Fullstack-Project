@@ -24,6 +24,7 @@ import { useItemStore } from '@/stores/Item';
 import { useUserStore } from '@/stores/User';
 import { getItems } from '@/service/ItemService';
 import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+import {getUserBookmarks} from "@/service/BookmarkService";
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
@@ -44,7 +45,12 @@ onMounted(() => {
   getItems(0, 15, useRoute().query)
     .then((response) => {
       itemStore.setLists(response.data.items);
+    }).catch((error) => {
+      console.error(error);
     });
+  if (userStore.isLoggedIn()) {
+    userStore.fetchBookmarks();
+  }
 })
 
 </script>
