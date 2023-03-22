@@ -20,10 +20,11 @@ import { faBolt  } from '@fortawesome/free-solid-svg-icons'
 import { faCouch  } from '@fortawesome/free-solid-svg-icons'
 import { faPuzzlePiece  } from '@fortawesome/free-solid-svg-icons'
 import { faVolleyball  } from '@fortawesome/free-solid-svg-icons'
+import { faTag } from '@fortawesome/free-solid-svg-icons'
 
 
 /* add icons to the library */
-library.add(faShirt, faBook, faBolt, faCouch, faPuzzlePiece, faVolleyball)
+library.add(faShirt, faBook, faBolt, faCouch, faPuzzlePiece, faVolleyball, faTag)
 
 const pinia = createPinia();
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
