@@ -41,6 +41,18 @@ public class BookmarkController {
 
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/delete/{itemId}")
+    @Operation(summary = "Removes a user's bookmark for a specific item",
+            description = "Removes the bookmark for the given item for the authenticated user." +
+                    " The user is not passed as a parameter, but the username is extracted from the JWT token." +
+                    " This ensures that users only have access to delete only their own data.",
+            parameters = {
+                    @Parameter(name = "itemId",
+                            description = "The ID of the item to remove the bookmark for.")
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Bookmark successfully removed"),
+                    @ApiResponse(responseCode = "404", description = "Bookmark not found")
+            })
     public ResponseEntity<String> removeBookmark(@PathVariable Long itemId, @CookieValue(value = "myMarketPlaceAccessToken") String jwtToken) throws UserNotFoundException {
         logger.info("Received remove bookmark request for item with id: " + itemId + " jwtToken: " + jwtToken);
 
@@ -53,7 +65,7 @@ public class BookmarkController {
             return ResponseEntity.ok("Bookmark successfully removed");
         } else {
             logger.info("Bookmark not found, returning 404 (Not Found)");
-        return new ResponseEntity<>("Bookmark not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Bookmark not found", HttpStatus.NOT_FOUND);
         }
     }
 
