@@ -1,12 +1,15 @@
 <template>
   <nav>
     <ul>
-      <li><RouterLink to="/my-profile" v-if="loggedIn">My Profile</RouterLink></li>
       <li><a href="/">Home</a></li>
       <li><a href="#">About</a></li>
       <li><a href="#">Contact</a></li>
-      <li v-if="loggedIn" @click="userStore.logOut()"><a href="/">Log Out</a></li>
-      <li><RouterLink to="/login" v-if="!loggedIn">Login</RouterLink></li>
+      <li v-if="loggedIn">
+        <RouterLink to="/my-profile">My Profile</RouterLink>
+      </li>
+      <li v-else>
+        <RouterLink to="/login">Login</RouterLink>
+      </li>
     </ul>
   </nav>
 </template>
@@ -17,9 +20,7 @@ import {computed} from "vue";
 
 const userStore = useUserStore();
 
-const loggedIn = computed(() => {
-  return userStore.isLoggedIn();
-});
+const loggedIn = computed(() => userStore.isLoggedIn());
 </script>
 
 <style scoped>

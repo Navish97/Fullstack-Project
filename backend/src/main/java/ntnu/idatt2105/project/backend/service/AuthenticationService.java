@@ -49,14 +49,9 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) throws InvalidCredentialsException {
-        logger.info("Authenticating user with email: " + request.getEmail());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        logger.info("User authenticated");
         var user = repository.findByEmail(request.getEmail()).orElseThrow(() -> new InvalidCredentialsException("Invalid credentials"));
-        logger.info("User found");
-        logger.info("Generating token");
         var jwToken = jwtService.generateToken(user);
-        logger.info("Token generated");
         return AuthenticationResponse.builder().token(jwToken).build();
     }
 

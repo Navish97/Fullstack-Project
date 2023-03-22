@@ -2,12 +2,14 @@ import { defineStore } from 'pinia'
 import type { Bookmark } from "@/types/BookmarkType";
 import type {Item} from "@/types/ItemType";
 import router from "@/router";
+import axiosInstance from "@/service/AxiosInstance";
 
 export const useUserStore = defineStore({
     id: 'user',
     state: () => ({
         loggedInUserEmail: "" as string,
         bookmarks: [] as Bookmark[],
+        authenticated: false as boolean
     }),
     persist: {
         storage: sessionStorage,
@@ -26,7 +28,8 @@ export const useUserStore = defineStore({
             //Axios call for adding bookmark to database
         },
         isLoggedIn: (state) => () => {
-            return state.loggedInUserEmail !== "";
+            console.log("Is logged in: " + state.authenticated)
+            return state.authenticated;
         }
 
     },
@@ -35,12 +38,25 @@ export const useUserStore = defineStore({
             router.push("/")
             this.loggedInUserEmail = "";
             this.bookmarks = [];
+            this.authenticated = false;
         },
         setLoggedInUserEmail(userEmail: string) {
             this.loggedInUserEmail = userEmail;
         },
         setBookmarks(bookmarks: Bookmark[]) {
             this.bookmarks = bookmarks;
+        },
+
+        async checkAuthStatus() {
+            try {
+                const response = await axiosInstance.get('/api/user-status');
+                this.loggedInUserEmail = response.data.email;
+                this.authenticated = true; // Set authenticated to true on successful response
+            } catch (error) {
+                console.error('Error checking authentication status:', error);
+                this.loggedInUserEmail = "";
+                this.authenticated = false; // Set authenticated to false on error
+            }
         },
     }
 })
