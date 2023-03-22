@@ -2,11 +2,11 @@ package ntnu.idatt2105.project.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import ntnu.idatt2105.project.backend.controller.ItemController;
-import ntnu.idatt2105.project.backend.model.AuthenticationRequest;
-import ntnu.idatt2105.project.backend.dto.AuthenticationResponse;
-import ntnu.idatt2105.project.backend.model.RegisterRequest;
+import ntnu.idatt2105.project.backend.model.authentication.AuthenticationRequest;
+import ntnu.idatt2105.project.backend.model.dto.AuthenticationResponse;
+import ntnu.idatt2105.project.backend.model.authentication.RegisterRequest;
 import ntnu.idatt2105.project.backend.exceptions.UserAlreadyExistsException;
-import ntnu.idatt2105.project.backend.enums.Role;
+import ntnu.idatt2105.project.backend.model.enums.Role;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.repository.UserRepository;
 import org.apache.http.auth.InvalidCredentialsException;

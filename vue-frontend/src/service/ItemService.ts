@@ -7,7 +7,19 @@ export async function getItems(pageNr : number, pageSize : number, filter : obje
             size:pageSize,
             filter:JSON.stringify(filter)
         }
+    }).then((response) => {
+        return response;
     })
-    return response
+    .catch((error) => {
+        console.log('Error loading items: ', error.message)
+    })
+    return response;
 }
 
+export async function getItemDetails(itemid: string): Promise<any> {
+    return await axiosInstance.get('/api/item/details', {
+        params: {
+            id: itemid,
+        }
+    })
+}
