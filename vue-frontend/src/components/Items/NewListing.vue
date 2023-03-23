@@ -3,7 +3,7 @@
     <form @submit.prevent="sendForm" class="form">
       <h1>New Listing</h1>
       <div class="category">
-        <h3 v-if="icon">Current category: {{ icon.type }}</h3><font-awesome-icon :icon="icon.iconUrl" style="display: inline" />
+        <h3 v-if="icon">Current category: {{ icon.type }}</h3><font-awesome-icon :icon="icon.iconUrl" style="display: inline; padding-top: 4px" />
       </div>
 
       <h4 id="changeCategoryBtn" @click="resetCategory">Change category</h4>
@@ -15,6 +15,7 @@
       <BaseInput id="inpLatitude" class="input-container" type="text" label="Latitude" v-model="form.latitude" />
       <BaseInput id="inpImageUrls" class="input-container" type="text" label="Image URLs" v-model="form.imageUrls" />
       <button id="button">Create Listing</button>
+      <ErrorMessage v-if="errorMessage" :message="errorMessage" />
     </form>
   </div>
 </template>
@@ -25,6 +26,7 @@ import router from "@/router";
 import {ref, onMounted} from "vue";
 import axiosInstance from "@/service/AxiosInstance";
 import { useItemStore } from "@/stores/Item";
+import ErrorMessage from "@/components/Errors/ErrorMessage.vue";
 
 const itemStore = useItemStore();
 //et chosenCategory = computed(() => itemStore.getNewListingCategory);
@@ -34,9 +36,20 @@ const resetCategory = () => {
   router.push("/new-listing");
 };
 
-const form = ref({
+const errorMessage = ref("");
+
+interface Form {
+  title: string;
+  description: string;
+  price: string;
+  longitude: string;
+  latitude: string;
+  imageUrls: string;
+  [key: string]: string;
+}
+
+const form = ref<Form>({
   title: "",
-  briefDescription: "",
   description: "",
   price: "",
   longitude: "",
@@ -49,12 +62,25 @@ let icon = ref({
   iconUrl: "",
 })
 
+
+const validateForm = () => {
+  const requiredFields = ['title', 'description', 'price', 'longitude', 'latitude', 'imageUrls'];
+  for (let field of requiredFields) {
+    if (!form.value[field]) {
+      return false;
+    }
+  }
+  return true;
+};
+
 const sendForm = async () => {
+  if (!validateForm()) {
+    return;
+  }
   try {
-    const response = await axiosInstance.post("/api/items", form.value); // Update the URL to match your API endpoint for creating a new listing
+    const response = await axiosInstance.post("/api/items/new-listing", form.value);
     if (response.status === 200) {
       form.value.title = "";
-      form.value.briefDescription = "";
       form.value.description = "";
       form.value.price = "";
       form.value.longitude = "";

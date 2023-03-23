@@ -1,6 +1,7 @@
 package ntnu.idatt2105.project.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.model.dto.Filter;
 import ntnu.idatt2105.project.backend.model.Item;
@@ -54,6 +55,19 @@ public class ItemService {
 
 
 
+    }
+
+    public ItemDTO saveItem(ItemDTO itemDTO, User user){
+        Item item = new Item();
+        item.setTitle(itemDTO.getTitle());
+        item.setDescription(itemDTO.getDescription());
+        item.setPrice(itemDTO.getPrice());
+        item.setLongitude(itemDTO.getLongitude());
+        item.setLatitude(itemDTO.getLatitude());
+        item.setImageUrls(itemDTO.getImageUrls());
+        item.setUser(user);
+        itemRepository.save(item);
+        return new ItemDTO(item);
     }
 
 }

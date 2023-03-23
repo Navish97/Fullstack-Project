@@ -9,20 +9,22 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import ntnu.idatt2105.project.backend.model.Item;
 import ntnu.idatt2105.project.backend.model.User;
+import ntnu.idatt2105.project.backend.model.authentication.RegisterRequest;
 import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.model.dto.Filter;
-import ntnu.idatt2105.project.backend.service.ItemService;
-import ntnu.idatt2105.project.backend.service.JwtService;
-import ntnu.idatt2105.project.backend.service.UserService;
+import ntnu.idatt2105.project.backend.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ntnu.idatt2105.project.backend.service.BookmarkService;
 
+import java.lang.management.PlatformLoggingMXBean;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +43,7 @@ public class ItemController {
     private final BookmarkService bookmarkService;
     private final UserService userService;
     private final ItemService itemService;
+    private final CookieService cookieService;
 
     @GetMapping("/details/{itemId}")
     @Operation(summary = "Get item details",
@@ -117,4 +120,25 @@ public class ItemController {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(json, Filter.class);
     }
+
+    @PostMapping("/new-listing")
+    @Operation(summary = "Register a new item", description = "Registers a new item in the database.")
+    public ResponseEntity<?> registerNewItem(@RequestBody ItemDTO itemDTO, HttpServletRequest request) {
+
+        // Extract userID from JWT
+        String jwtToken = cookieService.extractTokenFromCookie(request);
+        String email = jwtService.extractUsername(jwtToken);
+        User user = userService.findByEmail(email);
+
+        // Save the item with the user object
+        ItemDTO item = itemService.saveItem(itemDTO, user);
+        if (item == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        logger.info("Received api call for registering a new item: " + itemDTO);
+        return ResponseEntity.ok().body("Item saved");
+    }
+
+
 }
