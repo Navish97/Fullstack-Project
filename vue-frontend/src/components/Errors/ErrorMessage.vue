@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref } from "vue";
 
 export default {
@@ -16,7 +16,7 @@ export default {
       required: true,
     },
   },
-  setup(props) {
+  setup(props: any) {
     const isVisible = ref(true);
 
     const hide = () => {
