@@ -63,10 +63,8 @@ public class LoginController {
         Cookie accessTokenCookie = new Cookie("myMarketPlaceAccessToken", authResponse.getToken());
         accessTokenCookie.setHttpOnly(true);
         accessTokenCookie.setPath("/");
-        accessTokenCookie.setMaxAge(5 * 60); // 5 minutes
+        accessTokenCookie.setMaxAge(20 * 60); // 5 minutes
 
-        //cookie expires at "date"
-        logger.info("Cookie expires at: " + new Date(System.currentTimeMillis() + 5 * 60 * 1000));
         return accessTokenCookie;
     }
 

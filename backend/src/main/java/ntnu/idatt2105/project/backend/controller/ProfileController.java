@@ -9,6 +9,7 @@ import ntnu.idatt2105.project.backend.model.dto.UserProfileDTO;
 import ntnu.idatt2105.project.backend.model.enums.AuthenticationState;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.service.AuthenticationService;
+import ntnu.idatt2105.project.backend.service.CookieService;
 import ntnu.idatt2105.project.backend.service.JwtService;
 import ntnu.idatt2105.project.backend.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,8 @@ public class ProfileController {
     private final JwtService jwtService;
     private final UserService userService;
 
+    private final CookieService cookieService;
+
     Logger logger = Logger.getLogger(ProfileController.class.getName());
 
 
@@ -36,7 +39,7 @@ public class ProfileController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getMyProfile(HttpServletRequest request) {
         try{
-            User user = userService.findByEmail(jwtService.extractUsername(extractTokenFromCookie(request)));
+            User user = userService.findByEmail(jwtService.extractUsername(cookieService.extractTokenFromCookie(request)));
             UserProfileDTO userProfileDTO = new UserProfileDTO(user.getName(), user.getEmail());
             return ResponseEntity.ok(userProfileDTO);
         }
@@ -48,7 +51,7 @@ public class ProfileController {
     @GetMapping("/user-status")
     public ResponseEntity<?> getUserStatus(HttpServletRequest request) {
         try {
-            String jwt = extractTokenFromCookie(request); // Extract the token from the cookie
+            String jwt = cookieService.extractTokenFromCookie(request); // Extract the token from the cookie
             logger.info("JWT: " + jwt);
             if (jwt == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Unauthorized"));
@@ -63,17 +66,5 @@ public class ProfileController {
         } catch (TokenExpiredException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Token expired"));
         }
-    }
-
-    private String extractTokenFromCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("myMarketPlaceAccessToken".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
     }
 }

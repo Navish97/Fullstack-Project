@@ -1,4 +1,7 @@
 <template>
+  <div id="header">
+    <h1>What do you want to sell?</h1>
+  </div>
   <div class="categories-container">
     <div class="categories-wrapper">
       <div class="categories-grid">
@@ -58,7 +61,8 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
   width: 70%; /* Set the width to fill the viewport width */
-  margin: 75px auto;
+  margin: 5px auto 0 auto;
+  color: white;
 }
 
 .categories-wrapper {
@@ -91,5 +95,15 @@ onMounted(async () => {
 
 .category > .text-container > span {
   margin-left: 1rem; /* add some space between the icon and the category name */
+}
+
+#header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  margin: 75px auto 15px auto;
+  font-size: 30px;
+  color: white;
 }
 </style>

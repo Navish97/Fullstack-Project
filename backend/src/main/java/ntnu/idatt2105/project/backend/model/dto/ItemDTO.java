@@ -1,5 +1,6 @@
 package ntnu.idatt2105.project.backend.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import ntnu.idatt2105.project.backend.model.Item;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 public class ItemDTO {
     private long id;
     private String userId;
@@ -22,27 +24,6 @@ public class ItemDTO {
     private String latitude;
     private String imageUrls;
 
-    /**
-     * Constructor with every parameter given.
-     * @param id
-     * @param userId
-     * @param title
-     * @param description
-     * @param price
-     * @param longitude
-     * @param latitude
-     * @param imageUrls
-     */
-    public ItemDTO(long id, String userId, String title, String description, BigDecimal price, String longitude, String latitude, String imageUrls) {
-        this.id = id;
-        this.userId = userId;
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.imageUrls = imageUrls;
-    }
 
     /**
      * Copy constructor to construct an ItemDTO from an Item object. 
