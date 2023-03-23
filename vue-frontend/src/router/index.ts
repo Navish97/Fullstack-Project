@@ -10,7 +10,7 @@ import { getItems } from '@/service/ItemService';
 import { useUserStore } from '@/stores/User';
 
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
@@ -20,8 +20,6 @@ const router = createRouter({
       beforeEnter: async (to, from, next) => {
         const userStore = useUserStore();
         await userStore.checkAuthStatus();
-        const { query } = to;
-        getItems(0, 15, query);
         next();
       },
     },

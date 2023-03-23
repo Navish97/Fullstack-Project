@@ -31,21 +31,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { getItems } from '@/service/ItemService';
-import { useItemStore } from '@/stores/Item';
 import router from '@/router';
 
-const itemStore = useItemStore();
-
-async function loadPage(filter : object){
-    await getItems(0, 15, filter)
-    .then((response) => {
-        itemStore.setLists(response.data.items);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
-}
 const filterState = computed(() => {
     const query: {[key: string]: string} = {};
     if(minPrice.value !== null) {
@@ -86,17 +73,6 @@ onMounted(() => {
     const maxPrice = ref<number | null>(null);
     const usedBox = ref<boolean>(true);
     const newBox = ref<boolean>(true);
-
-    const applyFilters = () => {
-        const minPriceValue = minPrice.value;
-        const maxPriceValue = maxPrice.value;
-        const usedValue = usedBox.value;
-        const newValue = newBox.value;
-
-        loadPage({
-            minPrice:minPriceValue, maxPrice:maxPriceValue, usedValue:usedValue, newValue:newValue
-        });
-    };
 
 </script>
 

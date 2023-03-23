@@ -8,11 +8,11 @@
     </div>
   </div>
   <div class ="page-buttons">
-    <button class = "arrow" id="go-back">
+    <button class = "arrow" id="go-back" @click="leftArrow">
       <img src = "@/assets/arrow-left.png">
     </button>
     <div class = "page-count"> {{ currentPage }} / {{ totalPages }}</div>
-    <button class = "arrow" id="go-forward">
+    <button class = "arrow" id="go-forward" @click="rightArrow">
       <img src = "@/assets/arrow-right.png">
     </button>
 
@@ -42,6 +42,19 @@ const props = defineProps({
     default: 1,
   },
 });
+
+const emit = defineEmits(["pagedown","pageup"]);
+
+function leftArrow(){
+  if(props.currentPage > 0){
+    emit("pagedown");
+  }
+}
+function rightArrow(){
+  if(props.currentPage < props.totalPages){
+    emit("pageup");
+  }
+}
 </script>
 
 <style scoped>
@@ -89,5 +102,6 @@ img {
 .item-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  height: 900px;
 }
 </style>
