@@ -15,7 +15,6 @@
     <button class = "arrow" id="go-forward" @click="rightArrow">
       <img src = "@/assets/arrow-right.png">
     </button>
-
   </div>
 </template>
 
@@ -88,15 +87,11 @@ img {
 .page-buttons{
   display: flex;
   width: inherit;
-  justify-content: right;
-  padding-right: 8%;
+  justify-content: center;
 }
-
-
 
 .item-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  height: 900px;
 }
 </style>
