@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Tag(name = "Login Controller", description = "Controller to handle user login")
 public class CategoryController {
 
     private final CategoryService categoryService;
