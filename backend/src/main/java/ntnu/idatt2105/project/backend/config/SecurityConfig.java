@@ -55,10 +55,9 @@ public class SecurityConfig {
                     .authenticationProvider(authenticationProvider)
                     .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
             ;
-            return http.build();
         }
         else{
-            logger.info("Dev profile is not active");
+            logger.info("Production profile is active");
             http
                     .headers().frameOptions().disable().and()
                     .cors().and()
@@ -75,8 +74,8 @@ public class SecurityConfig {
                     .authenticationProvider(authenticationProvider)
                     .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
             ;
-            return http.build();
         }
+        return http.build();
 
     }
 
