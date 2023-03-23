@@ -19,7 +19,6 @@ const router = createRouter({
       component: HomeView,
       beforeEnter: async (to, from, next) => {
         const userStore = useUserStore();
-        await userStore.checkAuthStatus();
         next();
       },
     },
@@ -60,7 +59,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
-
+    await userStore.checkAuthStatus()
     if(to.meta.requiresAuth && !userStore.isLoggedIn()) {
         next({name: 'login'});
     }

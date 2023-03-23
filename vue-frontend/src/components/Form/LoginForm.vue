@@ -29,7 +29,7 @@ const sendForm = async () => {
     const response = await postLogin(form);
 
     if (response.status === 200) {
-      userStore.setLoggedInUserEmail(form.email);
+      userStore.setLoggedIn(true);
       form.email = '';
       form.password = '';
       await router.push('/');
