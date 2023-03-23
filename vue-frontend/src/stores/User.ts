@@ -21,9 +21,6 @@ export const useUserStore = defineStore({
         isItemBookmarked: (state) => (item: Item) => {
                 return state.bookmarks.some(bookmark => bookmark.itemId === item.id);
         },
-        addBookmark: (state) => (item: Item) => {
-            //Axios call for adding bookmark to database
-        },
         isLoggedIn: (state) => () => {
             return state.authenticated;
         }
