@@ -45,7 +45,7 @@ public class LoginController {
             AuthenticationResponse authResponse = authenticationService.authenticate(authenticationRequest);
             Cookie cookie = getCookie(authResponse);
             if (!request.getServerName().equals("localhost")){
-                cookie.setDomain("https://mymarketplace-xt5ws57jza-lz.a.run.app");
+                cookie.setDomain("mymarketplace-xt5ws57jza-lz.a.run.app");
                 response.addHeader("Set-Cookie", cookieToHeaderWithSameSite(cookie));
             }
             else{
