@@ -70,7 +70,7 @@ public class LoginController {
     }
 
     private String cookieToHeaderWithSameSite(Cookie cookie) {
-        return cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; Max-Age=" + cookie.getMaxAge() + "; Secure; HttpOnly; SameSite=" + "none";
+        return cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; Max-Age=" + cookie.getMaxAge() + "; Secure; HttpOnly; SameSite=" + "none" + "; Domain=" + cookie.getDomain();
     }
 
     @PostMapping("/logout")
