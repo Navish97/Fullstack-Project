@@ -12,8 +12,19 @@
   import ChatComponent from '@/components/Chat/ChatComponent.vue';
   import { useChatStore } from '@/stores/Chat';
   import { useMessageStore } from '@/stores/Message';
+  import { onMounted } from 'vue';
+  import { getChats } from '@/service/MessagesService';
+
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
+
+  onMounted(() => {
+    getChats()
+    .then((response) => {
+      console.log(response);
+      chatStore.setChats(response.data.chats)
+    })
+  });
 
   </script>
   
@@ -35,7 +46,5 @@
     display: flex;
     flex-direction: row;
   }
-  ChatComponent {
-    align-content: center;
-  }
+
   </style>

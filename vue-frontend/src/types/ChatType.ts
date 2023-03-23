@@ -1,5 +1,7 @@
 export interface Chat {
     chatid: number;
-    receiver: string;
+    userId: string,
+    userName:string,
+    userEmail:string,
     item: number;
 }

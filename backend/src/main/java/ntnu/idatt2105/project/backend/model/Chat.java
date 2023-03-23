@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "chats")
+@Schema(description = "Represents a chat between two users concerning an item")
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +18,12 @@ public class Chat {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user-one-id")
+    @JoinColumn(name = "user_one")
     @Schema(description = "the id of user one")
     private User userOne;
 
     @ManyToOne
-    @JoinColumn(name = "user-two-id")
+    @JoinColumn(name = "user_two")
     @Schema(description = "the id of user one")
     private User userTwo;
 

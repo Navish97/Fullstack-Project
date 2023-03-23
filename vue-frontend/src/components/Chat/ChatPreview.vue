@@ -1,6 +1,6 @@
 <template>
     <div class ="chat-container">
-        <div class="receive-label"> {{ chat.receiver }}</div>
+        <div class="receive-label"> {{ chat.userName }}</div>
     </div>
 </template>
 
