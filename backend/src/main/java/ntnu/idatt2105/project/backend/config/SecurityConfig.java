@@ -25,7 +25,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
-@Profile("dev")
+
 public class SecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
