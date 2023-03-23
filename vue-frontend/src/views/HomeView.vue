@@ -5,7 +5,7 @@
         <FilterComponent />
       </div>
       <div class="items">
-        <ItemList :items="itemStore.items" :listingType="currentListingType"/>
+        <ItemList :items="itemStore.items" :listingType="currentListingType" :currentPage="currentPage" :totalPages="totalPages" @pageup="pageUp" @pagedown="pageDown" />
       </div>
       <div class="right-sidebar">
         <ListingTypeButton />
@@ -28,30 +28,58 @@ import {getUserBookmarks} from "@/service/BookmarkService";
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
+const route = useRoute();
 
 const currentListingType = computed(() => {
   return itemStore.currentListingType;
 });
 
-onBeforeRouteUpdate(async (to, from) => {
-  console.log("route updated");
-    getItems(0, 15, to.query)
+let currentPage = 1;
+let totalPages = 1;
+
+function pageUp(){
+  if(currentPage < totalPages){
+    currentPage++;
+    loadItems();
+  }
+}
+function pageDown(){
+  if(currentPage > 0){
+    currentPage--;
+    loadItems();
+  }
+}
+async function loadItems(){
+    await getItems(currentPage-1, 9, route.query)
     .then((response) => {
       itemStore.setLists(response.data.items);
+      currentPage = response.data['current-page']+1;
+      totalPages = response.data['total-pages'];
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+onBeforeRouteUpdate(async (to, from) => {
+  console.log("route updated");
+  getItems(currentPage, 9, to.query)
+    .then((response) => {
+      itemStore.setLists(response.data.items);
+      currentPage = response.data['current-page']+1;
+      totalPages = response.data['total-pages'];
+    })
+    .catch((error) => {
+      console.log(error);
     });
 })
 
 onMounted(() => {
-  getItems(0, 15, useRoute().query)
-    .then((response) => {
-      itemStore.setLists(response.data.items);
-    }).catch((error) => {
-      console.error(error);
-    });
+  loadItems();
   if (userStore.isLoggedIn()) {
     userStore.fetchBookmarks();
   }
 })
+
 
 </script>
 
