@@ -45,7 +45,7 @@ public class LoginController {
             AuthenticationResponse authResponse = authenticationService.authenticate(authenticationRequest);
             Cookie cookie = getCookie(authResponse);
             if (!request.getServerName().equals("localhost")){
-                cookie.setDomain("myserverprojects.store");
+                cookie.setDomain(".myserverprojects.store");
                 response.addHeader("Set-Cookie", cookieToHeaderWithSameSite(cookie));
             }
             else{
