@@ -138,7 +138,7 @@ onMounted(() => {
   height:15vh;
   min-height:100px;
   max-height:150px;
-  margin-top: 5rem;
+  margin-top: 6.5rem;
 }
 
 
