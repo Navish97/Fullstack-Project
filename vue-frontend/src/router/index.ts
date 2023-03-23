@@ -8,6 +8,7 @@ import ItemDetailsView from '../views/ItemDetailsView.vue'
 import NewListingView from "../views/NewListingView.vue";
 import { getItems } from '@/service/ItemService';
 import { useUserStore } from '@/stores/User';
+import ChatView from '@/views/ChatView.vue'
 
 
 const router = createRouter({
@@ -54,6 +55,11 @@ const router = createRouter({
       name: 'item-details',
       component: ItemDetailsView,
       props: true
+    },
+    {
+      path: '/chats',
+      name: 'chats',
+      component: ChatView,
     },
   ]
 })
