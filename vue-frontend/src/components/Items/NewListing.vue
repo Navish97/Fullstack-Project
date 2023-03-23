@@ -24,7 +24,7 @@ import axiosInstance from "@/service/AxiosInstance";
 import { useItemStore } from "@/stores/Item";
 
 const itemStore = useItemStore();
-let chosenCategory = computed(() => itemStore.getNewListingCategory);
+//et chosenCategory = computed(() => itemStore.getNewListingCategory);
 
 const form = ref({
   title: "",
@@ -47,7 +47,7 @@ const sendForm = async () => {
       form.value.longitude = "";
       form.value.latitude = "";
       form.value.imageUrls = "";
-      router.push("/"); // Redirect to the desired page after successful listing creation
+      await router.push("/"); // Redirect to the desired page after successful listing creation
     }
   } catch (error: any) {
     alert(error.response); // TODO: Display a user-friendly error message
@@ -58,7 +58,7 @@ const sendForm = async () => {
 
 const fetchIcon = async (chosenCategory: any) => {
   try {
-    const response = await axiosInstance.get(`/api/${chosenCategory}/icon-url`);
+    const response = await axiosInstance.get(`/api/${chosenCategory}/icon`);
     iconUrl = response.data;
   } catch (error) {
     console.error(error);
@@ -68,11 +68,10 @@ const fetchIcon = async (chosenCategory: any) => {
 let iconUrl;
 
 onMounted(async () => {
-  await fetchIcon(chosenCategory);
+  await fetchIcon(itemStore.getNewListingCategory);
 });
 </script>
 
-<!-- You can use the existing styles from the RegisterForm component -->
 <style scoped>
 .wrapper {
 

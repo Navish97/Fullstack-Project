@@ -7,6 +7,7 @@ import ntnu.idatt2105.project.backend.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +19,8 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public String findIconUrlById(Long id) {
-        return categoryRepository.findIconUrlById(id);
+    public Optional<Category> getCategoryById(Long id){
+        return categoryRepository.findById(id);
     }
 
 
