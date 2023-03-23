@@ -61,7 +61,15 @@ async function loadItems(){
 }
 onBeforeRouteUpdate(async (to, from) => {
   console.log("route updated");
-  loadItems();
+  getItems(currentPage, 9, to.query)
+    .then((response) => {
+      itemStore.setLists(response.data.items);
+      currentPage = response.data['current-page'];
+      totalPages = response.data['total-pages']-1;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 })
 
 onMounted(() => {
