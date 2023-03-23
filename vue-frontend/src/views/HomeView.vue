@@ -33,8 +33,8 @@ const currentListingType = computed(() => {
   return itemStore.currentListingType;
 });
 
-let currentPage = 0;
-let totalPages = 0;
+let currentPage = 1;
+let totalPages = 1;
 
 function pageUp(){
   if(currentPage < totalPages){
@@ -49,11 +49,11 @@ function pageDown(){
   }
 }
 async function loadItems(){
-    await getItems(currentPage, 9, route.query)
+    await getItems(currentPage-1, 9, route.query)
     .then((response) => {
       itemStore.setLists(response.data.items);
-      currentPage = response.data['current-page'];
-      totalPages = response.data['total-pages']-1;
+      currentPage = response.data['current-page']+1;
+      totalPages = response.data['total-pages'];
     })
     .catch((error) => {
       console.log(error);
@@ -64,8 +64,8 @@ onBeforeRouteUpdate(async (to, from) => {
   getItems(currentPage, 9, to.query)
     .then((response) => {
       itemStore.setLists(response.data.items);
-      currentPage = response.data['current-page'];
-      totalPages = response.data['total-pages']-1;
+      currentPage = response.data['current-page']+1;
+      totalPages = response.data['total-pages'];
     })
     .catch((error) => {
       console.log(error);
