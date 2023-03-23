@@ -3,7 +3,7 @@
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/new-listing">New listing</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="#">Messages</a></li>
         <li v-if="loggedIn">
           <RouterLink to="/my-profile">My Profile</RouterLink>
         </li>
@@ -58,5 +58,7 @@ li {
 a {
   color: #fff;
   text-decoration: none;
+  font-weight: 300;
+  font-size: 1.1rem;
 }
 </style>
