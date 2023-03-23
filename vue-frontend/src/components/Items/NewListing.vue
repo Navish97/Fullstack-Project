@@ -111,6 +111,7 @@ onMounted(async () => {
 
 <style scoped>
 
+
 #changeCategoryBtn {
   cursor: pointer;
 }
