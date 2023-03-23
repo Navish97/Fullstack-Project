@@ -7,6 +7,15 @@
       <ItemComponent v-for="item in items" :item="item" :key="item.id" listing-type="thumbnail" />
     </div>
   </div>
+  <div class ="page-buttons">
+    <button class = "arrow" id="go-back" @click="leftArrow">
+      <img src = "@/assets/arrow-left.png">
+    </button>
+    <div class = "page-count"> {{ currentPage }} / {{ totalPages }}</div>
+    <button class = "arrow" id="go-forward" @click="rightArrow">
+      <img src = "@/assets/arrow-right.png">
+    </button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -22,14 +31,62 @@ const props = defineProps({
   listingType: {
     type: String,
     default: 'thumbnail'
-  }
+  },
+  currentPage: {
+    type: Number,
+    default: 1,
+  },
+  totalPages: {
+    type: Number,
+    default: 1,
+  },
 });
+
+const emit = defineEmits(["pagedown","pageup"]);
+
+function leftArrow(){
+  if(props.currentPage > 0){
+    emit("pagedown");
+  }
+}
+function rightArrow(){
+  if(props.currentPage < props.totalPages){
+    emit("pageup");
+  }
+}
 </script>
 
 <style scoped>
 .item-list {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+}
+img {
+  background-color: transparent;
+  height: 80%;
+  width: 90%;
+  vertical-align: center;
+}
+.page-count{
+  color: black;
+  font-weight: bolder;
+  font-size: 120%;
+  vertical-align: center;
+  text-align: center;
+}
+.arrow {
+  background-color: transparent;
+  border: 0;
+  width: 3%;
+  height: 10%;
+}
+.arrow :hover {
+  transform: scale(1.1);
+}
+.page-buttons{
+  display: flex;
+  width: inherit;
   justify-content: center;
 }
 
