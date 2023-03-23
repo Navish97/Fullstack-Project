@@ -124,7 +124,7 @@ onMounted(() => {
   justify-content: center;
 }
 .wave-wrapper {
-  height: 25rem;
+  height: 35rem;
   background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
@@ -135,10 +135,10 @@ onMounted(() => {
 .waves {
   position:relative;
   width: 100%;
-  height:15vh;
+  height:20vh;
   min-height:100px;
   max-height:150px;
-  margin-top: 5rem;
+  margin-top: 15rem;
 }
 
 
