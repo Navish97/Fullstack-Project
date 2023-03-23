@@ -27,11 +27,6 @@ public class Message {
     @Schema(description = "The id of the user who received the message")
     private User receiver;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id")
-    @Schema(description = "The id of the item of interest")
-    private Item item;
-
     @Column(name = "message")
     @Schema(description = "The text that is sent in the message")
     private String message;
