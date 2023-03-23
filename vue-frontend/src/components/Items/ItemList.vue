@@ -83,12 +83,7 @@ img {
   height: 10%;
 }
 .arrow :hover {
-  border-color: black;
-  border-style: solid;
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
-  border-width: 3px;
+  transform: scale(1.1);
 }
 .page-buttons{
   display: flex;
