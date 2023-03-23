@@ -4,6 +4,7 @@ package ntnu.idatt2105.project.backend.config;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import ntnu.idatt2105.project.backend.model.enums.AuthenticationState;
+import ntnu.idatt2105.project.backend.service.CookieService;
 import ntnu.idatt2105.project.backend.service.JwtService;
 import org.springframework.lang.NonNull;
 import jakarta.servlet.FilterChain;
@@ -29,24 +30,12 @@ public class JwTAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final CookieService cookieService;
 
-    private final Logger logger = LoggerFactory.getLogger(JwTAuthenticationFilter.class);
-
-    private String extractTokenFromCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("myMarketPlaceAccessToken".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
-    }
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-        final String jwt = extractTokenFromCookie(request);
+        final String jwt = cookieService.extractTokenFromCookie(request);
 
         String username = null;
         AuthenticationState authState = AuthenticationState.UNAUTHENTICATED;
@@ -62,15 +51,11 @@ public class JwTAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
-        logger.info("Username: " + username);
-        logger.info(String.valueOf(SecurityContextHolder.getContext().getAuthentication()));
         if (username != null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            logger.info("User " + username + " is loaded");
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 authState = AuthenticationState.AUTHENTICATED;
-                logger.info("User " + username + " is authenticated");
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -80,8 +65,6 @@ public class JwTAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
-
-        logger.info("Authentication state: " + authState);
 
         // Set AuthenticationState as a request attribute
         request.setAttribute("authState", authState);
