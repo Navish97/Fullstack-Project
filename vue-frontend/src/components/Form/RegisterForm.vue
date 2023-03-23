@@ -54,11 +54,6 @@ export default {
 </script>
 
 <style scoped>
-
-.body {
-  background-color: rgb(124, 121, 121);
-}
-
 h1{
   color: white;
   text-align: center;
