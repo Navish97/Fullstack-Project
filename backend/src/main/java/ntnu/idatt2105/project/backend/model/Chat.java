@@ -22,7 +22,7 @@ public class Chat {
     private User userOne;
 
     @ManyToOne
-    @JoinColumn(name = "user-one-id")
+    @JoinColumn(name = "user-two-id")
     @Schema(description = "the id of user one")
     private User userTwo;
 

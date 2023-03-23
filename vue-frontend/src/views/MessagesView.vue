@@ -32,5 +32,10 @@
     background-color: rgba(30, 29, 29, 0.99);
     padding: 20px; /* add some padding to the inside */
     border-radius: 15px;
+    display: flex;
+    flex-direction: row;
+  }
+  ChatComponent {
+    align-content: center;
   }
   </style>

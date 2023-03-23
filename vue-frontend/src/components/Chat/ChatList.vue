@@ -1,6 +1,6 @@
 <template>
     <div class="convo-wrapper">
-        <ChatPreview v-for="chat in chats" :chat="chat" :key="chat.chatid" />
+        <ChatPreview class = "chatelement" v-for="chat in chats" :chat="chat" :key="chat.chatid" />
     </div>
 </template>
 
@@ -22,11 +22,12 @@ const props = defineProps({
 .convo-wrapper{
     display: flex;
     flex-direction: column;
-    justify-content: center;
     text-align: center;
     width: 25%;
     height: 100%;
-    background-color: grey;
+    background-color: white;
     border-radius: 15px;
+    overflow: hidden;
 }
+
 </style>

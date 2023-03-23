@@ -18,7 +18,7 @@ const props = defineProps({
 </script>
 <style>
 .chat-container{
-    background-color: antiquewhite;
+    background-color:cornflowerblue;
     color: rgba(30, 29, 29, 0.99);
     padding: 30px;
     border-bottom: 1px;

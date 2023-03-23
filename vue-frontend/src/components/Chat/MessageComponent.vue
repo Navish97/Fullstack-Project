@@ -22,7 +22,12 @@ const props = defineProps({
 </script>
 
 <style>
-    .message-wrapper{
-        background-color: blue;
-    }
+.message{
+    background-color: cornflowerblue;
+    width: fit-content;
+    padding: 8px;
+    border-radius: 10px;
+    color: white;
+    font-size: larger;
+}
 </style>

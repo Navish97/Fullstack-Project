@@ -5,9 +5,6 @@ export const useChatStore = defineStore({
     id:'chats',
     state: () => ({
         chats : [
-            { chatid: 1, receiver: 'John', item: 1 },
-            { chatid: 2, receiver: 'Mary', item: 2 },
-            { chatid: 3, receiver: 'Alex', item: 3 }
         ] as Chat[],
     }),
     getters: {
