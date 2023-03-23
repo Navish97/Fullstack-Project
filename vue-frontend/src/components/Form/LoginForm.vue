@@ -1,6 +1,6 @@
 
 <template>
-  <div class="body">
+  <div class="wrapper">
     <form @submit.prevent="sendForm" class="form">
       <h1>Login</h1>
       <BaseInput id="inpEmail" class="input-container" type="text" label="Email" v-model="form.email"/>
@@ -44,9 +44,6 @@ const sendForm = async () => {
 
 <style scoped>
 
-.body {
-  background-color: rgb(124, 121, 121);
-}
 
 h1{
   color: white;

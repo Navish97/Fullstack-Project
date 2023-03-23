@@ -1,6 +1,5 @@
 <template>
-  <div id="wrapper">
-    <nav id="navbar">
+    <div id="navbar">
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/new-listing">New listing</a></li>
@@ -12,8 +11,7 @@
           <RouterLink to="/login">Login</RouterLink>
         </li>
       </ul>
-    </nav>
-  </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -26,15 +24,6 @@ const loggedIn = computed(() => userStore.isLoggedIn());
 </script>
 
 <style scoped>
-#wrapper{
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  padding: 10px;
-  z-index: 999;
-  margin: auto;
-  background-color: transparent;
-}
 #navbar {
   height: 3rem;
   background-color: transparent;
