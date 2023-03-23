@@ -2,11 +2,14 @@
   <div class="wrapper">
     <form @submit.prevent="sendForm" class="form">
       <h1>New Listing</h1>
-      <h3>Current category: Sport</h3>
-      <h4>Change category</h4>
+      <div class="category">
+        <h3 v-if="icon">Current category: {{ icon.type }}</h3><font-awesome-icon :icon="icon.iconUrl" style="display: inline" />
+      </div>
+
+      <h4 id="changeCategoryBtn" @click="resetCategory">Change category</h4>
+      <div v-if="icon" class="icon-container"></div>
       <BaseInput id="inpTitle" class="input-container" type="text" label="Title" v-model="form.title" />
       <BaseInput id="inpDescription" class="input-container" type="text" label="Description" v-model="form.description" />
-      <div class="icon-container"><font-awesome-icon :icon="iconUrl" /></div>
       <BaseInput id="inpPrice" class="input-container" type="number" label="Price" v-model="form.price" />
       <BaseInput id="inpLongitude" class="input-container" type="text" label="Longitude" v-model="form.longitude" />
       <BaseInput id="inpLatitude" class="input-container" type="text" label="Latitude" v-model="form.latitude" />
@@ -19,12 +22,17 @@
 <script setup lang="ts">
 import BaseInput from "@/components/Form/BaseInput.vue";
 import router from "@/router";
-import {ref, computed, onMounted} from "vue";
+import {ref, onMounted} from "vue";
 import axiosInstance from "@/service/AxiosInstance";
 import { useItemStore } from "@/stores/Item";
 
 const itemStore = useItemStore();
 //et chosenCategory = computed(() => itemStore.getNewListingCategory);
+
+const resetCategory = () => {
+  itemStore.setNewListingCategory(0);
+  router.push("/new-listing");
+};
 
 const form = ref({
   title: "",
@@ -35,6 +43,11 @@ const form = ref({
   latitude: "",
   imageUrls: "",
 });
+
+let icon = ref({
+  type: "",
+  iconUrl: "",
+})
 
 const sendForm = async () => {
   try {
@@ -55,17 +68,15 @@ const sendForm = async () => {
 };
 
 
-
 const fetchIcon = async (chosenCategory: any) => {
   try {
     const response = await axiosInstance.get(`/api/${chosenCategory}/icon`);
-    iconUrl = response.data;
+    icon.value = response.data;
+    console.log(icon);
   } catch (error) {
     console.error(error);
   }
 };
-
-let iconUrl;
 
 onMounted(async () => {
   await fetchIcon(itemStore.getNewListingCategory);
@@ -73,8 +84,19 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.wrapper {
 
+#changeCategoryBtn {
+  cursor: pointer;
+}
+.category {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category h3 {
+  margin-right: 10px;
+  cursor: default;
 }
 h1{
   color: white;
