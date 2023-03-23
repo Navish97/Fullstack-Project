@@ -1,11 +1,15 @@
 <template>
     <div class="convo-wrapper">
-        <ChatPreview class = "chatelement" v-for="chat in chats" :chat="chat" :key="chat.chatid" />
+        <ChatPreview class = "chatelement" 
+        v-for="chat in chats" 
+        :chat="chat" 
+        :key="chat.chatid"
+        @click="chatClicked(chat)" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 import type { Chat } from '@/types/ChatType';
 import ChatPreview from '@/components/Chat/ChatPreview.vue';
 
@@ -16,6 +20,10 @@ const props = defineProps({
     },
 });
 
+const emit = defineEmits(["chat-clicked"]);
+function chatClicked(chat : Chat) {
+    emit('chat-clicked', chat);
+}
 </script>
 
 <style>

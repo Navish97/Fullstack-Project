@@ -1,7 +1,8 @@
 export interface Message {
     id: number,
+    sent: boolean,
     senderId: string,
-    receiverId: string,
+    senderName: string,
     message: string,
     chatId: number,
 }

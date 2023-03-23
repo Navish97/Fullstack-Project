@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
       <div class="chat-wrapper">
-        <ChatListComponent :chats="chatStore.chats"/>
+        <ChatListComponent :chats="chatStore.chats" @chat-clicked="(chat) => loadChat(chat)"/>
         <ChatComponent :messages="messageStore.messages" />
       </div>
     </div>
@@ -13,7 +13,8 @@
   import { useChatStore } from '@/stores/Chat';
   import { useMessageStore } from '@/stores/Message';
   import { onMounted } from 'vue';
-  import { getChats } from '@/service/MessagesService';
+  import { getChats, getMessages } from '@/service/MessagesService';
+  import type { Chat } from '@/types/ChatType';
 
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
@@ -21,10 +22,16 @@
   onMounted(() => {
     getChats()
     .then((response) => {
-      console.log(response);
       chatStore.setChats(response.data.chats)
     })
   });
+
+  function loadChat(chat : Chat){
+    getMessages(chat)
+    .then((response) => {
+      messageStore.setMessages(response.data.messages);
+    })
+  }
 
   </script>
   

@@ -30,4 +30,10 @@ public class Message {
     @Column(name = "message")
     @Schema(description = "The text that is sent in the message")
     private String message;
+
+    @ManyToOne
+    @JoinColumn(name = "chat_id")
+    @Schema(description = "The chat the message was sent in")
+    private Chat chat;
+
 }

@@ -42,16 +42,6 @@ CREATE TABLE IF NOT EXISTS bookmarks (
     FOREIGN KEY (item_id) REFERENCES items(id)
     );
 
-CREATE TABLE IF NOT EXISTS messages (
-    id BIGINT AUTO_INCREMENT,
-    sender_id VARCHAR(36),
-    receiver_id VARCHAR(36),
-    message TEXT,
-
-    PRIMARY KEY (id),
-    FOREIGN KEY (sender_id) REFERENCES users(id),
-    FOREIGN KEY (receiver_id) REFERENCES users(id)
-    );
 
 CREATE TABLE IF NOT EXISTS chats (
     id BIGINT AUTO_INCREMENT,
@@ -63,4 +53,16 @@ CREATE TABLE IF NOT EXISTS chats (
     FOREIGN KEY (user_one) REFERENCES users(id),
     FOREIGN KEY (user_two) REFERENCES users(id),
     FOREIGN KEY (item_id) REFERENCES items(id)
+    );
+CREATE TABLE IF NOT EXISTS messages (
+                                        id BIGINT AUTO_INCREMENT,
+                                        sender_id VARCHAR(36),
+    receiver_id VARCHAR(36),
+    message TEXT,
+    chat_id BIGINT,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (sender_id) REFERENCES users(id),
+    FOREIGN KEY (receiver_id) REFERENCES users(id),
+    FOREIGN KEY (chat_id) REFERENCES chats(id)
     );
