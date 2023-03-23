@@ -44,11 +44,12 @@ public class LoginController {
         try {
             AuthenticationResponse authResponse = authenticationService.authenticate(authenticationRequest);
             Cookie cookie = getCookie(authResponse);
-            cookie.setDomain(request.getServerName());
             if (!request.getServerName().equals("localhost")){
+                cookie.setDomain("https://mymarketplace-xt5ws57jza-lz.a.run.app");
                 response.addHeader("Set-Cookie", cookieToHeaderWithSameSite(cookie));
             }
             else{
+                cookie.setDomain("localhost");
                 response.addCookie(cookie);
             }
             return ResponseEntity.ok(authResponse);
