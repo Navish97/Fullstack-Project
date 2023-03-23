@@ -111,7 +111,7 @@ public class BookmarkController {
             throw new UserNotFoundException("User with email: " + email + " not found");
         }
 
-        List<BookmarkDTO> bookmarks = bookmarkService.getAllBookmarksForUser(user);
+        List<BookmarkDTO> bookmarks = bookmarkService.getAllBookmarksForUser(user.get());
         logger.info("User found, returning bookmarks for user with email: " + email);
         return ResponseEntity.ok(bookmarks);
     }

@@ -11,7 +11,7 @@
 import {computed} from "vue";
 import {useItemStore} from "@/stores/Item";
 import {useUserStore} from "@/stores/User";
-import {deleteBookmark} from "@/service/BookmarkService";
+import {addBookmark, deleteBookmark} from "@/service/BookmarkService";
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
@@ -20,9 +20,14 @@ async function toggleBookmark() {
   if (itemStore.isCurrentItemBookmarked) {
     const response = await deleteBookmark(itemStore.getCurrentItemId);
     if (response.status === 200) {
-      itemStore.setBookmarked(false);
+      itemStore.setCurrentItemBookmarked(false);
     }
-  } else {}
+  } else {
+    const response = await addBookmark(itemStore.getCurrentItemId);
+    if (response.status === 200) {
+      itemStore.setCurrentItemBookmarked(true);
+    }
+  }
 }
 
 const isLoggedIn = computed(() => {

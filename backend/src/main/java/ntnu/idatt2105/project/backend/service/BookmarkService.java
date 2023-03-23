@@ -21,8 +21,8 @@ public class BookmarkService {
         return bookmarkRepository.findByUserIdAndItemId(userId, itemId).isPresent();
     }
 
-    public List<BookmarkDTO> getAllBookmarksForUser(Optional<User> user) {
-        return bookmarkRepository.findAllBookmarksByUser(user);
+    public List<BookmarkDTO> getAllBookmarksForUser(User user) {
+        return bookmarkRepository.findAllBookmarksByUserId(user.getId());
     }
 
     public void addBookmark(String userId, Long itemId) throws BookmarkAlreadyExistsException {

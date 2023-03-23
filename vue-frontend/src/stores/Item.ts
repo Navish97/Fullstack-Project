@@ -39,7 +39,7 @@ export const useItemStore = defineStore({
     }
   },
   actions: {
-    setBookmarked(bookmarked: boolean) {
+    setCurrentItemBookmarked(bookmarked: boolean) {
         this.currentItemBookmarked = bookmarked;
     },
     setCurrentItem(item: Item) {
@@ -48,17 +48,14 @@ export const useItemStore = defineStore({
     setCurrentListingType(listingType: string) {
       this.currentListingType = listingType;
     },
-    addItem(item : Item){
-      const currentItems = this.items;
-      const updatedItems = [...currentItems, item];
-      this.items = updatedItems;
+    addItem(item: Item) {
+      this.items.push(item);
     },
     responseToItem(response: any){
       const data = JSON.parse(JSON.stringify(response));
         return {
             id: data.id,
             description: data.description,
-            briefDescription: data.briefDescription,
             price: data.price,
             imageURLs: [data.imageUrls],
             categoryId: data.categoryid,

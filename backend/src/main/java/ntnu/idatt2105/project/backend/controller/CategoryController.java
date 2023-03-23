@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
@@ -35,5 +36,16 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("No categories found"));
         }
         return ResponseEntity.ok(categories);
+    }
+
+    @GetMapping("{id}/icon")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> findCategoryById(@PathVariable Long id) {
+        Optional<Category> category = categoryService.getCategoryById(id);
+        logger.info("Icon URL: " + category);
+        if (category.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("No icon URL found"));
+        }
+        return ResponseEntity.ok(category);
     }
 }

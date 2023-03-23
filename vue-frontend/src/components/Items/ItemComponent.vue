@@ -1,14 +1,15 @@
 <template>
-  <router-link class="item-link" :to="{ name: 'item-details', params: { id: item.id } }">
+  <router-link class="item-link" :to="{ name: 'item-details', params: { id: item.id } }" :class="{ bookmarked: itemIsBookmarked }">
     <div class="container" :class="listingType" @click="updateSelected()">
       <div class="item" :class="listingType">
         <div class="image-wrapper">
-          <img :src="item.imageURLs[0]" alt="item.briefDescription"/>
+          <img :src="bookmark" alt="bookmarked" class="bookmark-icon" v-if="itemIsBookmarked"/>
+          <img :src="item.imageURLs[0]" alt="thumbnail image" class="image"/>
           <div class="price"> {{ formattedPrice }} </div>
         </div>
         <div class="content-wrapper">
           <h2> {{ item.title }} </h2>
-          <h4 v-if="listingType==='list'"> {{ item.briefDescription }} </h4>
+          <h4 v-if="listingType==='list'"> {{ item.description }} </h4>
         </div>
       </div>
     </div>
@@ -19,7 +20,12 @@
 import { defineProps, computed } from 'vue';
 import type { Item } from '@/types/ItemType';
 import { useItemStore } from '@/stores/Item';
+import {useUserStore} from "@/stores/User";
+import bookmark from '@/assets/bookmark.png';
+
 const itemStore = useItemStore();
+const userStore = useUserStore();
+
 
 const props = defineProps({
   item: {
@@ -30,6 +36,10 @@ const props = defineProps({
     type: String,
     default: 'thumbnail'
   }
+});
+
+const itemIsBookmarked = computed(() => {
+  return userStore.isItemBookmarked(props.item);
 });
 
 function updateSelected() {
@@ -106,7 +116,7 @@ const formattedPrice = computed(() => {
   text-overflow: clip;
 }
 
-.item img {
+.image-wrapper img:not(.bookmark-icon) {
   position: absolute;
   top: 0;
   left: 0;
@@ -114,6 +124,17 @@ const formattedPrice = computed(() => {
   height: 100%;
   object-fit: cover;
   border-radius: 8px;
+}
+
+.bookmark-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 45px;
+  height: 60px;
+  opacity: 0.6;
+  border-top-right-radius: 8px;
 }
 
 .item .price {
