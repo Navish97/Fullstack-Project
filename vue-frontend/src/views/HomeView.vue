@@ -1,8 +1,8 @@
 <template>
-  <div class="d-flex flex-column justify-content-center w-100 h-100">
+  <div class="wave-wrapper">
 
-    <div class="d-flex flex-column justify-content-center align-items-center">
-      <h1 id="title">MyMarketPlace</h1>
+    <div class="title">
+      <h1>MyMarketPlace</h1>
     </div>
     <div>
       <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -106,16 +106,24 @@ onMounted(() => {
 
 </script>
 
-<style>
+<style scoped>
 
-#title{
+.title{
   font-weight: 300;
-  text-align: center;
   margin-top: 5rem;
   color: white !important;
   font-size: 4rem;
+  display: flex;
+  justify-content: center;
 }
-.h-100 {
+
+.title h1{
+  font-weight: 300;
+  font-size: 4rem;
+  display: flex;
+  justify-content: center;
+}
+.wave-wrapper {
   height: 25rem;
   background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400% 400%;
@@ -147,6 +155,7 @@ onMounted(() => {
 }
 
 .justify-content-center {
+  display: flex;
   justify-content: center;
 }
 .wrapper {
@@ -178,6 +187,7 @@ onMounted(() => {
 .right-sidebar {
   width: 250px;
   padding: 20px;
+  background-color: white;
 }
 
 /* Animation */
