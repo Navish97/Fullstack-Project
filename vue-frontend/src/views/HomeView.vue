@@ -19,7 +19,6 @@
       </svg>
     </div>
   </div>
-
   <div class="wrapper">
     <div class="grid-container">
       <div class="listing-type">
@@ -117,7 +116,7 @@ onMounted(() => {
   font-size: 4rem;
 }
 .h-100 {
-  height: 35vh;
+  height: 25rem;
   background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
@@ -129,9 +128,9 @@ onMounted(() => {
   position:relative;
   width: 100%;
   height:15vh;
-  margin-bottom:-7px; /*Fix for safari gap*/
   min-height:100px;
   max-height:150px;
+  margin-top: 5rem;
 }
 
 
