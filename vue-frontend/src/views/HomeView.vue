@@ -1,4 +1,25 @@
 <template>
+  <div class="d-flex flex-column justify-content-center w-100 h-100">
+
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <h1 id="title">MyMarketPlace</h1>
+    </div>
+    <div>
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+           viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+          <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+          <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+          <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+        </g>
+      </svg>
+    </div>
+  </div>
+
   <div class="wrapper">
     <div class="grid-container">
       <div class="listing-type">
@@ -12,8 +33,11 @@
         <div>test</div>
       </div>
     </div>
+
   </div>
 </template>
+
+
 
 <script setup lang="ts">
 import ItemList from '@/components/Items/ItemList.vue';
@@ -84,11 +108,54 @@ onMounted(() => {
 </script>
 
 <style>
+
+#title{
+  font-weight: 300;
+  text-align: center;
+  margin-top: 5rem;
+  color: white !important;
+  font-size: 4rem;
+}
+.h-100 {
+  height: 35vh;
+  background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.waves {
+  position:relative;
+  width: 100%;
+  height:15vh;
+  margin-bottom:-7px; /*Fix for safari gap*/
+  min-height:100px;
+  max-height:150px;
+}
+
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.justify-content-center {
+  justify-content: center;
+}
 .wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  padding-top: 4rem;
 }
 
 .grid-container {
@@ -112,5 +179,35 @@ onMounted(() => {
 .right-sidebar {
   width: 250px;
   padding: 20px;
+}
+
+/* Animation */
+
+.parallax > use {
+  animation: move-forever 25s cubic-bezier(.55,.5,.45,.5)     infinite;
+}
+.parallax > use:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 7s;
+}
+.parallax > use:nth-child(2) {
+  animation-delay: -3s;
+  animation-duration: 10s;
+}
+.parallax > use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 13s;
+}
+.parallax > use:nth-child(4) {
+  animation-delay: -5s;
+  animation-duration: 20s;
+}
+@keyframes move-forever {
+  0% {
+    transform: translate3d(-90px,0,0);
+  }
+  100% {
+    transform: translate3d(85px,0,0);
+  }
 }
 </style>
