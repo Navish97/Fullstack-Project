@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, defineEmits } from 'vue';
 import { useMessageStore } from '@/stores/Message';
 import { Message } from '@/types/MessageType';
 import MessageComponent from './MessageComponent.vue';
@@ -36,13 +36,18 @@ const props = defineProps({
 },
 });
 
+const emit = defineEmits(['chatIdUpdated']);
+
+
 async function sendMessageService(){
   const chat : Chat | undefined = chatStore.findChatById(props.chatId);
   if(chat !== undefined){
     await sendMessage(messageInput.value, props.chatId, chat.item.id)
     .then((response) => {
         console.log(response);
-        messageStore.addMessage(response.data);
+        messageStore.addMessage(response.data.message);
+        chat.id = response.data.chatId;
+        emit('chatIdUpdated', chat.id);
     })
     .catch((error) => {
         console.log('Error occured while sending message', error.message);

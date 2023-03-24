@@ -93,8 +93,15 @@ public class ChatController {
             return ResponseEntity.badRequest().build();
         }
         logger.info("Messages stored to database, returning sent message to user in messageDTO");
-        return ResponseEntity.ok(messageDTO);
+        return ResponseEntity.ok(generateResponseChat(messageDTO, chatId));
 
+    }
+
+    private Map<String, Object> generateResponseChat(final MessageDTO message, final Long chatId){
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", message);
+        response.put("chatId", chatId);
+        return response;
     }
 
     private Map<String, Object> generateResponseMessages(final List<MessageDTO> messages){

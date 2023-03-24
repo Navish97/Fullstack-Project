@@ -5,7 +5,7 @@
         :chats="chatStore.chats" 
         @chat-clicked="(chat) => loadChat(chat)"
         :selectedChatId="selectedChatId"/>
-        <ChatComponent :chatId="selectedChatId" :messages="messageStore.messages" />
+        <ChatComponent :chatId="selectedChatId" @chat-id-updated="e => chatIdUpdated(e)" :messages="messageStore.messages" />
       </div>
     </div>
   </template>
@@ -41,6 +41,14 @@
       }
     })
   });
+
+  function chatIdUpdated(chatId : number){
+    selectedChatId.value = chatId;
+    const chat : Chat | undefined = chatStore.findChatById(selectedChatId.value);
+    if(chat !== undefined){
+      loadChat(chat);
+    }
+  }
 
   function loadChat(chat : Chat){
     getMessages(chat)
