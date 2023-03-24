@@ -45,8 +45,10 @@ const isBookmarked = computed(() => {
 .container {
   padding-top: 8px;
 }
+
 .bookmark-button {
-  display: inline-block;
+
+
   padding: 8px 8px;
   border-radius: 4px;
   border: 1px solid #9b9b9b;

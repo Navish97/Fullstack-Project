@@ -8,7 +8,7 @@
         <button class="image-btn next" @click="nextImage" v-if="props.item.images.length>1">&gt;</button>
         <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.images.length }}</div>
       </div>
-      <bookmark-component />
+      <bookmark-component class="bookmarkbutton" />
       <div class="item-info">
         <h2>{{ item.title }}</h2>
         <p>(DD): {{ item.latitude }}, {{ item.longitude }}</p>
@@ -95,33 +95,44 @@ function nextImage() {
   border-top-right-radius: 24px;
 }
 
+.item-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  padding-top: 16px;
+}
+
 .flex-container {
-  padding-top: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  padding-top: 55px;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 80%;
+}
+
+.bookmarkbutton {
+  width:100%;
 }
 
 .item-details {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 auto;
   width: 100%;
   height: 100%;
+  word-wrap: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
-.item-info {
-  padding-top: 16px;
-}
 
 .image-container {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 60vw;
-  height: 80vh;
+  width: 100%;
+  height: 100%;
 }
 
 .image-index {
