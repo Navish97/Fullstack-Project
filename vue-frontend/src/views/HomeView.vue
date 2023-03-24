@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <div class="title">
       <h1>MyMarketPlace</h1>
     </div>
@@ -12,16 +11,12 @@
     <div class="grid-container">
       <div class="listing-type">
         <FilterComponent />
+        <ListingTypeButton />
       </div>
       <div class="items">
         <ItemList :items="itemStore.items" :listingType="currentListingType" :currentPage="currentPage" :totalPages="totalPages" @pageup="pageUp" @pagedown="pageDown" />
       </div>
-      <div class="right-sidebar">
-        <ListingTypeButton />
-        <div>test</div>
-      </div>
     </div>
-
   </div>
 </template>
 
@@ -98,6 +93,25 @@ onMounted(() => {
 
 <style scoped>
 
+.page-count{
+  color: black;
+  font-weight: bolder;
+  font-size: 120%;
+  vertical-align: center;
+  text-align: center;
+}
+
+.arrow {
+  background-color: transparent;
+  border: 0;
+  width: 3%;
+  height: 10%;
+}
+
+.arrow :hover {
+  transform: scale(1.1);
+}
+
 .wave-container{
   position: absolute;
   bottom: 0;
@@ -122,8 +136,8 @@ onMounted(() => {
   justify-content: center;
   text-align: center;
 }
-.container {
-  height: 25rem;
+
+.wave-wrapper {
   background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
@@ -163,13 +177,8 @@ onMounted(() => {
 
 .listing-type {
   width: 250px;
-  padding: 20px;
 }
 
-
-.items {
-  padding: 20px;
-}
 
 .right-sidebar {
   width: 250px;
@@ -204,6 +213,32 @@ onMounted(() => {
   }
   100% {
     transform: translate3d(85px,0,0);
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    margin-top: 2rem;
+  }
+
+  .title h1 {
+    font-size: 2.5rem;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .listing-type {
+    width: 100%;
+  }
+
+  .items {
+    width: 100%;
   }
 }
 </style>

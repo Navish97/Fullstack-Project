@@ -178,7 +178,7 @@ const formattedPrice = computed(() => {
 
   .container.list {
     width: 100%;
-    height: 20%;
+    height: 15%;
   }
 
   .item.thumbnail .image-wrapper {
@@ -228,15 +228,16 @@ const formattedPrice = computed(() => {
   }
 
   .item.list {
-    height: auto;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
   }
-
   .item.list .image-wrapper {
-    height: 150px;
-    width: 150px;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
   }
 }
 </style>

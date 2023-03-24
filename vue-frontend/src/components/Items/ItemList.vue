@@ -94,4 +94,29 @@ img {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
+@media (max-width: 768px) {
+  .item-grid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .item-list .list {
+    height: auto;
+    width: 50%;
+    display: grid;
+    grid-auto-rows: auto;
+    align-items: center;
+  }
+
+  .container.thumbnail:hover,
+  .container.list:hover {
+    background-color: transparent;
+  }
+
+  .item-grid{
+    grid-template-columns: repeat(2, 49%);
+    gap: 2%;
+  }
+}
 </style>
