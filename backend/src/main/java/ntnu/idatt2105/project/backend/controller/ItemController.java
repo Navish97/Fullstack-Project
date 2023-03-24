@@ -19,6 +19,7 @@ import ntnu.idatt2105.project.backend.model.authentication.RegisterRequest;
 import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.model.dto.Filter;
 import ntnu.idatt2105.project.backend.service.*;
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -115,6 +116,9 @@ public class ItemController {
         logger.info("Received api call for retrieving a page of items. Page: " + pageNumber + " Page size: " + size + " with filter: " + filter);
         Filter f = this.parseFilter(filter);
         Page<Item> itemPage = itemService.getItemPage(pageNumber, size, f);
+        if(itemPage == null){
+            return ResponseEntity.badRequest().build();
+        }
         Page<ItemDTO> itemDtoPage = itemPage.map(ItemDTO::new);
         return ResponseEntity.ok(generateResponse(itemDtoPage));
     }
