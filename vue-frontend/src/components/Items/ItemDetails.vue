@@ -61,7 +61,7 @@ function preLoadChat() {
         userId:props.item.userId,
         userName:props.item.userName,
         userEmail:props.item.userEmail,
-        item:props.item.id,
+        item:props.item,
       }
 
   chatStore.newChat(newChat);

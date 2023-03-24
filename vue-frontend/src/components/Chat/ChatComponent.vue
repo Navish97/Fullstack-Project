@@ -39,7 +39,7 @@ const props = defineProps({
 async function sendMessageService(){
   const chat : Chat | undefined = chatStore.findChatById(props.chatId);
   if(chat !== undefined){
-    await sendMessage(messageInput.value, props.chatId, chat.item)
+    await sendMessage(messageInput.value, props.chatId, chat.item.id)
     .then((response) => {
         console.log(response);
         messageStore.addMessage(response.data);

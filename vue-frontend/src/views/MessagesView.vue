@@ -18,22 +18,26 @@
   import { onMounted, ref } from 'vue';
   import { getChats, getMessages } from '@/service/MessagesService';
   import type { Chat } from '@/types/ChatType';
-  import type { Item } from '@/types/ItemType';
-import { useRoute } from 'vue-router';
 
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
   const selectedChatId = ref(-1);
 
   onMounted(() => {
-    const chat : Chat | undefined = chatStore.findChatById(-1);
+    const tempChat : Chat | undefined = chatStore.findChatById(-1);
     getChats()
     .then((response) => {
       chatStore.setChats(response.data.chats)
-      if(chat !== undefined){
-        chatStore.newChat(chat);
-        messageStore.setChatId(-1);
-        selectedChatId.value = -1;
+      if(tempChat !== undefined){
+        const existingChat : Chat | undefined = chatStore.findExistingChat(tempChat);
+        if(existingChat !== undefined){
+          loadChat(existingChat);
+        }
+        else{
+          chatStore.newChat(tempChat);
+          messageStore.setChatId(-1);
+          selectedChatId.value = -1;
+        }
       }
     })
   });

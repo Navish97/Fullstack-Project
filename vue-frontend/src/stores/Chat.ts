@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import type { Chat } from '@/types/ChatType';
+import type { Item } from '@/types/ItemType';
 
 export const useChatStore = defineStore({
     id:'chats',
@@ -30,7 +31,12 @@ export const useChatStore = defineStore({
             if (index !== -1) {
                 this.chats.splice(index, 1);
             }
-        }
-    },
+        },
+        findExistingChat(chat: Chat): Chat | undefined {
+            return this.chats.find((c) => c.userId === chat.userId 
+            && c.userName === chat.userName 
+            && c.userEmail === chat.userEmail 
+            && c.item === chat.item);
+          }
 
-})
+}});
