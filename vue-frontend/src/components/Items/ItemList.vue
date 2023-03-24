@@ -1,6 +1,6 @@
 <template>
   <div class="item-list">
-    <div v-if="listingType==='list'">
+    <div v-if="listingType==='list'" class="item-list">
       <ItemComponent v-for="item in items" :item="item" :key="item.id" listing-type="list" />
     </div>
     <div v-else-if="listingType==='thumbnail'" class="item-grid">
@@ -58,8 +58,9 @@ function rightArrow(){
 
 <style scoped>
 .item-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(1,95%);
+
   justify-content: center;
 }
 img {
@@ -101,12 +102,12 @@ img {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .item-list .list {
-    height: auto;
-    width: 50%;
+  .item-list {
+    height: 100%;
     display: grid;
     grid-auto-rows: auto;
     align-items: center;
+    gap: .5rem;
   }
 
   .container.thumbnail:hover,

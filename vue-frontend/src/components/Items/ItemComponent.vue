@@ -7,9 +7,11 @@
           <img :src="props.item.images[0].data.toString()" alt="thumbnail image" class="image"/>
           <div class="price"> {{ formattedPrice }} </div>
         </div>
-        <div class="content-wrapper">
-          <h2> {{ item.title }} </h2>
-          <h4 v-if="listingType==='list'"> {{ item.description }} </h4>
+        <div class="content-wrapper" :class="{'max-height': listingType === 'list'}">
+          <div class="text-wrapper" :class="{'max-height': listingType === 'list'}">
+            <h2> {{ item.title }} </h2>
+            <h4 v-if="listingType==='list'"> {{ item.description }} </h4>
+          </div>
         </div>
       </div>
     </div>
@@ -52,6 +54,10 @@ const formattedPrice = computed(() => {
 </script>
 
 <style scoped>
+.max-height {
+  height: 100%;
+}
+
 .container:hover {
   cursor: pointer;
 }
@@ -105,10 +111,10 @@ const formattedPrice = computed(() => {
 }
 @media (min-width: 768px) {
   .item.list .content-wrapper {
-    padding-top: 0;
+    position: absolute;
+    top: 0;
     padding-left: 16px;
-    padding-right: 32px;
-    width: 100%;
+    padding-right: 16px;
   }
 }
 
@@ -117,6 +123,8 @@ const formattedPrice = computed(() => {
   overflow: hidden;
   overflow-wrap: break-word;
   text-overflow: clip;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .image-wrapper img:not(.bookmark-icon) {
@@ -154,6 +162,10 @@ const formattedPrice = computed(() => {
 }
 
 @media (max-width: 768px) {
+
+  h2 {
+    font-size: 1.2rem;
+  }
   .container.thumbnail:hover {
     background-color: transparent;
     padding-top: 4%;
@@ -170,8 +182,8 @@ const formattedPrice = computed(() => {
     top: 0;
     right: 0;
     z-index: 1;
-    width: 45px;
-    height: 60px;
+    width: 35px;
+    height: 50px;
     opacity: 0.6;
     border-top-right-radius: 8px;
   }
@@ -203,6 +215,9 @@ const formattedPrice = computed(() => {
 
   .container {
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4), 8px 4px 4px rgba(0, 0, 0, 0.1);
+    display: grid;
+    border: rgba(28, 27, 27, 0.5) 1px solid;
+    grid-template-rows: 1fr 0fr;
     border-radius: 8px
   }
 
@@ -215,6 +230,7 @@ const formattedPrice = computed(() => {
     width: 100%;
     height: 100%;
   }
+
 
   .item.thumbnail {
     width: 100%;
@@ -230,10 +246,11 @@ const formattedPrice = computed(() => {
   .item.list {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 140px 2fr;
     align-items: center;
   }
+
   .item.list .image-wrapper {
     width: 120px;
     height: 120px;
