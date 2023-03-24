@@ -61,9 +61,18 @@ const formattedPrice = computed(() => {
     cursor: pointer;
   }
 
-  .container {
+  .container.thumbnail {
     width: 100%;
     height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-self: center;
+    align-content: center;
+    align-items: center;
+    gap: 10px;
+    border: rgba(28, 27, 27, 0.35) 1px solid;
+    border-radius: 8px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4), 8px 4px 4px rgba(0, 0, 0, 0.1);
   }
 
   .item.thumbnail {
@@ -73,33 +82,56 @@ const formattedPrice = computed(() => {
     flex-direction: column;
     align-items: center;
     margin: 16px;
-    padding: 0 0 16px;
+    padding: 0 0 0px;
     border-radius: 8px;
   }
+
   .container.thumbnail:hover {
-    background-color: #505050;
+    background-color: #bebebe;
     border-radius: 8px;
   }
 
   .container.list:hover {
-    background-color: #505050;
+    background-color: #bebebe;
     border-radius: 8px;
+  }
+
+  .container.list {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    align-content: center;
   }
 
   .item.list {
-    width: 600px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4), 8px 4px 4px rgba(0, 0, 0, 0.1);
+    border: rgba(28, 27, 27, 0.5) 1px solid;
+    width: 100%;
     height: 160px;
     display: grid;
     grid-template-columns: 180px 2fr;
-
-    padding: 16px 0 0;
     border-radius: 8px;
+
   }
 
   .item.list .image-wrapper {
-    width: 160px;
+    align-self: center;
+    justify-self: center;
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+  }
+
+  .item.list .image-wrapper img:not(.bookmark-icon) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 8px;
+    max-height: 100%;
   }
 
   .item.thumbnail .image-wrapper {
@@ -109,12 +141,12 @@ const formattedPrice = computed(() => {
   }
 
   .item.list .content-wrapper {
-    position: absolute;
+    position: relative;
     top: 0;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding: .5rem;
   }
-  .image-wrapper img:not(.bookmark-icon) {
+
+  .item.thumbnail .image-wrapper img:not(.bookmark-icon) {
     position: absolute;
     top: 0;
     left: 0;

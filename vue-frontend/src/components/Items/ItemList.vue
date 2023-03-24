@@ -60,7 +60,7 @@ function rightArrow(){
 .item-list {
   display: grid;
   grid-template-columns: repeat(1,95%);
-
+  gap: 1rem;
   justify-content: center;
 }
 img {
@@ -95,8 +95,10 @@ img {
 
 .item-grid {
   display: grid;
+  gap: 1rem;
   grid-template-columns: repeat(3, 1fr);
 }
+
 @media (max-width: 768px) {
   .item-grid {
     display: grid;
