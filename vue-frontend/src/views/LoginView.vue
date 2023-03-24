@@ -16,11 +16,10 @@ import LoginForm from '@/components/Form/LoginForm.vue'
   color: #fff;
   display: flex;
   justify-content: center;
-  padding: 10px;
   background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
-  height: 100vh;
+  height: 100%;
   width: 100%;
-  min-height: 500px;
+  min-height: 100vh;
 }
 
 #loginForm{
