@@ -18,10 +18,10 @@
 <script setup lang="ts">
 import { defineProps, ref, defineEmits } from 'vue';
 import { useMessageStore } from '@/stores/Message';
-import { Message } from '@/types/MessageType';
+import type { Message } from '@/types/MessageType';
 import MessageComponent from './MessageComponent.vue';
 import { sendMessage } from '@/service/MessagesService';
-import { Chat } from '@/types/ChatType';
+import type { Chat } from '@/types/ChatType';
 import { useChatStore } from '@/stores/Chat';
 import ChatDetails from './ChatDetails.vue';
 

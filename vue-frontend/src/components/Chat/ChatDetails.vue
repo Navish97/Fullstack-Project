@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { Chat } from '@/types/ChatType';
+import type { Chat } from '@/types/ChatType';
 import { defineProps, computed } from 'vue';
 
 const props = defineProps({

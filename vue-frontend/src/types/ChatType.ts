@@ -1,4 +1,4 @@
-import { Item } from '@/types/ItemType';
+import type { Item } from '@/types/ItemType';
 export interface Chat {
     id: number;
     userId: string,
