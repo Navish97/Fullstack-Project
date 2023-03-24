@@ -58,6 +58,15 @@
   margin: 0;
   position: relative;
   font-weight: normal;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300;
+}
+
+body, input, textarea, button {
+  font-weight: 300;
 }
 
 body {

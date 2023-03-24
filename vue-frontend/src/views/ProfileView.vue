@@ -1,12 +1,13 @@
 <template>
   <div class="container">
 
-    <div class="title">
-      <h1>Hello there</h1>
+    <div class="content-wrapper">
+<!--      <div class="profile-wrapper">
+        <MyProfile></MyProfile>
+      </div>-->
+      <InfoBox />
     </div>
-    <div class="profile-wrapper">
-      <MyProfile></MyProfile>
-    </div>
+
     <div class="wave-container">
       <Wave></Wave>
     </div>
@@ -20,15 +21,31 @@
 <script setup lang="ts">
 import Wave from '@/components/Wave/Wave.vue'
 import MyProfile from "@/components/Profile/MyProfile.vue";
+import InfoBox from "@/components/Profile/InfoBox.vue";
 
 
 </script>
 
 <style scoped>
 
-.profile-wrapper{
-  display: flex;
+.content-wrapper{
+  width: 40%;
   justify-content: center;
+  display: flex;
+  flex-direction: column;
+  margin: 6rem auto auto;
+  height: 60vh;
+}
+
+.profile-wrapper{
+  position: relative;
+  width: 100%;
+  height: 42.5%;
+  flex-direction: column;
+  align-items: flex-start;
+  border: solid 3px white;
+  border-radius: 20px;
+  padding: 2rem;
 }
 
 .wave-container{
@@ -44,22 +61,6 @@ Wave {
   height: 15vh;
   min-height: 100px;
   max-height: 150px;
-}
-
-.title{
-  font-weight: 300;
-  margin-top: 5rem;
-  color: white !important;
-  font-size: 4rem;
-  display: flex;
-  justify-content: center;
-}
-
-.title h1{
-  font-weight: 300;
-  font-size: 4rem;
-  display: flex;
-  justify-content: center;
 }
 .container {
   height: 100vh;

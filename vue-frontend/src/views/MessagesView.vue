@@ -74,7 +74,7 @@
 
   </script>
   
-  <style>
+  <style scoped>
   .wrapper {
     display: flex;
     justify-content:center;

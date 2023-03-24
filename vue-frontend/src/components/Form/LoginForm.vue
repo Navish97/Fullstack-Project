@@ -53,7 +53,6 @@ h1{
 }
 
 .form {
-  margin: 50px auto 0 auto;
   width: 400px;
   height: fit-content;
   background-image: linear-gradient(to bottom right, rgb(92, 88, 88), rgb(37, 33, 33));

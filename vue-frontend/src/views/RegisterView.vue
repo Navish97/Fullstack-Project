@@ -1,6 +1,6 @@
 <template>
   <div id="wrapper">
-    <RegisterForm id="loginForm"></RegisterForm>
+    <RegisterForm id="register-form"></RegisterForm>
   </div>
 
 </template>
@@ -16,15 +16,14 @@ import RegisterForm from '@/components/Form/RegisterForm.vue'
   color: #fff;
   display: flex;
   justify-content: center;
-  padding: 10px;
   background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
   height: 100vh;
   width: 100%;
   min-height: 500px;
 }
 
-#loginForm{
-  margin-top: 50px;
+#register-form{
+  margin-top: 150px;
 }
 
 
