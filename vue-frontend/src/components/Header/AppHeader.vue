@@ -1,21 +1,23 @@
 <template>
-  <div id="navbar">
-    <div id="hamburger" @click="toggleMenu">
-      <span></span>
-      <span></span>
-      <span></span>
+  <div class="navbar-container">
+    <div id="navbar">
+      <div id="hamburger" @click="toggleMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul :class="{ 'open': menuOpen}">
+        <li @click="menuOpen = false"><a href="/">Home</a></li>
+        <li @click="menuOpen = false"><a href="/new-listing">New listing</a></li>
+        <li @click="menuOpen = false"><a href="#">Messages</a></li>
+        <li v-if="loggedIn" @click="menuOpen = false">
+          <RouterLink to="/my-profile">My Profile</RouterLink>
+        </li>
+        <li v-else @click="menuOpen = false">
+          <RouterLink to="/login">Login</RouterLink>
+        </li>
+      </ul>
     </div>
-    <ul :class="{ 'open': menuOpen}">
-      <li @click="menuOpen = false"><a href="/">Home</a></li>
-      <li @click="menuOpen = false"><a href="/new-listing">New listing</a></li>
-      <li @click="menuOpen = false"><a href="#">Messages</a></li>
-      <li v-if="loggedIn" @click="menuOpen = false">
-        <RouterLink to="/my-profile">My Profile</RouterLink>
-      </li>
-      <li v-else @click="menuOpen = false">
-        <RouterLink to="/login">Login</RouterLink>
-      </li>
-    </ul>
   </div>
 </template>
 
@@ -46,6 +48,16 @@ const toggleMenu = () => {
   left: 0;
   right: 0;
   z-index: 999;
+}
+
+.navbar-container {
+  position: fixed;
+  width: 100%;
+  background: rgba(28, 27, 27, 0.64);
+  display: flex;
+  justify-content: center;
+  height: 3rem;
+  z-index: 3;
 }
 
 #hamburger {
@@ -86,7 +98,8 @@ a {
   color: #fff;
   text-decoration: none;
   font-weight: 300;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+
 }
 
 @media (max-width: 768px) {
