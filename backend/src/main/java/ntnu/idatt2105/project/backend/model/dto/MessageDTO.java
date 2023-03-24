@@ -32,4 +32,16 @@ public class MessageDTO {
         this.message = m.getMessage();
         this.chatId = m.getChat().getId();
     }
+
+    @Override
+    public String toString() {
+        return "MessageDTO{" +
+                "id=" + id +
+                ", sent=" + sent +
+                ", senderId='" + senderId + '\'' +
+                ", senderName='" + senderName + '\'' +
+                ", message='" + message + '\'' +
+                ", chatId=" + chatId +
+                '}';
+    }
 }

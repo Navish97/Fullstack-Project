@@ -56,10 +56,13 @@ public class ChatController {
         String email = jwtService.extractUsername(jwtToken);
         User user = userService.findByEmail(email);
 
+        logger.info("Retrieved request for retrieving chat " + chatId + " for user" + user.getId() + user.getName());
+
         List<MessageDTO> messageDTOs = messageService.getMessages(chatId, user);
         if(messageDTOs == null){
             return ResponseEntity.badRequest().build();
         }
+        logger.info("Returning the following messages in chat " + chatId + " "  + messageDTOs);
         return ResponseEntity.ok(generateResponseMessage(messageDTOs));
     }
 

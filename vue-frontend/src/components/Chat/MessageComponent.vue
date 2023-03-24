@@ -1,9 +1,9 @@
 <template>
     <div class = "message-wrapper">
         <div class="from">
-            {{ message.senderId }}
+            {{ message.senderName }}
         </div>
-        <div class="message">
+        <div  class = "message">
             {{ message.message }}
         </div>
     </div>

@@ -14,6 +14,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Override
     Optional<Message> findById(Long aLong);
 
-    @Query("SELECT m FROM Message m WHERE m.sender.id = :chatid OR m.receiver.id = :chatid")
+    @Query("SELECT m FROM Message m WHERE m.chat.id = :chatid")
     List<Message> findByChatid(@Param("chatid") String chatid);
 }
