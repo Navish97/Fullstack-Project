@@ -27,7 +27,6 @@ public class ItemService {
         return new ItemDTO(item);
     }
 
-
     /**
      * Gets an item page, using the filter specified in the parameter. The method first gets the filtered
      * items from the database, then creates a Data Transfer Object for each of the items and maps them to a Page.

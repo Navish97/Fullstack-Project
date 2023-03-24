@@ -1,5 +1,8 @@
 <template>
     <div class="parent">
+      <div class = "details">
+        <ChatDetails :chat="props.chat" />
+      </div>
         <div class="messages">
             <MessageComponent v-for="message in messages" :message="message" :key="message.id" :class="{'messages sent': message.sent, 'messages received': !message.sent}" />
         </div>
@@ -18,6 +21,7 @@ import MessageComponent from './MessageComponent.vue';
 import { sendMessage } from '@/service/MessagesService';
 import { Chat } from '@/types/ChatType';
 import { useChatStore } from '@/stores/Chat';
+import ChatDetails from './ChatDetails.vue';
 
 const messageStore = useMessageStore();
 const chatStore = useChatStore();
@@ -29,20 +33,21 @@ const props = defineProps({
         type: Array as () => Message[],
         required:true
     },
-    chatId: {
-  type: Number,
-  default: 0,
-  required: true,
-},
+    chat: {
+      type: Object as () => Chat,
+      required:true
+    }
+
+
 });
 
 const emit = defineEmits(['chatIdUpdated']);
 
 
 async function sendMessageService(){
-  const chat : Chat | undefined = chatStore.findChatById(props.chatId);
+  const chat : Chat | undefined = chatStore.findChatById(props.chat.id);
   if(chat !== undefined){
-    await sendMessage(messageInput.value, props.chatId, chat.item.id)
+    await sendMessage(messageInput.value, props.chat.id, chat.item.id)
     .then((response) => {
         console.log(response);
         messageStore.addMessage(response.data.message);
@@ -62,6 +67,13 @@ async function sendMessageService(){
 </script>
 
 <style>
+.details {
+  position: sticky;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 1;
+}
 .messages {
   padding: 10px;
   display: flex;
@@ -97,6 +109,7 @@ async function sendMessageService(){
   justify-content: flex-end;
   width: 100%;
   height: auto;
+  position: relative;
 }
 
 .sent {

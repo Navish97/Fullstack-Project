@@ -5,7 +5,11 @@
         :chats="chatStore.chats" 
         @chat-clicked="(chat) => loadChat(chat)"
         :selectedChatId="selectedChatId"/>
-        <ChatComponent :chatId="selectedChatId" @chat-id-updated="e => chatIdUpdated(e)" :messages="messageStore.messages" />
+        <ChatComponent 
+        :chat="getChat()" 
+        @chat-id-updated="e => chatIdUpdated(e)" 
+        :messages="messageStore.messages"
+        v-if="getChat()" />
       </div>
     </div>
   </template>
@@ -48,6 +52,14 @@
     if(chat !== undefined){
       loadChat(chat);
     }
+  }
+
+  function getChat() : Chat{
+    const chat : Chat | undefined = chatStore.findChatById(selectedChatId.value);
+    if(chat === undefined){
+      //handle exceptions
+    }
+    return chat!;
   }
 
   function loadChat(chat : Chat){

@@ -15,7 +15,7 @@ public class ChatDTO {
     private String userId;
     private String userName;
     private String userEmail;
-    private Item item;
+    private ItemDTO item;
 
     public ChatDTO(Chat chat, User user){
         User userTwo;
@@ -30,7 +30,7 @@ public class ChatDTO {
         this.userName = userTwo.getName();
         this.userEmail = userTwo.getEmail();
 
-        this.item = chat.getItem();
+        this.item = new ItemDTO(chat.getItem());
     }
 
 }
