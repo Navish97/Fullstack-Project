@@ -4,7 +4,9 @@
     <div class="title">
       <h1>Hello there</h1>
     </div>
-    <MyProfile></MyProfile>
+    <div class="profile-wrapper">
+      <MyProfile></MyProfile>
+    </div>
     <div class="wave-container">
       <Wave></Wave>
     </div>
@@ -23,6 +25,11 @@ import MyProfile from "@/components/Profile/MyProfile.vue";
 </script>
 
 <style scoped>
+
+.profile-wrapper{
+  display: flex;
+  justify-content: center;
+}
 
 .wave-container{
   position: absolute;
