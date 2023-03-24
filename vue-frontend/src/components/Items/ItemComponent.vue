@@ -4,7 +4,7 @@
       <div class="item" :class="listingType">
         <div class="image-wrapper">
           <img :src="bookmark" alt="bookmarked" class="bookmark-icon" v-if="itemIsBookmarked"/>
-          <img :src="props.item.images[0].data" alt="thumbnail image" class="image"/>
+          <img :src="props.item.images[0].data.toString()" alt="thumbnail image" class="image"/>
           <div class="price"> {{ formattedPrice }} </div>
         </div>
         <div class="content-wrapper">

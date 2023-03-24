@@ -37,6 +37,11 @@ const props = defineProps({
   },
 });
 
+function bufferToImage(buffer: ArrayBuffer, type: string): string {
+  const blob = new Blob([buffer], { type });
+  return URL.createObjectURL(blob);
+}
+
 watch(() => props.item, () => {
   currentImageIndex.value = 0;
 });
@@ -48,8 +53,9 @@ const itemIsBookmarked = computed(() => {
 });
 
 const currentImage = computed(() => {
-  if (props.item !== undefined && props.item.images.length > 0) {
-    return props.item.images[currentImageIndex.value].data;
+  console.log(props.item.images[currentImageIndex.value].data)
+  if (props.item.images.length > 0) {
+    return props.item.images[currentImageIndex.value].data.toString();
   }
 });
 
