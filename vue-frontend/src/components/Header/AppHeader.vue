@@ -5,14 +5,14 @@
       <span></span>
       <span></span>
     </div>
-    <ul :class="{ 'open': menuOpen }">
-      <li><a href="/">Home</a></li>
-      <li><a href="/new-listing">New listing</a></li>
-      <li><a href="#">Messages</a></li>
-      <li v-if="loggedIn">
+    <ul :class="{ 'open': menuOpen}">
+      <li @click="menuOpen = false"><a href="/">Home</a></li>
+      <li @click="menuOpen = false"><a href="/new-listing">New listing</a></li>
+      <li @click="menuOpen = false"><a href="#">Messages</a></li>
+      <li v-if="loggedIn" @click="menuOpen = false">
         <RouterLink to="/my-profile">My Profile</RouterLink>
       </li>
-      <li v-else>
+      <li v-else @click="menuOpen = false">
         <RouterLink to="/login">Login</RouterLink>
       </li>
     </ul>
