@@ -3,6 +3,7 @@ package ntnu.idatt2105.project.backend.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,6 +24,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
+@Profile("dev")
 public class SecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
@@ -40,7 +42,7 @@ public class SecurityConfig {
                     .csrf().disable()
                     .authorizeHttpRequests()
                     .requestMatchers("/api/**").permitAll()
-                    .requestMatchers("/h2-ui/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                    .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                     //.requestMatchers("/my-profile").permitAll()
                     .requestMatchers(toH2Console()).permitAll()// Add this line if you want to access H2 console without authentication
                     .anyRequest()

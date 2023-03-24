@@ -1,15 +1,22 @@
 package ntnu.idatt2105.project.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import ntnu.idatt2105.project.backend.model.Category;
+import ntnu.idatt2105.project.backend.model.ItemImage;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.model.dto.Filter;
 import ntnu.idatt2105.project.backend.model.Item;
+import ntnu.idatt2105.project.backend.model.dto.ItemImageDTO;
 import ntnu.idatt2105.project.backend.repository.ItemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Item Service class which contains methods used to retrieve and handle items from the database.
@@ -51,23 +58,10 @@ public class ItemService {
         Page<ItemDTO> copyPage = itemPage.map(ItemDTO::new);
 
         return new PageImpl<>(copyPage.getContent(), copyPage.getPageable(), copyPage.getTotalElements());
-
-
-
-
     }
 
-    public ItemDTO saveItem(ItemDTO itemDTO, User user){
-        Item item = new Item();
-        item.setTitle(itemDTO.getTitle());
-        item.setDescription(itemDTO.getDescription());
-        item.setPrice(itemDTO.getPrice());
-        item.setLongitude(itemDTO.getLongitude());
-        item.setLatitude(itemDTO.getLatitude());
-        item.setImageUrls(itemDTO.getImageUrls());
-        item.setUser(user);
-        itemRepository.save(item);
-        return new ItemDTO(item);
+    public Item saveItem(Item item) {
+        return itemRepository.save(item);
     }
 
 }
