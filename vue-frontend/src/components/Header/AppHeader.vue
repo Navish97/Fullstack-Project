@@ -9,7 +9,7 @@
       <ul :class="{ 'open': menuOpen}">
         <li @click="menuOpen = false"><a href="/">Home</a></li>
         <li @click="menuOpen = false"><a href="/new-listing">New listing</a></li>
-        <li @click="menuOpen = false"><a href="#">Messages</a></li>
+        <li @click="menuOpen = false"><a href="/chats">Messages</a></li>
         <li v-if="loggedIn" @click="menuOpen = false">
           <RouterLink to="/my-profile">My Profile</RouterLink>
         </li>

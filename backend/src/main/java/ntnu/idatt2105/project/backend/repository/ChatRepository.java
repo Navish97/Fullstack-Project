@@ -1,6 +1,7 @@
 package ntnu.idatt2105.project.backend.repository;
 
-import ntnu.idatt2105.project.backend.model.Message;
+import ntnu.idatt2105.project.backend.model.Chat;
+import ntnu.idatt2105.project.backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,10 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MessageRepository extends JpaRepository<Message, Long> {
-    @Override
-    Optional<Message> findById(Long aLong);
+public interface ChatRepository extends JpaRepository<Chat, Long> {
 
-    @Query("SELECT m FROM Message m WHERE m.chat.id = :chatid")
-    List<Message> findByChatid(@Param("chatid") String chatid);
+    @Override
+    Optional<Chat> findById(Long aLong);
+
+    @Query("SELECT c from Chat c WHERE c.userOne = :user OR c.userTwo = :user")
+    List<Chat> findAllByUser(@Param("user") User user);
+
 }
