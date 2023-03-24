@@ -60,7 +60,7 @@ function pageUp(){
   }
 }
 function pageDown(){
-  if(currentPage > 0){
+  if(currentPage > 1){
     currentPage--;
     loadItems();
   }
@@ -70,7 +70,7 @@ async function loadItems(){
     .then((response) => {
       itemStore.setLists(response.data.items);
       currentPage = response.data['current-page']+1;
-      totalPages = response.data['total-pages'];
+      totalPages = response.data['total-pages']+1;
     })
     .catch((error) => {
       console.log(error);
