@@ -4,6 +4,7 @@ package ntnu.idatt2105.project.backend.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import ntnu.idatt2105.project.backend.model.Item;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.model.dto.ChatDTO;
 import ntnu.idatt2105.project.backend.model.dto.MessageDTO;
@@ -29,6 +30,7 @@ public class ChatController {
     private final UserService userService;
     private final ChatService chatService;
     private final MessageService messageService;
+    private final ItemService itemService;
 
 
     @GetMapping("/load-chats")
@@ -73,6 +75,16 @@ public class ChatController {
 
         String message = (String) requestBody.get("message");
         Long chatId = ((Number) requestBody.get("chatId")).longValue();
+        Long itemId = ((Number) requestBody.get("itemId")).longValue();
+        ChatDTO chatDTO;
+        if(chatId == -1){
+            logger.info("Creating new chat");
+            chatDTO = chatService.newChat(user, itemId);
+            chatId = chatDTO.getId();
+            if(chatDTO == null){
+                return ResponseEntity.badRequest().build();
+            }
+        }
 
         logger.info("Received message from user: " + user.getId() + " in chat " + chatId);
 

@@ -1,8 +1,11 @@
 <template>
     <div class="wrapper">
       <div class="chat-wrapper">
-        <ChatListComponent :chats="chatStore.chats" @chat-clicked="(chat) => loadChat(chat)"/>
-        <ChatComponent :messages="messageStore.messages" />
+        <ChatListComponent 
+        :chats="chatStore.chats" 
+        @chat-clicked="(chat) => loadChat(chat)"
+        :selectedChatId="selectedChatId"/>
+        <ChatComponent :chatId="selectedChatId" :messages="messageStore.messages" />
       </div>
     </div>
   </template>
@@ -12,17 +15,26 @@
   import ChatComponent from '@/components/Chat/ChatComponent.vue';
   import { useChatStore } from '@/stores/Chat';
   import { useMessageStore } from '@/stores/Message';
-  import { onMounted } from 'vue';
+  import { onMounted, ref } from 'vue';
   import { getChats, getMessages } from '@/service/MessagesService';
   import type { Chat } from '@/types/ChatType';
+  import type { Item } from '@/types/ItemType';
+import { useRoute } from 'vue-router';
 
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
+  const selectedChatId = ref(-1);
 
   onMounted(() => {
+    const chat : Chat | undefined = chatStore.findChatById(-1);
     getChats()
     .then((response) => {
       chatStore.setChats(response.data.chats)
+      if(chat !== undefined){
+        chatStore.newChat(chat);
+        messageStore.setChatId(-1);
+        selectedChatId.value = -1;
+      }
     })
   });
 
@@ -31,8 +43,10 @@
     .then((response) => {
       messageStore.setMessages(response.data.messages);
       messageStore.setChatId(chat.id);
+      selectedChatId.value = chat.id;
     })
   }
+
 
   </script>
   
@@ -54,5 +68,8 @@
     display: flex;
     flex-direction: row;
   }
+  .chat-list-item.selected {
+  background-color: #555;
+}
 
   </style>

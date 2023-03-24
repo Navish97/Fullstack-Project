@@ -16,8 +16,11 @@ import { useMessageStore } from '@/stores/Message';
 import { Message } from '@/types/MessageType';
 import MessageComponent from './MessageComponent.vue';
 import { sendMessage } from '@/service/MessagesService';
+import { Chat } from '@/types/ChatType';
+import { useChatStore } from '@/stores/Chat';
 
 const messageStore = useMessageStore();
+const chatStore = useChatStore();
 
 const messageInput=ref('');
 
@@ -26,10 +29,17 @@ const props = defineProps({
         type: Array as () => Message[],
         required:true
     },
+    chatId: {
+  type: Number,
+  default: 0,
+  required: true,
+},
 });
 
 async function sendMessageService(){
-    await sendMessage(messageInput.value, messageStore.chatid)
+  const chat : Chat | undefined = chatStore.findChatById(props.chatId);
+  if(chat !== undefined){
+    await sendMessage(messageInput.value, props.chatId, chat.item)
     .then((response) => {
         console.log(response);
         messageStore.addMessage(response.data);
@@ -38,6 +48,7 @@ async function sendMessageService(){
         console.log('Error occured while sending message', error.message);
         messageInput.value = "Could not send message. Something went wrong";
     })
+  }
 }
 
 

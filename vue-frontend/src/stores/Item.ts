@@ -62,7 +62,9 @@ export const useItemStore = defineStore({
             title: data.title,
             latitude: parseFloat(data.latitude),
             longitude: parseFloat(data.longitude),
-            userId: data.userid,
+            userId: data.userId,
+            userName: data.userName,
+            userEmail: data.userEmail,
           };
     },
     setLists(list : []){

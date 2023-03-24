@@ -13,7 +13,6 @@ export async function getChats():Promise<any> {
 }
 
 export async function getMessages(chat : Chat):Promise<any> {
-    console.log(chat);
     const response = await axiosInstance.get('/api/chats/load-messages', {
         params: {
             chatId : chat.id
@@ -28,7 +27,12 @@ export async function getMessages(chat : Chat):Promise<any> {
     return response;
 }
 
-export async function sendMessage(message: String, chatId:number):Promise<any> {
-    const response = axiosInstance.post('/api/chats/send-message', {message:message, chatId:chatId})
+export async function sendMessage(message: String, chatId:Number, itemId:Number):Promise<any> {
+    const response = axiosInstance.post('/api/chats/send-message', 
+    {
+        message:message,
+        chatId:chatId,
+        itemId:itemId,
+        })
     return response;
 }

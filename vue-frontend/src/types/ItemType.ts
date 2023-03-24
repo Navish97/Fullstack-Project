@@ -7,5 +7,7 @@ export interface Item {
     categoryId: number;
     latitude: number;
     longitude: number;
-    userId: number;
+    userId: string;
+    userName: string;
+    userEmail: string;
 }

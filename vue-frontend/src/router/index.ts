@@ -61,6 +61,11 @@ const router = createRouter({
       name: 'chats',
       component: MessagesView,
     },
+    {
+      path: '/chats/new-chat:item',
+      name: 'new-chat',
+      component: MessagesView,
+    },
   ]
 })
 

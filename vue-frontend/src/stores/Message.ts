@@ -4,7 +4,7 @@ import type { Message } from '@/types/MessageType';
 export const useMessageStore = defineStore({
     id: 'messages',
     state: () => ({
-        chatid:9999999 as number, 
+        chatid:-1 as number, 
         messages:[
         ] as Message[],
     }),

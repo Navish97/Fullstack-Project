@@ -60,6 +60,7 @@ public class ItemController {
     public ResponseEntity<?> getItemDetails(@PathVariable Long itemId, @CookieValue(value = "myMarketPlaceAccessToken", required = false) String jwtToken) throws JsonProcessingException {
         logger.info("Received get item details request");
         ItemDTO item = itemService.getItemById(itemId);
+        System.out.println(item.getUserEmail() + item.getUserId());
         Map<String, Object> response = new HashMap<>();
         response.put("item", item);
 

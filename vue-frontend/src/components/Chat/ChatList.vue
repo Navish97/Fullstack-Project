@@ -4,6 +4,7 @@
         v-for="chat in chats" 
         :chat="chat" 
         :key="chat.id"
+        :class="{ selected: chat.id === selectedChatId }"
         @click="chatClicked(chat)" />
     </div>
 </template>
@@ -18,6 +19,10 @@ const props = defineProps({
         type: Array as () => Chat[],
         required: true
     },
+    selectedChatId: {
+        type: Number,
+        default: null,
+    }
 });
 
 const emit = defineEmits(["chat-clicked"]);
@@ -36,6 +41,11 @@ function chatClicked(chat : Chat) {
     background-color: white;
     border-radius: 15px;
     overflow: hidden;
+}
+.chatelement.selected {
+  background-color: #555;
+  color: #fff;
+  font-weight: bold;
 }
 
 </style>

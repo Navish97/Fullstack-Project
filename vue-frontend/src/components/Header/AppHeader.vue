@@ -3,7 +3,7 @@
     <ul>
       <li><a href="/">Home</a></li>
       <li><a href="/new-listing">New listing</a></li>
-      <li><a href="#">Contact</a></li>
+      <li><a>Contact</a></li>
       <li v-if="loggedIn">
         <RouterLink to="/chats">Messages</RouterLink>
       </li>
