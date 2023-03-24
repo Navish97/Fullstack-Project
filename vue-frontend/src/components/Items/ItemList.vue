@@ -86,6 +86,8 @@ img {
   transform: scale(1.1);
 }
 .page-buttons{
+  padding-top: 1.5rem;
+  padding-bottom: 3rem;
   display: flex;
   width: inherit;
   justify-content: center;
