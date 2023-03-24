@@ -137,12 +137,13 @@ onMounted(() => {
   text-align: center;
 }
 
-.wave-wrapper {
+.container {
   background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   position: relative;
   overflow: hidden;
+  height: 25rem;
 }
 
 

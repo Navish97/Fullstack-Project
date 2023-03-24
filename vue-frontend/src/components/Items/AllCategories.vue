@@ -60,7 +60,7 @@ onMounted(async () => {
 <style scoped>
 .wrapper {
   width: 55%;
-  margin: 75px auto;
+  margin: 95px auto;
   height: fit-content;
 }
 .categories-container {
@@ -68,7 +68,6 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
   width: 70%; /* Set the width to fill the viewport width */
-  margin: 5px auto 0 auto;
   color: white;
 }
 
