@@ -18,7 +18,6 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       beforeEnter: async (to, from, next) => {
-        const userStore = useUserStore();
         next();
       },
     },

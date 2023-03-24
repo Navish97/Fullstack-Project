@@ -19,7 +19,7 @@ axiosInstance.interceptors.response.use(
     },
     (error) => {
         if (error.response.status === 401 && useUserStore().isLoggedIn()) {
-            //useUserStore().logOut()
+            useUserStore().logOut()
             console.log("401 error, logging out");
         }
 

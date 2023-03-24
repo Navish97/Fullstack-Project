@@ -11,13 +11,13 @@
       <BaseInput id="inpTitle" class="input-container" type="text" label="Title" v-model="form.title" />
       <BaseInput id="inpDescription" class="input-container" type="text" label="Description" v-model="form.description" />
       <BaseInput id="inpPrice" class="input-container" type="number" label="Price" v-model="form.price" />
-      <BaseInput id="inpLongitude" class="input-container" type="text" label="Longitude" v-model="form.longitude" />
-      <BaseInput id="inpLatitude" class="input-container" type="text" label="Latitude" v-model="form.latitude" />
+      <BaseInput id="inpLongitude" class="input-container" type="number" label="Longitude" v-model="form.longitude" />
+      <BaseInput id="inpLatitude" class="input-container" type="number" label="Latitude" v-model="form.latitude" />
       <div class="input-container">
         <input id="inpImages" type="file" @change="onImagesChange" multiple />
       </div>
       <button id="button">Create Listing</button>
-      <ErrorMessage v-if="errorMessage" :message="errorMessage" />
+      <ErrorMessage v-if="errorMessage" :message="errorMessage" @clear-error="errorMessage=''"/>
     </form>
   </div>
 </template>
@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import BaseInput from "@/components/Form/BaseInput.vue";
 import router from "@/router";
-import { ref, onMounted } from "vue";
+import {ref, onMounted, computed} from "vue";
 import axiosInstance from "@/service/AxiosInstance";
 import { useItemStore } from "@/stores/Item";
 import ErrorMessage from "@/components/Errors/ErrorMessage.vue";
@@ -66,12 +66,40 @@ let icon = ref({
 let images = ref<{ url: string; name: string }[]>([]);
 
 const validateForm = () => {
-  const requiredFields = ['title', 'description', 'price', 'longitude', 'latitude', 'images'];
-  for (let field of requiredFields) {
-    if (!form.value[field]) {
-      return false;
-    }
+  errorMessage.value = "";
+
+  if (!form.value.title || form.value.title.length < 3 || form.value.title.length > 50) {
+    errorMessage.value = "Title must be at least 3 characters and cannot exceed 50";
+    return false
   }
+
+  if (!form.value.description || form.value.description.length < 20 ||form.value.description.length > 1000) {
+    errorMessage.value = "Description must be at least 20 characters and cannot exceed 1000";
+    return false
+  }
+
+  if (!form.value.price || isNaN(Number(form.value.price)) || Number(form.value.price) < 10 || Number(form.value.price) > 10000000) {
+    errorMessage.value = "Price must be a valid number between 10 and 10.000.000";
+    return false;
+  }
+
+  if (!form.value.longitude || isNaN(Number(form.value.longitude))
+      || Number(form.value.longitude) < -180 || Number(form.value.longitude) > 180) {
+    errorMessage.value = "Longitude must be a valid number between -180 and 180";
+    return false;
+  }
+
+  if (!form.value.latitude || isNaN(Number(form.value.latitude))
+      || Number(form.value.latitude) < -90 || Number(form.value.latitude) > 90) {
+    errorMessage.value = "Latitude must be a valid number between -90 and 90";
+    return false;
+  }
+
+  if (form.value.images.length === 0 || form.value.images.length > 5) {
+    errorMessage.value = "You must upload at least one image, and can upload up to 5";
+    return false;
+  }
+
   return true;
 };
 
@@ -107,7 +135,7 @@ const sendForm = async () => {
       await router.push("/"); // Redirect to the desired page after successful listing creation
     }
   } catch (error: any) {
-    alert(error.response); // TODO: Display a user-friendly error message
+    console.log(error);
   }
 };
 
