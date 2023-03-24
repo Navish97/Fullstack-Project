@@ -3,9 +3,11 @@
       <div class = "details">
         <ChatDetails :chat="props.chat" />
       </div>
+      <div class="message-wrapper">
         <div class="messages">
             <MessageComponent v-for="message in messages" :message="message" :key="message.id" :class="{'messages sent': message.sent, 'messages received': !message.sent}" />
         </div>
+      </div>
         <div class="message-bar">
             <input type = "text" placeholder="Send a message..." v-model="messageInput">
             <button class="send-button" @click="sendMessageService()">Send</button>
@@ -69,10 +71,23 @@ async function sendMessageService(){
 <style>
 .details {
   position: sticky;
-  height: 100%;
   display: flex;
   justify-content: center;
   z-index: 1;
+}
+.message-wrapper{
+  overflow-y: auto;
+  height: 100%;
+  scrollbar-width: none;
+}
+.message-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.example {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 .messages {
   padding: 10px;
