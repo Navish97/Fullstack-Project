@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "messages")
 @Schema(description = "Represents a message that is sent between two users")
 public class Message {

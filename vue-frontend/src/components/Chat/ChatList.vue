@@ -3,7 +3,7 @@
         <ChatPreview class = "chatelement" 
         v-for="chat in chats" 
         :chat="chat" 
-        :key="chat.chatid"
+        :key="chat.id"
         @click="chatClicked(chat)" />
     </div>
 </template>

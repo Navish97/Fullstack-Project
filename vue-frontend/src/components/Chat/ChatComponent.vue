@@ -4,19 +4,22 @@
             <MessageComponent v-for="message in messages" :message="message" :key="message.id" :class="{'messages sent': message.sent, 'messages received': !message.sent}" />
         </div>
         <div class="message-bar">
-            <input type = "text" placeholder="Send a message...">
-            <button class="send-button">Send</button>
+            <input type = "text" placeholder="Send a message..." v-model="messageInput">
+            <button class="send-button" @click="sendMessageService()">Send</button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
 import { useMessageStore } from '@/stores/Message';
 import { Message } from '@/types/MessageType';
 import MessageComponent from './MessageComponent.vue';
+import { sendMessage } from '@/service/MessagesService';
 
 const messageStore = useMessageStore();
+
+const messageInput=ref('');
 
 const props = defineProps({
     messages: {
@@ -24,6 +27,20 @@ const props = defineProps({
         required:true
     },
 });
+
+async function sendMessageService(){
+    await sendMessage(messageInput.value, messageStore.chatid)
+    .then((response) => {
+        console.log(response);
+        messageStore.addMessage(response.data);
+    })
+    .catch((error) => {
+        console.log('Error occured while sending message', error.message);
+        messageInput.value = "Could not send message. Something went wrong";
+    })
+}
+
+
 
 
 </script>

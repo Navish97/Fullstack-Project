@@ -8,13 +8,11 @@ import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.model.dto.ChatDTO;
 import ntnu.idatt2105.project.backend.model.dto.MessageDTO;
 import ntnu.idatt2105.project.backend.service.*;
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +43,7 @@ public class ChatController {
         if(chats == null) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(generateResponseChat(chats));
+        return ResponseEntity.ok(generateResponseChats(chats));
 
     }
 
@@ -63,17 +61,38 @@ public class ChatController {
             return ResponseEntity.badRequest().build();
         }
         logger.info("Returning the following messages in chat " + chatId + " "  + messageDTOs);
-        return ResponseEntity.ok(generateResponseMessage(messageDTOs));
+        return ResponseEntity.ok(generateResponseMessages(messageDTOs));
     }
 
-    private Map<String, Object> generateResponseMessage(final List<MessageDTO> messages){
+    @PostMapping("/send-message")
+    public ResponseEntity<?> sendMessage(HttpServletRequest request, @RequestBody Map<String, Object> requestBody){
+        // Extract userID from JWT
+        String jwtToken = cookieService.extractTokenFromCookie(request);
+        String email = jwtService.extractUsername(jwtToken);
+        User user = userService.findByEmail(email);
+
+        String message = (String) requestBody.get("message");
+        Long chatId = ((Number) requestBody.get("chatId")).longValue();
+
+        logger.info("Received message from user: " + user.getId() + " in chat " + chatId);
+
+        MessageDTO messageDTO = messageService.sendMessage(chatId, user, message);
+        if(messageDTO == null){
+            return ResponseEntity.badRequest().build();
+        }
+        logger.info("Messages stored to database, returning sent message to user in messageDTO");
+        return ResponseEntity.ok(messageDTO);
+
+    }
+
+    private Map<String, Object> generateResponseMessages(final List<MessageDTO> messages){
         Map<String, Object> response = new HashMap<>();
         response.put("messages", messages);
         response.put("total-messages", messages.size());
         return response;
     }
 
-    private Map<String, Object> generateResponseChat(final List<ChatDTO> chats){
+    private Map<String, Object> generateResponseChats(final List<ChatDTO> chats){
         Map<String, Object> response = new HashMap<>();
         response.put("chats",chats);
         response.put("total-chats", chats.size());

@@ -23,4 +23,23 @@ public class MessageService {
         List<MessageDTO> messageDTOs = messages.stream().map(message -> new MessageDTO(message, user)).collect(Collectors.toList());
         return messageDTOs;
     }
+
+    public MessageDTO sendMessage(Long chatId, User user, String message){
+        User recepient;
+        Chat c = chatRepository.getReferenceById(chatId);
+        if(c.getUserOne() == user){
+            recepient = c.getUserTwo();
+        }
+        else{
+            recepient = user;
+        }
+        Message messageObject = new Message();
+        messageObject.setMessage(message);
+        messageObject.setChat(c);
+        messageObject.setSender(user);
+        messageObject.setReceiver(recepient);
+
+        messageRepository.save(messageObject);
+        return new MessageDTO(messageObject, user);
+    }
 }

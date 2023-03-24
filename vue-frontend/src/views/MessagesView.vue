@@ -30,6 +30,7 @@
     getMessages(chat)
     .then((response) => {
       messageStore.setMessages(response.data.messages);
+      messageStore.setChatId(chat.id);
     })
   }
 

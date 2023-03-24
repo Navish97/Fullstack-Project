@@ -27,3 +27,8 @@ export async function getMessages(chat : Chat):Promise<any> {
     })
     return response;
 }
+
+export async function sendMessage(message: String, chatId:number):Promise<any> {
+    const response = axiosInstance.post('/api/chats/send-message', {message:message, chatId:chatId})
+    return response;
+}
