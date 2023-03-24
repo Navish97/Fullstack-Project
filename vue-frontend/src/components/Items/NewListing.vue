@@ -13,7 +13,9 @@
       <BaseInput id="inpPrice" class="input-container" type="number" label="Price" v-model="form.price" />
       <BaseInput id="inpLongitude" class="input-container" type="text" label="Longitude" v-model="form.longitude" />
       <BaseInput id="inpLatitude" class="input-container" type="text" label="Latitude" v-model="form.latitude" />
-      <BaseInput id="inpImageUrls" class="input-container" type="text" label="Image URLs" v-model="form.imageUrls" />
+      <div class="input-container">
+        <input id="inpImages" type="file" @change="onImagesChange" multiple />
+      </div>
       <button id="button">Create Listing</button>
       <ErrorMessage v-if="errorMessage" :message="errorMessage" />
     </form>
@@ -23,13 +25,12 @@
 <script setup lang="ts">
 import BaseInput from "@/components/Form/BaseInput.vue";
 import router from "@/router";
-import {ref, onMounted} from "vue";
+import { ref, onMounted } from "vue";
 import axiosInstance from "@/service/AxiosInstance";
 import { useItemStore } from "@/stores/Item";
 import ErrorMessage from "@/components/Errors/ErrorMessage.vue";
 
 const itemStore = useItemStore();
-//et chosenCategory = computed(() => itemStore.getNewListingCategory);
 
 const resetCategory = () => {
   itemStore.setNewListingCategory(0);
@@ -44,8 +45,8 @@ interface Form {
   price: string;
   longitude: string;
   latitude: string;
-  imageUrls: string;
-  [key: string]: string;
+  images: File[];
+  [key: string]: string | File[];
 }
 
 const form = ref<Form>({
@@ -54,17 +55,18 @@ const form = ref<Form>({
   price: "",
   longitude: "",
   latitude: "",
-  imageUrls: "",
+  images: [],
 });
 
 let icon = ref({
   type: "",
   iconUrl: "",
-})
+});
 
+let images = ref<{ url: string; name: string }[]>([]);
 
 const validateForm = () => {
-  const requiredFields = ['title', 'description', 'price', 'longitude', 'latitude', 'imageUrls'];
+  const requiredFields = ['title', 'description', 'price', 'longitude', 'latitude', 'images'];
   for (let field of requiredFields) {
     if (!form.value[field]) {
       return false;
@@ -78,14 +80,30 @@ const sendForm = async () => {
     return;
   }
   try {
-    const response = await axiosInstance.post("/api/items/new-listing", form.value);
+    const formData = new FormData();
+    formData.append("title", form.value.title);
+    formData.append("description", form.value.description);
+    formData.append("price", form.value.price);
+    formData.append("category_id", itemStore.getNewListingCategory.toString());
+    formData.append("longitude", form.value.longitude);
+    formData.append("latitude", form.value.latitude);
+    for (let i = 0; i < form.value.images.length; i++) {
+      const file = new File([form.value.images[i]], "image_" + i, { type: form.value.images[i].type });
+      formData.append("images", file);
+    }
+    const response = await axiosInstance.post("/api/items/new-listing", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     if (response.status === 200) {
       form.value.title = "";
       form.value.description = "";
       form.value.price = "";
       form.value.longitude = "";
       form.value.latitude = "";
-      form.value.imageUrls = "";
+      form.value.images = [];
+      images.value = [];
       await router.push("/"); // Redirect to the desired page after successful listing creation
     }
   } catch (error: any) {
@@ -93,12 +111,26 @@ const sendForm = async () => {
   }
 };
 
+const onImagesChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (!target.files) {
+    return;
+  }
+  const files = Array.from(target.files);
+  form.value.images = files;
+  images.value = files.map((file) => ({ url: URL.createObjectURL(file), name: file.name }));
+};
+
+const removeImage = (image: { url: string; name: string }) => {
+  const index = images.value.findIndex((img) => img.url === image.url);
+  images.value.splice(index, 1);
+  form.value.images.splice(index, 1);
+};
 
 const fetchIcon = async (chosenCategory: any) => {
   try {
     const response = await axiosInstance.get(`/api/${chosenCategory}/icon`);
     icon.value = response.data;
-    console.log(icon);
   } catch (error) {
     console.error(error);
   }

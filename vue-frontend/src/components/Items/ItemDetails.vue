@@ -1,12 +1,12 @@
 <template>
-  <div class="item-details" v-if="props.item.imageURLs">
+  <div class="item-details" v-if="props.item.images">
     <div class="flex-container">
       <div class="image-container">
         <img :src="bookmark" alt="bookmarked" class="bookmark-icon" v-if="itemIsBookmarked"/>
         <img :src="currentImage" class="item-image" alt="item-image" />
-        <button class="image-btn prev" @click="prevImage" v-if="props.item.imageURLs.length>1">&lt;</button>
-        <button class="image-btn next" @click="nextImage" v-if="props.item.imageURLs.length>1">&gt;</button>
-        <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.imageURLs.length }}</div>
+        <button class="image-btn prev" @click="prevImage" v-if="props.item.images.length>1">&lt;</button>
+        <button class="image-btn next" @click="nextImage" v-if="props.item.images.length>1">&gt;</button>
+        <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.images.length }}</div>
       </div>
       <bookmark-component />
       <div class="item-info">
@@ -48,8 +48,8 @@ const itemIsBookmarked = computed(() => {
 });
 
 const currentImage = computed(() => {
-  if (props.item !== undefined && props.item.imageURLs !== undefined) {
-    return props.item.imageURLs[currentImageIndex.value];
+  if (props.item !== undefined && props.item.images.length > 0) {
+    return props.item.images[currentImageIndex.value].data;
   }
 });
 
@@ -62,12 +62,12 @@ function prevImage() {
     currentImageIndex.value -= 1;
   }
   else {
-    currentImageIndex.value = props.item.imageURLs.length - 1;
+    currentImageIndex.value = props.item.images.length - 1;
   }
 }
 
 function nextImage() {
-  if (currentImageIndex.value < props.item.imageURLs.length - 1) {
+  if (currentImageIndex.value < props.item.images.length - 1) {
     currentImageIndex.value += 1;
   }
   else {
