@@ -205,12 +205,15 @@ const formattedPrice = computed(() => {
   }
 
   .content-wrapper.list {
-    word-wrap: normal;
+    position:relative;
     overflow: hidden;
-    overflow-wrap: break-word;
-    text-overflow: clip;
     word-break: break-word;
-    white-space: normal;
+    word-wrap: break-word;
+    max-height: 100%;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   .image-wrapper img:not(.bookmark-icon) {
@@ -263,7 +266,7 @@ const formattedPrice = computed(() => {
 
   .container.list {
     width: 100%;
-    height: 15%;
+    max-height: 15%;
   }
 
   .item.thumbnail .image-wrapper {
@@ -319,7 +322,7 @@ const formattedPrice = computed(() => {
 
   .item.list {
     width: 100%;
-    height: 100%;
+    max-height: 100%;
     display: grid;
     grid-template-columns: 140px 2fr;
     align-items: center;
