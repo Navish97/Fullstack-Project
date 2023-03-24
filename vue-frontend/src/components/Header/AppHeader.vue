@@ -72,7 +72,7 @@ const handleScroll = () => {
 .navbar-container {
   position: fixed;
   width: 100%;
-  background-color: transparent;
+  background-color: rgba(28, 27, 27, 0.24);
   display: flex;
   justify-content: center;
   height: 3rem;
