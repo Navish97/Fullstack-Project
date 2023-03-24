@@ -67,6 +67,7 @@ public class ItemController {
         logger.info("Received get item details request");
         ItemDTO item = itemService.getItemById(itemId);
         Map<String, Object> response = new HashMap<>();
+        logger.info("Item found: " + item.getId());
         response.put("item", item);
 
         if (jwtToken != null) {
@@ -76,7 +77,7 @@ public class ItemController {
         } else {
             response.put("isBookmarked", false);
         }
-
+        logger.info("Returning item");
         return ResponseEntity.ok(response);
     }
 
@@ -106,14 +107,16 @@ public class ItemController {
     @Operation(summary = "Retrieve a page of items filtered according to provided filter. ", description = "Retrieves a page of items based on the given page number, page size, and filter. The filter should be provided as a JSON string.")
     @ApiResponse(responseCode = "200", description = "Page of items retrieved successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class)))
     @GetMapping("/page")
-    public ResponseEntity<?> getPersonsPageable(
+    public ResponseEntity<?> getItemsPageable(
             @RequestParam final Integer pageNumber,
             @RequestParam final Integer size,
-            @RequestParam String filter) throws JsonProcessingException {
-                logger.info("Received api call for retrieving a page of items. Page: " + pageNumber + " Page size: " + size + " with filter: " + filter);
-                Filter f = this.parseFilter(filter);
-
-        return ResponseEntity.ok(generateResponse(itemService.getItemPage(pageNumber, size, f)));
+            @RequestParam String filter
+    ) throws JsonProcessingException {
+        logger.info("Received api call for retrieving a page of items. Page: " + pageNumber + " Page size: " + size + " with filter: " + filter);
+        Filter f = this.parseFilter(filter);
+        Page<Item> itemPage = itemService.getItemPage(pageNumber, size, f);
+        Page<ItemDTO> itemDtoPage = itemPage.map(ItemDTO::new);
+        return ResponseEntity.ok(generateResponse(itemDtoPage));
     }
 
     /**

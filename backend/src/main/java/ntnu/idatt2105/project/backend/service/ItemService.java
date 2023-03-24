@@ -12,10 +12,13 @@ import ntnu.idatt2105.project.backend.repository.ItemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -26,11 +29,12 @@ import java.util.stream.Collectors;
 public class ItemService {
     private final ItemRepository itemRepository;
 
-    public ItemDTO getItemById(Long id){
-        Item item = itemRepository.findById(id).orElse(null);
-        if(item == null){
-            return null;
+    public ItemDTO getItemById(Long id) {
+        Optional<Item> optionalItem = itemRepository.findById(id);
+        if (optionalItem.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid item id, item not found");
         }
+        Item item = optionalItem.get();
         return new ItemDTO(item);
     }
 
@@ -43,21 +47,14 @@ public class ItemService {
      * @param filter
      * @return
      */
-    public Page<ItemDTO> getItemPage(int pageNr, int pageSize, Filter filter){
+    public Page<Item> getItemPage(int pageNr, int pageSize, Filter filter) {
         int minPrice = filter.getMinPrice();
         int maxPrice = filter.getMaxPrice();
-        Page<Item> itemPage;
-        if(minPrice == 0 && maxPrice == 0){
-            itemPage = itemRepository
-                    .getItems(PageRequest.of(pageNr, pageSize));
+        if (minPrice == 0 && maxPrice == 0) {
+            return itemRepository.getItems(PageRequest.of(pageNr, pageSize));
+        } else {
+            return itemRepository.getItemsByPrice(minPrice, maxPrice, PageRequest.of(pageNr, pageSize));
         }
-        else{
-            itemPage = itemRepository
-                    .getItemsByPrice(minPrice, maxPrice, PageRequest.of(pageNr, pageSize));
-        }
-        Page<ItemDTO> copyPage = itemPage.map(ItemDTO::new);
-
-        return new PageImpl<>(copyPage.getContent(), copyPage.getPageable(), copyPage.getTotalElements());
     }
 
     public Item saveItem(Item item) {
