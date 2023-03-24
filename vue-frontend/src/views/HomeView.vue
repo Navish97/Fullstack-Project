@@ -1,22 +1,11 @@
 <template>
-  <div class="wave-wrapper">
+  <div class="container">
 
     <div class="title">
       <h1>MyMarketPlace</h1>
     </div>
-    <div>
-      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-           viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-        <defs>
-          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-        </defs>
-        <g class="parallax">
-          <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
-          <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
-          <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
-          <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
-        </g>
-      </svg>
+    <div class="wave-container">
+      <Waves />
     </div>
   </div>
   <div class="wrapper">
@@ -48,6 +37,7 @@ import { useUserStore } from '@/stores/User';
 import { getItems } from '@/service/ItemService';
 import { onBeforeRouteUpdate, useRoute } from 'vue-router';
 import {getUserBookmarks} from "@/service/BookmarkService";
+import Waves from '@/components/Wave/Wave.vue'
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
@@ -108,6 +98,13 @@ onMounted(() => {
 
 <style scoped>
 
+.wave-container{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
 .title{
   font-weight: 300;
   margin-top: 5rem;
@@ -115,6 +112,7 @@ onMounted(() => {
   font-size: 4rem;
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .title h1{
@@ -122,8 +120,9 @@ onMounted(() => {
   font-size: 4rem;
   display: flex;
   justify-content: center;
+  text-align: center;
 }
-.wave-wrapper {
+.container {
   height: 25rem;
   background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400% 400%;
@@ -132,14 +131,6 @@ onMounted(() => {
   overflow: hidden;
 }
 
-.waves {
-  position:relative;
-  width: 100%;
-  height:15vh;
-  min-height:100px;
-  max-height:150px;
-  margin-top: 6.5rem;
-}
 
 
 @keyframes gradient {
@@ -154,10 +145,6 @@ onMounted(() => {
   }
 }
 
-.justify-content-center {
-  display: flex;
-  justify-content: center;
-}
 .wrapper {
   display: flex;
   justify-content: center;
@@ -197,19 +184,19 @@ onMounted(() => {
 }
 .parallax > use:nth-child(1) {
   animation-delay: -2s;
-  animation-duration: 7s;
+  animation-duration: 10s;
 }
 .parallax > use:nth-child(2) {
   animation-delay: -3s;
-  animation-duration: 10s;
+  animation-duration: 13s;
 }
 .parallax > use:nth-child(3) {
   animation-delay: -4s;
-  animation-duration: 13s;
+  animation-duration: 16s;
 }
 .parallax > use:nth-child(4) {
   animation-delay: -5s;
-  animation-duration: 20s;
+  animation-duration: 23s;
 }
 @keyframes move-forever {
   0% {
