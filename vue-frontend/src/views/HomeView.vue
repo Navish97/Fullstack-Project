@@ -70,7 +70,7 @@ async function loadItems(){
     .then((response) => {
       itemStore.setLists(response.data.items);
       currentPage = response.data['current-page']+1;
-      totalPages = response.data['total-pages']+1;
+      totalPages = response.data['total-pages'];
     })
     .catch((error) => {
       console.log(error);
