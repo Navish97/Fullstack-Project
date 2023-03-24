@@ -56,16 +56,20 @@ async function loadData() {
 
 .profile-wrapper{
   position: relative;
-  width: 100%;
-  height: 42.5%;
+  width: 800px;
+  height: 50%;
   flex-direction: column;
   align-items: flex-start;
   border: solid 3px white;
   border-radius: 20px;
   padding: 2rem;
+  margin: auto;
 }
 
 .log-out-btn {
+  position: absolute;
+  bottom: -20px;
+  left: 40px;
   font-size: 1.25rem;
   color: black;
   background-color: white;
@@ -74,8 +78,6 @@ async function loadData() {
   cursor: pointer;
   transition: background-color 0.3s;
   border-radius: 20px;
-  align-self: flex-end;
-  text-align: left;
-  justify-self: start;
+  z-index: 1;
 }
 </style>

@@ -2,12 +2,26 @@
   <div class="container">
 
     <div class="content-wrapper">
-<!--      <div class="profile-wrapper">
-        <MyProfile></MyProfile>
-      </div>-->
       <InfoBox />
-    </div>
+      <div class="grid">
+        <div class="box">hold kjeft a</div>
+        <div class="box">endre profil</div>
+        <div class="box">mine annonser</div>
+        <div class="box">mine bokmerker</div>
+        <div class="box">mine bokmerker</div>
+        <div class="box">mine bokmerker</div>
+        <div class="box">mine bokmerker</div>
+        <div class="box">mine bokmerker</div>
+        <div class="box">mine bokmerker</div>
+        <div class="box">mine bokmerker</div>
+        <div class="box">mine bokmerker</div>
+        <div class="box">mine bokmerker</div>
+        <div class="box">mine bokmerker</div>
+        <div class="box">mine bokmerker</div>
+        <div class="box">mine bokmerker</div>
 
+      </div>
+    </div>
     <div class="wave-container">
       <Wave></Wave>
     </div>
@@ -28,25 +42,32 @@ import InfoBox from "@/components/Profile/InfoBox.vue";
 
 <style scoped>
 
-.content-wrapper{
-  width: 40%;
-  justify-content: center;
+.grid {
   display: flex;
-  flex-direction: column;
-  margin: 6rem auto auto;
-  height: 60vh;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+  width: 60%;
+  margin: 40px auto 0;
+  gap: 10px;
 }
 
-.profile-wrapper{
-  position: relative;
-  width: 100%;
-  height: 42.5%;
-  flex-direction: column;
-  align-items: flex-start;
-  border: solid 3px white;
+.box {
+  width: 200px;
+  height: 200px;
+  background-color: white;
+  border: 4px solid #000000;
   border-radius: 20px;
-  padding: 2rem;
+  margin-right: 0;
 }
+
+.content-wrapper{
+  justify-content: center;
+  display: flex;
+  margin-top: 120px;
+  flex-direction: column;
+}
+
 
 .wave-container{
   position: absolute;
@@ -68,7 +89,7 @@ Wave {
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   position: relative;
-  overflow: hidden;
+  justify-content: center;
 }
 
 

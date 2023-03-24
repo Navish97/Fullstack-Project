@@ -2,7 +2,7 @@
   <div class="profile-container">
     <div class="user-details">
       <h1 class="user-name">{{ user.name }}</h1>
-      <p>{{ user.email }}</p>
+      <p class="user-email">{{ user.email }}</p>
     </div>
     <div class="profile-picture-container">
       <img src="https://i.imgur.com/8Km9tLL.png" alt="profile" class="profile-picture" />
@@ -29,19 +29,6 @@ onMounted(() => {
   loadData();
 });
 
-async function logOut() {
-  try{
-    await axiosInstance.post('/api/auth/logout');
-    userStore.logOut();
-  }
-  catch (error) {
-    console.error(error);
-  }
-}
-
-async function handleLogOut() {
-  await logOut();
-}
 
 async function loadData() {
   try {
@@ -59,6 +46,13 @@ async function loadData() {
 </script>
 
 <style scoped>
+
+.user-email{
+  font-size: 1.4rem;
+  color: white;
+  font-weight: 300;
+  margin-top: -25px;
+}
 
 .profile-picture-container{
   display: flex;
