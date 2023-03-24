@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <button @click="changeListingIndex">{{currentListingType}}</button>
+    <p>Change Listing:</p>
+    <button class="list-button"  @click="changeListingIndex">{{currentListingType}}</button>
   </div>
 </template>
 
@@ -29,9 +30,12 @@ const currentListingType = computed(() => {
 <style scoped>
 
 .container {
-  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
-button {
+
+.list-button {
   width: 100px;
   background-color: rgba(30, 29, 29, 0.99);
   color: #ffffff;
@@ -43,7 +47,7 @@ button {
   text-align: center;
 }
 
-button:hover {
+.list-button:hover {
   background-color: #555;
 }
 </style>
