@@ -1,6 +1,6 @@
 <template>
-  <div class="navbar-container">
-    <div id="navbar">
+  <div class="navbar-container" :class="{ 'scrolled': isScrolled }">
+    <div id="navbar" >
       <div id="hamburger" @click="toggleMenu">
         <span></span>
         <span></span>
@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import {useUserStore} from "@/stores/User";
-import {computed, ref} from "vue";
+import {computed, ref, onMounted} from "vue";
 
 const userStore = useUserStore();
 const loggedIn = computed(() => userStore.isLoggedIn());
@@ -32,6 +32,20 @@ const menuOpen = ref(false);
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;
 };
+
+const isScrolled = ref(false)
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+const handleScroll = () => {
+  if (window.scrollY > 0) {
+    isScrolled.value = true
+  } else {
+    isScrolled.value = false
+  }
+}
 </script>
 
 <style scoped>
@@ -48,16 +62,22 @@ const toggleMenu = () => {
   left: 0;
   right: 0;
   z-index: 999;
+  transition: background-color 2s ease;
+}
+
+.scrolled {
+  background-color: rgba(28, 27, 27, 0.64) !important;
 }
 
 .navbar-container {
   position: fixed;
   width: 100%;
-  background: rgba(28, 27, 27, 0.64);
+  background-color: transparent;
   display: flex;
   justify-content: center;
   height: 3rem;
   z-index: 3;
+  transition: background-color 2s ease;
 }
 
 #hamburger {
