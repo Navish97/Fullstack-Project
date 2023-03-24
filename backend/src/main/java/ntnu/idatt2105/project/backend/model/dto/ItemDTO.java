@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 public class ItemDTO {
     private long id;
     private String userId;
+    private String userName;
+    private String userEmail;
     private long categoryId;
     private String title;
     private String description;
@@ -33,6 +35,8 @@ public class ItemDTO {
     public ItemDTO(Item item) {
         this.id = item.getId();
         this.userId = item.getUser().getId();
+        this.userName = item.getUser().getName();
+        this.userEmail = item.getUser().getEmail();
         this.categoryId = item.getCategory().getId();
         this.title = item.getTitle();
         this.description = item.getDescription();

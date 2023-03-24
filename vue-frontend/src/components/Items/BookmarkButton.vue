@@ -40,12 +40,6 @@ const isBookmarked = computed(() => {
 </script>
 
 <style scoped>
-
-
-.container {
-  padding-top: 8px;
-}
-
 .bookmark-button {
 
 
