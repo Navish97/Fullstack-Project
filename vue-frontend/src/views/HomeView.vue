@@ -108,7 +108,7 @@ onMounted(() => {
   height: 10%;
 }
 
-.arrow :hover {
+.arrow:hover {
   transform: scale(1.1);
 }
 

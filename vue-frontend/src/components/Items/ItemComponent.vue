@@ -7,8 +7,8 @@
           <img :src="props.item.images[0].data.toString()" alt="thumbnail image" class="image"/>
           <div class="price"> {{ formattedPrice }} </div>
         </div>
-        <div class="content-wrapper" :class="{'max-height': listingType === 'list'}">
-          <div class="text-wrapper" :class="{'max-height': listingType === 'list'}">
+        <div class="content-wrapper" :class="listingType">
+          <div class="text-wrapper" :class="listingType">
             <h2> {{ item.title }} </h2>
             <h4 v-if="listingType==='list'"> {{ item.description }} </h4>
           </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from 'vue';
+import {defineProps, computed, ref} from 'vue';
 import type { Item } from '@/types/ItemType';
 import { useItemStore } from '@/stores/Item';
 import {useUserStore} from "@/stores/User";
@@ -39,6 +39,8 @@ const props = defineProps({
   }
 });
 
+const listingType = ref(props.listingType);
+
 const itemIsBookmarked = computed(() => {
   return userStore.isItemBookmarked(props.item);
 });
@@ -54,121 +56,160 @@ const formattedPrice = computed(() => {
 </script>
 
 <style scoped>
-.max-height {
-  height: 100%;
-}
-
-.container:hover {
-  cursor: pointer;
-}
-
-.container.thumbnail:hover {
-  background-color: #505050;
-  border-radius: 8px;
-}
-
-.container.list:hover {
-  background-color: #505050;
-  border-radius: 8px;
-}
-
-.container {
-  width: 100%;
-  height: 100%;
-}
-
-.item.thumbnail {
-  width: 240px;
-  height: 240px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 16px;
-  padding: 0 0 16px;
-  border-radius: 8px;
-}
-
-.item.list {
-  width: 600px;
-  height: 160px;
-  display: grid;
-  grid-template-columns: 180px 2fr;
-
-  padding: 16px 0 0;
-  border-radius: 8px;
-}
-
-.item.list .image-wrapper {
-  width: 160px;
-  height: 100%;
-  object-fit: cover;
-}
-
-.item.thumbnail .image-wrapper {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 @media (min-width: 768px) {
+  .container:hover {
+    cursor: pointer;
+  }
+
+  .container {
+    width: 100%;
+    height: 100%;
+  }
+
+  .item.thumbnail {
+    width: 240px;
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 16px;
+    padding: 0 0 16px;
+    border-radius: 8px;
+  }
+  .container.thumbnail:hover {
+    background-color: #505050;
+    border-radius: 8px;
+  }
+
+  .container.list:hover {
+    background-color: #505050;
+    border-radius: 8px;
+  }
+
+  .item.list {
+    width: 600px;
+    height: 160px;
+    display: grid;
+    grid-template-columns: 180px 2fr;
+
+    padding: 16px 0 0;
+    border-radius: 8px;
+  }
+
+  .item.list .image-wrapper {
+    width: 160px;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .item.thumbnail .image-wrapper {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   .item.list .content-wrapper {
     position: absolute;
     top: 0;
     padding-left: 16px;
     padding-right: 16px;
   }
+  .image-wrapper img:not(.bookmark-icon) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    max-height: 100%;
+  }
+
+  .content-wrapper {
+    word-wrap: normal;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    text-overflow: clip;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .bookmark-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 35px;
+    height: 50px;
+    opacity: 0.6;
+    border-top-right-radius: 8px;
+  }
+  .item .price {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.44);
+    color: #fff;
+    font-size: 16px;
+    border-bottom-left-radius: 8px;
+    border-top-left-radius: 8px;
+  }
 }
 
-.content-wrapper {
-  word-wrap: normal;
-  overflow: hidden;
-  overflow-wrap: break-word;
-  text-overflow: clip;
-  word-break: break-word;
-  white-space: normal;
-}
 
-.image-wrapper img:not(.bookmark-icon) {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-  max-height: 100%;
-}
-
-.bookmark-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 1;
-  width: 45px;
-  height: 60px;
-  opacity: 0.6;
-  border-top-right-radius: 8px;
-}
-
-.item .price {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  padding: 8px;
-  background-color: rgba(0, 0, 0, 0.44);
-  color: #fff;
-  font-size: 16px;
-  border-bottom-left-radius: 8px;
-  border-top-left-radius: 8px;
-}
 
 @media (max-width: 768px) {
+  .item .price {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.44);
+    color: #fff;
+    font-size: 16px;
+    border-bottom-left-radius: 8px;
+    border-top-left-radius: 8px;
+  }
+
+  .content-wrapper.list {
+    word-wrap: normal;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    text-overflow: clip;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .image-wrapper img:not(.bookmark-icon) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    max-height: 100%;
+  }
+
+  .text-wrapper.thumbnail {
+    position:relative;
+    word-wrap: normal;
+    overflow: hidden;
+    overflow-wrap: normal;
+    text-overflow: clip;
+    word-break: normal;
+    white-space: normal;
+    align-self: start;
+    padding: 0rem 1rem .5rem 1rem;
+  }
 
   h2 {
     font-size: 1.2rem;
   }
+
   .container.thumbnail:hover {
     background-color: transparent;
-    padding-top: 4%;
     width: 100%;
     height: 100%;
   }
@@ -221,8 +262,10 @@ const formattedPrice = computed(() => {
     border-radius: 8px
   }
 
-  .container .thumbnail {
-    width: 100%;
+  .container.thumbnail {
+    display: grid;
+    grid-template-columns: 100% 100%;
+    max-width: 100%;
     height: 100%;
   }
 
@@ -233,13 +276,12 @@ const formattedPrice = computed(() => {
 
 
   .item.thumbnail {
-    width: 100%;
+    max-width: 100%;
     height: 200px;
     display: flex;
     flex-direction: column;
     align-content: center;
     align-items: center;
-    margin: 0;
     border-radius: 8px;
   }
 
