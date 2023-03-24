@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
-import MyProfile from '../views/MyProfile.vue'
+import MyProfile from '../views/ProfileView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import HomeView from '../views/HomeView.vue'
 import FilterComponent from '@/components/FilterComponent.vue'
@@ -19,8 +19,6 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       beforeEnter: async (to, from, next) => {
-        const userStore = useUserStore();
-        await userStore.checkAuthStatus();
         next();
       },
     },
@@ -71,7 +69,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
-
+    await userStore.checkAuthStatus()
     if(to.meta.requiresAuth && !userStore.isLoggedIn()) {
         next({name: 'login'});
     }

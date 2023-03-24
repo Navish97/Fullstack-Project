@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS items (
     price DECIMAL,
     longitude VARCHAR(255),
     latitude VARCHAR(255),
-    image_urls TEXT,
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id),
@@ -42,6 +41,15 @@ CREATE TABLE IF NOT EXISTS bookmarks (
     FOREIGN KEY (item_id) REFERENCES items(id)
     );
 
+CREATE TABLE IF NOT EXISTS item_images (
+    id BIGINT AUTO_INCREMENT,
+    item_id BIGINT,
+    data LONGBLOB,
+    content_type VARCHAR(255),
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
+    );
 
 CREATE TABLE IF NOT EXISTS chats (
     id BIGINT AUTO_INCREMENT,
@@ -55,8 +63,8 @@ CREATE TABLE IF NOT EXISTS chats (
     FOREIGN KEY (item_id) REFERENCES items(id)
     );
 CREATE TABLE IF NOT EXISTS messages (
-                                        id BIGINT AUTO_INCREMENT,
-                                        sender_id VARCHAR(36),
+    id BIGINT AUTO_INCREMENT,
+    sender_id VARCHAR(36),
     receiver_id VARCHAR(36),
     message TEXT,
     chat_id BIGINT,

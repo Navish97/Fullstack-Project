@@ -1,12 +1,12 @@
 <template>
-  <div class="item-details" v-if="props.item.imageURLs">
+  <div class="item-details" v-if="props.item.images">
     <div class="flex-container">
       <div class="image-container">
         <img :src="bookmark" alt="bookmarked" class="bookmark-icon" v-if="itemIsBookmarked"/>
         <img :src="currentImage" class="item-image" alt="item-image" />
-        <button class="image-btn prev" @click="prevImage" v-if="props.item.imageURLs.length>1">&lt;</button>
-        <button class="image-btn next" @click="nextImage" v-if="props.item.imageURLs.length>1">&gt;</button>
-        <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.imageURLs.length }}</div>
+        <button class="image-btn prev" @click="prevImage" v-if="props.item.images.length>1">&lt;</button>
+        <button class="image-btn next" @click="nextImage" v-if="props.item.images.length>1">&gt;</button>
+        <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.images.length }}</div>
       </div>
       <div class="toolbar">
         <bookmark-component />
@@ -51,6 +51,11 @@ const props = defineProps({
   },
 });
 
+function bufferToImage(buffer: ArrayBuffer, type: string): string {
+  const blob = new Blob([buffer], { type });
+  return URL.createObjectURL(blob);
+}
+
 watch(() => props.item, () => {
   currentImageIndex.value = 0;
 });
@@ -74,8 +79,9 @@ const itemIsBookmarked = computed(() => {
 });
 
 const currentImage = computed(() => {
-  if (props.item !== undefined && props.item.imageURLs !== undefined) {
-    return props.item.imageURLs[currentImageIndex.value];
+  console.log(props.item.images[currentImageIndex.value].data)
+  if (props.item.images.length > 0) {
+    return props.item.images[currentImageIndex.value].data.toString();
   }
 });
 
@@ -88,12 +94,12 @@ function prevImage() {
     currentImageIndex.value -= 1;
   }
   else {
-    currentImageIndex.value = props.item.imageURLs.length - 1;
+    currentImageIndex.value = props.item.images.length - 1;
   }
 }
 
 function nextImage() {
-  if (currentImageIndex.value < props.item.imageURLs.length - 1) {
+  if (currentImageIndex.value < props.item.images.length - 1) {
     currentImageIndex.value += 1;
   }
   else {
@@ -115,33 +121,44 @@ function nextImage() {
   border-top-right-radius: 24px;
 }
 
+.item-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  padding-top: 16px;
+}
+
 .flex-container {
-  padding-top: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  padding-top: 55px;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 80%;
+}
+
+.bookmarkbutton {
+  width:100%;
 }
 
 .item-details {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 auto;
   width: 100%;
   height: 100%;
+  word-wrap: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
-.item-info {
-  padding-top: 16px;
-}
 
 .image-container {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 60vw;
-  height: 80vh;
+  width: 100%;
+  height: 100%;
 }
 
 .image-index {

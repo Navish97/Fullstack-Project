@@ -1,6 +1,6 @@
 
 <template>
-  <div class="body">
+  <div class="wrapper">
     <form @submit.prevent="sendForm" class="form">
       <h1>Login</h1>
       <BaseInput id="inpEmail" class="input-container" type="text" label="Email" v-model="form.email"/>
@@ -29,7 +29,7 @@ const sendForm = async () => {
     const response = await postLogin(form);
 
     if (response.status === 200) {
-      userStore.setLoggedInUserEmail(form.email);
+      userStore.setLoggedIn(true);
       form.email = '';
       form.password = '';
       await router.push('/');
@@ -44,9 +44,6 @@ const sendForm = async () => {
 
 <style scoped>
 
-.body {
-  background-color: rgb(124, 121, 121);
-}
 
 h1{
   color: white;

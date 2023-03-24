@@ -1,13 +1,12 @@
 <template>
-  <div v-if="isVisible" class="error-message">
+  <div v-if="hasError" class="error-message">
     {{ message }}
-    <button @click="hide">X</button>
+    <button @click="$emit('clear-error')">X</button>
   </div>
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
-
+import {computed, ref} from "vue";
 export default {
   name: "ErrorMessage",
   props: {
@@ -17,15 +16,13 @@ export default {
     },
   },
   setup(props: any) {
-    const isVisible = ref(true);
 
-    const hide = () => {
-      isVisible.value = false;
-    };
+    const hasError = computed(() => {
+      return props.message !== "";
+    });
 
     return {
-      isVisible,
-      hide,
+      hasError
     };
   },
 };

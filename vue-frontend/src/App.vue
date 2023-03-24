@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import Navbar from './components/Header/AppHeader.vue'
+import AppHeader from './components/Header/AppHeader.vue'
 
 import { useUserStore } from './stores/User'
 import {onMounted} from "vue";
@@ -14,7 +14,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Navbar id="nav" />
+  <AppHeader></AppHeader>
   <RouterView />
 </template>
 

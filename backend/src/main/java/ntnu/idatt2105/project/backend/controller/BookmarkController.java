@@ -40,6 +40,14 @@ public class BookmarkController {
 
     Logger logger = LoggerFactory.getLogger(BookmarkController.class);
 
+    /**
+     * Removes a user's bookmark for a specific item, checks if the user is authenticated first.
+     *
+     * @param itemId    The ID of the item to remove the bookmark for.
+     * @param jwtToken  JWT token containing the user's information.
+     * @return ResponseEntity containing a message about the result of the operation.
+     * @throws UserNotFoundException if the user is not found.
+     */
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/delete/{itemId}")
     @Operation(summary = "Removes a user's bookmark for a specific item",
@@ -70,6 +78,27 @@ public class BookmarkController {
         }
     }
 
+    /**
+     * Adds a bookmark for a specific item to a user's bookmarks.
+     *
+     * @param itemId    The ID of the item to add the bookmark for.
+     * @param jwtToken  JWT token containing the user's information.
+     * @return ResponseEntity containing a message about the result of the operation.
+     * @throws UserNotFoundException if the user is not found.
+     * @throws BookmarkAlreadyExistsException if the bookmark already exists for the user.
+     */
+    @Operation(summary = "Add a bookmark for a specific item to a user's bookmarks",
+            description = "Adds a bookmark for the given item to the authenticated user's bookmarks." +
+                    " The user is not passed as a parameter, but the username is extracted from the JWT token." +
+                    " This ensures that users can only add bookmarks to their own data.",
+            parameters = {
+                    @Parameter(name = "itemId",
+                            description = "The ID of the item to add the bookmark for.")
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Bookmark successfully added"),
+                    @ApiResponse(responseCode = "409", description = "Bookmark already exists")
+            })
     @PostMapping("/add/{itemId}")
     public ResponseEntity<String> addBookmark(@PathVariable Long itemId, @CookieValue(value = "myMarketPlaceAccessToken") String jwtToken) throws UserNotFoundException, BookmarkAlreadyExistsException {
         logger.info("Received add bookmark request for item with id: " + itemId + " jwtToken: " + jwtToken);
@@ -87,6 +116,15 @@ public class BookmarkController {
         }
     }
 
+
+    /**
+     * Returns a list of bookmark objects for the user with the given email address.
+     *
+     * @param jwtToken  JWT token containing the user's information.
+     * @return ResponseEntity containing a list of bookmark objects for the user.
+     * @throws UserNotFoundException if the user is not found.
+     * @throws UnauthorizedException if the user is not authorized.
+     */
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Get a user's bookmarks",
             description = "Returns a list of bookmark objects for the user with the given email address.",

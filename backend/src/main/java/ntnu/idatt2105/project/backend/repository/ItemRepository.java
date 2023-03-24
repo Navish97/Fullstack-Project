@@ -1,5 +1,6 @@
 package ntnu.idatt2105.project.backend.repository;
 
+import ntnu.idatt2105.project.backend.model.Category;
 import ntnu.idatt2105.project.backend.model.Item;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;

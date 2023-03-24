@@ -1,16 +1,18 @@
 <template>
-  <div id="header">
-    <h1>What do you want to sell?</h1>
-  </div>
-  <div class="categories-container">
-    <div class="categories-wrapper">
-      <div class="categories-grid">
-        <div v-for="category in categories" :key="category.id" class="category" @click="selectCategory(category.id)">
-          <div class="icon-container">
-            <font-awesome-icon :icon="category.iconUrl" />
-          </div>
-          <div class="text-container">
-            <span>{{ category.type }}</span>
+  <div class="wrapper">
+    <div id="header">
+      <h1>What do you want to sell?</h1>
+    </div>
+    <div class="categories-container">
+      <div class="categories-wrapper">
+        <div class="categories-grid">
+          <div v-for="category in categories" :key="category.id" class="category" @click="selectCategory(category.id)">
+            <div class="icon-container">
+              <font-awesome-icon :icon="category.iconUrl" />
+            </div>
+            <div class="text-container">
+              <span>{{ category.type }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -55,13 +57,17 @@ onMounted(async () => {
 
 </script>
 
-<style>
+<style scoped>
+.wrapper {
+  width: 55%;
+  margin: 95px auto;
+  height: fit-content;
+}
 .categories-container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 70%; /* Set the width to fill the viewport width */
-  margin: 5px auto 0 auto;
   color: white;
 }
 
@@ -102,7 +108,7 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
   width: 70%;
-  margin: 75px auto 15px auto;
+  margin: auto;
   font-size: 30px;
   color: white;
 }

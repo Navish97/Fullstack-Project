@@ -1,39 +1,81 @@
 <template>
-  <nav>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/new-listing">New listing</a></li>
-      <li><a>Contact</a></li>
-      <li v-if="loggedIn">
-        <RouterLink to="/chats">Messages</RouterLink>
-      </li>
-      <li v-if="loggedIn">
-        <RouterLink to="/my-profile">My Profile</RouterLink>
-      </li>
-      <li v-else>
-        <RouterLink to="/login">Login</RouterLink>
-      </li>
-    </ul>
-  </nav>
+  <div class="navbar-container">
+    <div id="navbar">
+      <div id="hamburger" @click="toggleMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul :class="{ 'open': menuOpen}">
+        <li @click="menuOpen = false"><a href="/">Home</a></li>
+        <li @click="menuOpen = false"><a href="/new-listing">New listing</a></li>
+        <li @click="menuOpen = false"><a href="/chats">Messages</a></li>
+        <li v-if="loggedIn" @click="menuOpen = false">
+          <RouterLink to="/my-profile">My Profile</RouterLink>
+        </li>
+        <li v-else @click="menuOpen = false">
+          <RouterLink to="/login">Login</RouterLink>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import {useUserStore} from "@/stores/User";
-import {computed} from "vue";
+import {computed, ref} from "vue";
 
 const userStore = useUserStore();
-
 const loggedIn = computed(() => userStore.isLoggedIn());
+
+const menuOpen = ref(false);
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value;
+};
 </script>
 
 <style scoped>
-nav {
-  background-color: #333;
-  color: #fff;
+#navbar {
+  height: 3rem;
+  background-color: transparent;
+  width: 60%;
   display: flex;
   justify-content: center;
-  padding: 10px;
-  height: 50px;
+  justify-items: center;
+  margin: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+
+.navbar-container {
+  position: fixed;
+  width: 100%;
+  background: rgba(28, 27, 27, 0.64);
+  display: flex;
+  justify-content: center;
+  height: 3rem;
+  z-index: 3;
+}
+
+#hamburger {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  position: absolute;
+  left: 1rem;
+  top: 0.5rem;
+}
+
+#hamburger span {
+  width: 100%;
+  height: 0.25rem;
+  background-color: #fff;
 }
 
 ul {
@@ -42,7 +84,7 @@ ul {
   margin: auto 0;
   padding: 0;
   justify-content: center;
-  width: 50%;
+  width: 100%;
 }
 
 li {
@@ -55,5 +97,41 @@ li {
 a {
   color: #fff;
   text-decoration: none;
+  font-weight: 300;
+  font-size: 1.2rem;
+
+}
+
+@media (max-width: 768px) {
+  #navbar {
+    background-color: rgba(0, 0, 0, 0.34);
+    position: absolute;
+    width: 100%;
+  }
+
+  #hamburger {
+    display: flex;
+  }
+
+  ul {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.34);
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    right: 0;
+    padding: 1rem 0;
+  }
+
+  ul.open {
+    display: flex;
+  }
+
+  li {
+    margin-bottom: 1rem;
+  }
 }
 </style>

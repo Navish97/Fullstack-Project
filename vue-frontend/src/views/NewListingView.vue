@@ -1,6 +1,8 @@
 <template>
-  <AllCategories v-if="!hasChosenCategory"></AllCategories>
-  <NewListing v-else></NewListing>
+  <div id="wrapper">
+    <AllCategories v-if="!hasChosenCategory"></AllCategories>
+    <NewListing v-else></NewListing>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -15,3 +17,11 @@ const itemStore = useItemStore();
 const chosenCategory = computed(() => itemStore.getNewListingCategory);
 const hasChosenCategory = computed(() => chosenCategory.value !== 0);
 </script>
+
+<style scoped>
+
+#wrapper{
+  background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
+  height: 100vh;
+}
+</style>

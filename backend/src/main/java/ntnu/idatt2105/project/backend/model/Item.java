@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -51,8 +52,8 @@ public class Item {
     @Schema(description = "The latitude position of the item")
     private String latitude;
 
-    @Column(name = "image_urls", columnDefinition = "TEXT")
-    @Schema(description = "A string representation of all image urls for the item")
-    private String imageUrls;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Schema(description = "List of images for the item")
+    private List<ItemImage> images;
 }
 

@@ -28,6 +28,9 @@ export const useItemStore = defineStore({
     getCurrentListingType: (state) => {
       return state.currentListingType;
     },
+    getImages: (state) => {
+        return state.currentItem.images;
+    },
     getListingTypes: (state) => {
       return state.listingTypes;
     },
@@ -51,21 +54,25 @@ export const useItemStore = defineStore({
     addItem(item: Item) {
       this.items.push(item);
     },
-    responseToItem(response: any){
+    responseToItem(response: any) {
       const data = JSON.parse(JSON.stringify(response));
-        return {
-            id: data.id,
-            description: data.description,
-            price: data.price,
-            imageURLs: [data.imageUrls],
-            categoryId: data.categoryid,
-            title: data.title,
-            latitude: parseFloat(data.latitude),
-            longitude: parseFloat(data.longitude),
-            userId: data.userId,
-            userName: data.userName,
-            userEmail: data.userEmail,
-          };
+      const images = data.images.map((image: any) => ({
+        data: image.data,
+        contentType: image.contentType
+      }));
+      return {
+        id: data.id,
+        description: data.description,
+        price: data.price,
+        images: images,
+        categoryId: data.categoryId,
+        title: data.title,
+        latitude: parseFloat(data.latitude),
+        longitude: parseFloat(data.longitude),
+        userId: data.userId,
+        userName: data.userName,
+        userEmail: data.userEmail,
+      };
     },
     setLists(list : []){
       const newItems:Item[] = [];

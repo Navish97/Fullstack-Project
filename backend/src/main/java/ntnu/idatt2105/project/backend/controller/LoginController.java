@@ -45,7 +45,6 @@ public class LoginController {
             AuthenticationResponse authResponse = authenticationService.authenticate(authenticationRequest);
             Cookie cookie = getCookie(authResponse);
             if (!request.getServerName().equals("localhost")){
-                cookie.setDomain("mymarketplace-xt5ws57jza-lz.a.run.app");
                 response.addHeader("Set-Cookie", cookieToHeaderWithSameSite(cookie));
             }
             else{
@@ -69,7 +68,7 @@ public class LoginController {
     }
 
     private String cookieToHeaderWithSameSite(Cookie cookie) {
-        return cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; Max-Age=" + cookie.getMaxAge() + "; Secure; HttpOnly; SameSite=" + "none" + "; Domain=" + cookie.getDomain();
+        return cookie.getName() + "=" + cookie.getValue() + "; Path=" + cookie.getPath() + "; Max-Age=" + cookie.getMaxAge() + "; Secure; HttpOnly; SameSite=" + "none";
     }
 
     @PostMapping("/logout")

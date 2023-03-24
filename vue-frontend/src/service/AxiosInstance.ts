@@ -19,10 +19,12 @@ axiosInstance.interceptors.response.use(
     },
     (error) => {
         if (error.response.status === 401 && useUserStore().isLoggedIn()) {
+            alert("Session has expired. You've been logged out.");
             useUserStore().logOut()
-            console.log("401 error, logging out");
         }
-
+        else {
+            alert("An error has occurred. Errorcode: " + error.response.status);
+        }
         return Promise.reject(error);
     }
 );

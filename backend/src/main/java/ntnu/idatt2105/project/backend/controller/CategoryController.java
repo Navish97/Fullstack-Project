@@ -1,5 +1,8 @@
 package ntnu.idatt2105.project.backend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import ntnu.idatt2105.project.backend.model.dto.ErrorResponse;
@@ -18,17 +21,27 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Tag(name = "Login Controller", description = "Controller to handle user login")
 public class CategoryController {
 
     private final CategoryService categoryService;
 
     Logger logger = Logger.getLogger(ProfileController.class.getName());
 
-
+    /**
+     * Gets all categories. Checks first if the user is authenticated by using the @PreAuthorize annotation.
+     *
+     * @param request The HttpServletRequest
+     * @return List of categories
+     */
+    @Operation(summary = "Get all categories",
+            description = "Retrieve a list of all categories that can be used for items",
+            responses = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of categories"),
+            @ApiResponse(responseCode = "404", description = "No categories found")}
+    )
     @GetMapping("/categories")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> getMyProfile(HttpServletRequest request) {
+    public ResponseEntity<?> getMyCategories(HttpServletRequest request) {
         List<Category> categories = categoryService.getAllCategories();
         logger.info("Categories: " + categories);
 
@@ -38,6 +51,23 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
+    /**
+     * Gets the image that belongs to a category.
+     * Checks first if the user is authenticated by using the @PreAuthorize annotation.
+     *
+     * @param id The id of the category
+     * @return The image path of the category
+     */
+    @Operation(summary = "Get category icon by ID",
+            description = "Retrieve the icon URL for a category by ID",
+            parameters = {
+                    @Parameter(name = "id",
+                            description = "The ID of the category")
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully retrieved the icon URL for the category"),
+                    @ApiResponse(responseCode = "404", description = "No icon URL found")
+            })
     @GetMapping("{id}/icon")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> findCategoryById(@PathVariable Long id) {

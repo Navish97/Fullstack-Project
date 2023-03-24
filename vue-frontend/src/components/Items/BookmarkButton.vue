@@ -41,12 +41,13 @@ const isBookmarked = computed(() => {
 
 <style scoped>
 .bookmark-button {
-  display: inline-block;
+
+
   padding: 8px 8px;
   border-radius: 4px;
-  border: 1px solid #000000;
-  background-color: #1c1b1b;
-  color: #FFFFFF;
+  border: 1px solid #9b9b9b;
+  background-color: #ff9d4c;
+
   font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
@@ -55,16 +56,16 @@ const isBookmarked = computed(() => {
 }
 
 .bookmark-button:hover {
-  background: #4d4d4d;
+  background-color: #81491b;
 }
 
 .bookmark-button.bookmarked {
   color: #fafafa;
-  background: #425432;
+  background: #fc2323;
 }
 
 .bookmark-button.bookmarked:hover {
-  background: #1a6e27;
+  background: #963131;
 }
 
 

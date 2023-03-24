@@ -8,7 +8,6 @@ import {getUserBookmarks} from "@/service/BookmarkService";
 export const useUserStore = defineStore({
     id: 'user',
     state: () => ({
-        loggedInUserEmail: "" as string,
         bookmarks: [] as Bookmark[],
         authenticated: false as boolean
     }),
@@ -16,17 +15,11 @@ export const useUserStore = defineStore({
         storage: sessionStorage,
     },
     getters: {
-        getLoggedInUserEmail: (state) => {
-            return state.loggedInUserEmail;
-        },
         getBookmarks: (state) => {
             return state.bookmarks
         },
         isItemBookmarked: (state) => (item: Item) => {
                 return state.bookmarks.some(bookmark => bookmark.itemId === item.id);
-        },
-        addBookmark: (state) => (item: Item) => {
-            //Axios call for adding bookmark to database
         },
         isLoggedIn: (state) => () => {
             return state.authenticated;
@@ -36,12 +29,11 @@ export const useUserStore = defineStore({
     actions: {
         logOut() {
             router.push("/")
-            this.loggedInUserEmail = "";
             this.bookmarks = [];
             this.authenticated = false;
         },
-        setLoggedInUserEmail(userEmail: string) {
-            this.loggedInUserEmail = userEmail;
+        setLoggedIn(loggedIn: boolean) {
+            this.authenticated = loggedIn
         },
         setBookmarks(bookmarks: Bookmark[]) {
             this.bookmarks = bookmarks;
@@ -57,12 +49,12 @@ export const useUserStore = defineStore({
         },
         async checkAuthStatus() {
             try {
-                const response = await axiosInstance.get('/api/user-status');
-                this.loggedInUserEmail = response.data.email;
-                this.authenticated = true; // Set authenticated to true on successful response
+                if (this.isLoggedIn()) {
+                    const response = await axiosInstance.get('/api/user-status');
+                    this.authenticated = true; // Set authenticated to true on successful response
+                }
             } catch (error) {
                 console.error('Error checking authentication status:', error);
-                this.loggedInUserEmail = "";
                 this.authenticated = false; // Set authenticated to false on error
             }
         },
