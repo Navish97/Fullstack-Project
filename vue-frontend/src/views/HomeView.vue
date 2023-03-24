@@ -1,20 +1,24 @@
 <template>
-  <div class="container">
-    <div class="title">
-      <h1>MyMarketPlace</h1>
-    </div>
-    <div class="wave-container">
-      <Waves />
-    </div>
-  </div>
-  <div class="wrapper">
-    <div class="grid-container">
-      <div class="listing-type">
-        <FilterComponent />
-        <ListingTypeButton />
+  <div class="main-container">
+    <div class="home-container">
+      <div class="title">
+        <h1>MyMarketPlace</h1>
       </div>
-      <div class="items">
-        <ItemList :items="itemStore.items" :listingType="currentListingType" :currentPage="currentPage" :totalPages="totalPages" @pageup="pageUp" @pagedown="pageDown" />
+      <div class="wave-container">
+        <Waves />
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="grid-container">
+        <FilterComponent v-show="showFilter" />
+        <div class="listing-type">
+          <ListingTypeButton />
+          <button class="filter-toggle" :class="{ 'show': showFilter }" @click="toggleFilter">Toggle Filter</button>
+        </div>
+
+        <div class="items">
+          <ItemList :items="itemStore.items" :listingType="currentListingType" :currentPage="currentPage" :totalPages="totalPages" @pageup="pageUp" @pagedown="pageDown" />
+        </div>
       </div>
     </div>
   </div>
@@ -44,6 +48,10 @@ const currentListingType = computed(() => {
 
 let currentPage = 1;
 let totalPages = 1;
+let showFilter = false;
+function toggleFilter() {
+  showFilter = !showFilter;
+}
 
 function pageUp(){
   if(currentPage < totalPages){
@@ -92,6 +100,54 @@ onMounted(() => {
 </script>
 
 <style scoped>
+@media (min-width: 769px) {
+  .filter-toggle {
+    display: none;
+  }
+}
+
+.filter-toggle {
+  background-color: #23d5ab;
+  border: none;
+  color: white;
+  height: 100%;
+  width: 10rem;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+.listing-type {
+  width: 250px;
+  position: relative;
+  overflow: hidden;
+}
+
+FilterComponent {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.15);
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+FilterComponent.show {
+  transform: translateY(0);
+}
+
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  height: 100%;
+}
 
 .page-count{
   color: black;
@@ -137,7 +193,7 @@ onMounted(() => {
   text-align: center;
 }
 
-.container {
+.home-container {
   background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
@@ -218,6 +274,21 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
+  .title{
+    padding-top: 1.5rem;
+  }
+  .home-container {
+    height: 15rem;
+  }
+  .listing-type {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+  }
+  .filter-toggle {
+    display: inline-block;
+  }
+
   .title {
     margin-top: 2rem;
   }
@@ -230,6 +301,7 @@ onMounted(() => {
     display: grid;
     grid-template-columns: 1fr;
     width: 100%;
+    gap: 0;
     justify-content: center;
     padding: 0;
   }
@@ -240,6 +312,11 @@ onMounted(() => {
 
   .items {
     width: 100%;
+  }
+
+  .wrapper {
+    position: relative;
+    top:0;
   }
 }
 </style>

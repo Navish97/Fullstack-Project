@@ -143,7 +143,7 @@ const formattedPrice = computed(() => {
   .item.list .content-wrapper {
     position: relative;
     top: 0;
-    padding: .5rem;
+    margin: 5px;
   }
 
   .item.thumbnail .image-wrapper img:not(.bookmark-icon) {
