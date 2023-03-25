@@ -1,3 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`It renders the button properly 1`] = `"<div data-v-e5945115=\\"\\" class=\\"container\\"><button data-v-e5945115=\\"\\" class=\\"bookmark-button\\"><span data-v-e5945115=\\"\\" class=\\"bookmark-icon\\"></span><span data-v-e5945115=\\"\\" class=\\"bookmark-text\\">Add Bookmark</span></button></div>"`;
+
 exports[`renders the button properly 1`] = `"<div data-v-e5945115=\\"\\" class=\\"container\\"><button data-v-e5945115=\\"\\" class=\\"bookmark-button\\"><span data-v-e5945115=\\"\\" class=\\"bookmark-icon\\"></span><span data-v-e5945115=\\"\\" class=\\"bookmark-text\\">Add Bookmark</span></button></div>"`;
