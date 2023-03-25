@@ -68,7 +68,7 @@ async function sendMessageService(){
 
 </script>
 
-<style>
+<style scoped>
 .details {
   height: 12%;
   width: auto;
