@@ -20,7 +20,6 @@ import { defineProps } from 'vue';
 import type { Item } from '@/types/ItemType';
 import ItemComponent from '@/components/Items/ItemComponent.vue';
 import PaginationComponent from './PaginationComponent.vue';
-import { directive } from '@babel/types';
 const props = defineProps({
   items: {
     type: Array as () => Item[],

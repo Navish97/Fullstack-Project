@@ -22,7 +22,6 @@
           :items="itemStore.items" 
           :listingType="currentListingType" 
           :currentPage="currentPage" 
-          :totalPages="totalPages" 
           @load-page="(page) => setPage(page)"
           @nav-page="(direction) => callPage(direction)" />
         </div>
@@ -95,7 +94,6 @@ async function loadItems(){
       console.log(error);
     });
 
-    console.log(pages);
 }
 onBeforeRouteUpdate(async (to, from) => {
   console.log("route updated");
