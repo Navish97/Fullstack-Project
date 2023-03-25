@@ -22,6 +22,11 @@ const props = defineProps({
 </script>
 
 <style>
+
+.from {
+  color: white;
+  font-size: 20px;
+}
 .message{
     background-color: cornflowerblue;
     width: fit-content;

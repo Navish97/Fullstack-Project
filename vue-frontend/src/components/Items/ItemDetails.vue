@@ -205,9 +205,10 @@ function nextImage() {
   right: 0;
 }
 .toolbar{
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   justify-content: space-between;
-  width: 28%;
+  width: 100%;
   padding-top: 8px;
 }
 .contact-button {
