@@ -20,4 +20,21 @@ const props = defineProps({
 </script>
 
 <style>
+
+.info-wrapper {
+  width: 100%;
+  display: grid;
+  padding-left: 2rem;
+  font-size: 24px;
+}
+
+.item-title {
+  color: white;
+}
+
+.item-seller {
+  color: white;
+  font-weight: bold;
+
+}
 </style>

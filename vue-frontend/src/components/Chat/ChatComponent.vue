@@ -70,9 +70,9 @@ async function sendMessageService(){
 
 <style>
 .details {
+  width: 100%;
   position: sticky;
   display: flex;
-  justify-content: center;
   z-index: 1;
 }
 .message-wrapper{
