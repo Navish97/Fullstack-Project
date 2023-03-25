@@ -4,7 +4,7 @@
     <form @submit.prevent="sendForm" class="form">
       <h1>Login</h1>
       <BaseInput id="inpEmail" class="input-container" type="text" label="Email" v-model="form.email"/>
-      <BaseInput id="inpPassord" class="input-container" type="text" label="Passord" v-model="form.password"/> <!-- TODO: type="password" -->
+      <BaseInput id="inpPassord" class="input-container" type="text" label="Passord" v-model="form.password"/>
       <span class="text">Dont have an account?</span> <router-link class="link" to="/register">Register</router-link>      <button id="button">Send</button>
     </form>
   </div>
