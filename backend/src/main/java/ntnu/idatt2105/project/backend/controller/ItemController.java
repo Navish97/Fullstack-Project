@@ -23,6 +23,7 @@ import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -184,5 +185,25 @@ public class ItemController {
         logger.info("Item saved, returning response");
         // Return a 201 CREATED response with the saved item as the body
         return ResponseEntity.ok(HttpStatus.CREATED);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/my-listings")
+    public ResponseEntity<?> getMyUserItemsPageable(
+            @RequestParam final Integer pageNumber,
+            @RequestParam final Integer size,
+            @CookieValue(value = "myMarketPlaceAccessToken") String jwtToken
+    ) {
+        logger.info("Received api call for retrieving user's listings. Page: " + pageNumber + " Page size: " + size);
+        User user = userService.findByEmail(jwtService.extractUsername(jwtToken));
+        logger.info("The user retrieving it is: " + user.getEmail());
+        Page<Item> itemPage = itemService.getItemsByUserIdPageable(user.getId(), PageRequest.of(pageNumber, size));
+        if(itemPage == null){
+            logger.info("Item page is null");
+            return ResponseEntity.badRequest().build();
+        }
+        Page<ItemDTO> itemDtoPage = itemPage.map(ItemDTO::new);
+        logger.info("Returning user's listings");
+        return ResponseEntity.ok(generateResponse(itemDtoPage));
     }
 }

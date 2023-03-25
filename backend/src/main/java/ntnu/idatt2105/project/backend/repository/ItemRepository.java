@@ -10,15 +10,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
     @Override
     Optional<Item> findById(Long aLong);
+    Page<Item> findByUserId(String userId, Pageable pageable);
 
     @Query(value = "SELECT i FROM Item i WHERE (:minPrice IS NULL OR i.price >= :minPrice) AND (:maxPrice IS NULL OR i.price <= :maxPrice)")
     Page<Item> getItemsByPrice(int minPrice, int maxPrice, final Pageable pageable);
     @Query(value = "SELECT i FROM Item i")
     Page<Item> getItems(final Pageable pageable);
+
 }
