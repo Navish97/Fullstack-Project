@@ -97,11 +97,11 @@ async function loadItems(){
 }
 onBeforeRouteUpdate(async (to, from) => {
   console.log("route updated");
-  getItems(currentPage.value, itemStore.pageSize, to.query)
+  getItems(currentPage.value-1, itemStore.pageSize, to.query)
     .then((response) => {
       itemStore.setLists(response.data.items);
-      currentPage = response.data['current-page']+1;
-      totalPages = response.data['total-pages'];
+      currentPage.value = response.data['current-page']+1;
+      totalPages.value = response.data['total-pages'];
     })
     .catch((error) => {
       console.log(error);
