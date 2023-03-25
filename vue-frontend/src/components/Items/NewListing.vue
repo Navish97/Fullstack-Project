@@ -387,4 +387,45 @@ textarea{
   text-decoration: underline;
 }
 
+@media screen and (max-width: 768px) {
+  .form {
+    width: 90%;
+    padding: 30px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 12px;
+  }
+
+  .input {
+    font-size: 16px;
+  }
+
+  #button {
+    font-size: 16px;
+    height: 40px;
+  }
+
+  .input-container {
+    margin-top: 30px;
+    height: 40px;
+  }
+
+  .cut {
+    width: 60px;
+  }
+
+  .placeholder {
+    font-size: 12px;
+  }
+}
+
 </style>
