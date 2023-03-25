@@ -92,6 +92,7 @@
     display: flex;
     flex-direction: row;
   }
+  
   .chat-list-item.selected {
   background-color: #555;
 }
