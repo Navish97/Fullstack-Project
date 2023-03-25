@@ -14,17 +14,13 @@
                 </div>
             </div>
         </div>
-        <div class = "condition">
-            <div>Condition</div>
-            <div class = "condition-state">
-                <input type ="checkbox" id="used-box" v-model="usedBox">
-                <label for="used-box">Used</label>
-            </div>
-            <div class = "condition-state">
-                <input type ="checkbox" id="new-box" v-model="newBox">
-                <label for="new-box">New</label>
-            </div>
-        </div>
+        <div class="category">
+      <label>Category</label>
+      <select v-model="selectedCategory">
+        <option value="">All</option>
+        <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.type }}</option>
+      </select>
+      </div>
         <button class="apply" @click = "sendQuery()">Apply</button>
     </div>
 </template>
@@ -32,6 +28,10 @@
 <script setup lang="ts">
 import {ref, computed, onMounted, watch} from 'vue';
 import router from '@/router';
+import { useItemStore } from '@/stores/Item';
+import  axiosInstance  from '@/service/AxiosInstance';
+
+const itemStore = useItemStore();
 
 const filterState = computed(() => {
     const query: {[key: string]: string} = {};
@@ -41,8 +41,9 @@ const filterState = computed(() => {
     if(maxPrice.value !== null) {
         query.maxPrice = maxPrice.value.toString();
     }
-    query.usedValue = usedBox.value.toString();
-    query.newValue = newBox.value.toString();
+    if (selectedCategory.value !== "") {
+    query.category = selectedCategory.value.toString();
+  }
     return query;
 })
 function sendQuery(){
@@ -51,6 +52,28 @@ function sendQuery(){
         query: filterState.value,
     })
 }
+
+
+
+interface Category {
+  id: number;
+  type: string;
+  iconUrl: string;
+}
+
+const categories = ref<Category[]>([]);
+const selectedCategory = ref<string>('');
+
+
+onMounted(async () => {
+  try {
+    const response = await axiosInstance.get('/api/categories');
+    categories.value = response.data;
+
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 onMounted(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -118,6 +141,26 @@ onMounted(() => {
         padding:5px 8px;
       margin: 0 5px 5px auto;
     }
+    .category {
+  margin-top: 10px;
+}
+
+.category label {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.category select {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #646464;
+  background-color: #ffffff;
+  color: #333333;
+  margin-bottom: 5%;
+}
 
     @media (max-width: 768px) {
       .filter-wrapper {

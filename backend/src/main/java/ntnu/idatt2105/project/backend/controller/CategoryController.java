@@ -40,7 +40,6 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "No categories found")}
     )
     @GetMapping("/categories")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getMyCategories(HttpServletRequest request) {
         List<Category> categories = categoryService.getAllCategories();
         logger.info("Categories: " + categories);
@@ -69,7 +68,6 @@ public class CategoryController {
                     @ApiResponse(responseCode = "404", description = "No icon URL found")
             })
     @GetMapping("{id}/icon")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> findCategoryById(@PathVariable Long id) {
         Optional<Category> category = categoryService.getCategoryById(id);
         logger.info("Icon URL: " + category);

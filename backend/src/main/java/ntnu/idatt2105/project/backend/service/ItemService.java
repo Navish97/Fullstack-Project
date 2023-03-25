@@ -1,26 +1,18 @@
 package ntnu.idatt2105.project.backend.service;
 
 import lombok.RequiredArgsConstructor;
-import ntnu.idatt2105.project.backend.model.Category;
-import ntnu.idatt2105.project.backend.model.ItemImage;
-import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.model.dto.Filter;
 import ntnu.idatt2105.project.backend.model.Item;
-import ntnu.idatt2105.project.backend.model.dto.ItemImageDTO;
 import ntnu.idatt2105.project.backend.repository.ItemRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Item Service class which contains methods used to retrieve and handle items from the database.
@@ -51,11 +43,8 @@ public class ItemService {
     public Page<Item> getItemPage(int pageNr, int pageSize, Filter filter) {
         int minPrice = filter.getMinPrice();
         int maxPrice = filter.getMaxPrice();
-        if (minPrice == 0 && maxPrice == 0) {
-            return itemRepository.getItems(PageRequest.of(pageNr, pageSize));
-        } else {
-            return itemRepository.getItemsByPrice(minPrice, maxPrice, PageRequest.of(pageNr, pageSize));
-        }
+        long category = filter.getCategory();
+        return itemRepository.getItemsFiltered(minPrice, maxPrice, category, PageRequest.of(pageNr, pageSize));
     }
 
     public Page<Item> getItemsByUserIdPageable(String userId, Pageable pageable) {
