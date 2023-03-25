@@ -38,7 +38,7 @@ import {computed, onMounted, ref} from "vue";
 import { useItemStore } from '@/stores/Item';
 import { useUserStore } from '@/stores/User';
 import { getItems } from '@/service/ItemService';
-import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+import { LocationQuery, onBeforeRouteUpdate, useRoute } from 'vue-router';
 import {getUserBookmarks} from "@/service/BookmarkService";
 import Waves from '@/components/Wave/Wave.vue'
 
@@ -68,7 +68,7 @@ function toggleFilter() {
 
 function setPage(page : number){
   currentPage.value = page;
-  loadItems();
+  loadItems(route.query);
 }
 function callPage(direction : number){
   if(direction > 0){
@@ -81,10 +81,10 @@ function callPage(direction : number){
       currentPage.value = currentPage.value + direction;
     }
   }
-  loadItems();
+  loadItems(route.query);
 }
-async function loadItems(){
-    await getItems(currentPage.value-1, itemStore.pageSize, route.query)
+async function loadItems(route : LocationQuery){
+    await getItems(currentPage.value-1, itemStore.pageSize, route)
     .then((response) => {
       itemStore.setLists(response.data.items);
       currentPage.value = response.data['current-page']+1;
@@ -97,19 +97,11 @@ async function loadItems(){
 }
 onBeforeRouteUpdate(async (to, from) => {
   console.log("route updated");
-  getItems(currentPage.value-1, itemStore.pageSize, to.query)
-    .then((response) => {
-      itemStore.setLists(response.data.items);
-      currentPage.value = response.data['current-page']+1;
-      totalPages.value = response.data['total-pages'];
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  loadItems(to.query);
 })
 
 onMounted(() => {
-  loadItems();
+  loadItems(route.query);
   if (userStore.isLoggedIn()) {
     userStore.fetchBookmarks();
   }
