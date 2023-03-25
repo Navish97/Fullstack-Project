@@ -15,7 +15,6 @@
 <script setup lang="ts">
 
 import type {IconDefinition} from "@fortawesome/free-solid-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 const props = defineProps<{
   title: string;

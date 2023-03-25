@@ -1,7 +1,7 @@
 import {beforeEach, expect, it} from "vitest";
 import {createPinia} from "pinia";
 import {mount} from "@vue/test-utils";
-import ListingTypeButton from "@/components/ButtonChangeListingType.vue";
+import FilterComponent from "@/components/FilterComponent.vue";
 
 
 let wrapper: any;
@@ -10,7 +10,7 @@ beforeEach(() => {
 
     const pinia = createPinia();
 
-    wrapper = mount(ListingTypeButton, {
+    wrapper = mount(FilterComponent, {
         global: {
             plugins: [pinia],
         },
