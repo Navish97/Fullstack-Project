@@ -1,5 +1,5 @@
 <template>
-  <div class="item-list">
+  <div class="item-list-container">
     <div v-if="listingType==='list'" class="item-list">
       <ItemComponent v-for="item in items" :item="item" :key="item.id" listing-type="list" />
     </div>
@@ -28,6 +28,15 @@ const props = defineProps({
 </script>
 
 <style scoped>
+.item-list-container {
+  padding-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
 .item-list {
   display: grid;
   grid-template-columns: repeat(1,95%);
@@ -58,29 +67,30 @@ img {
 }
 
 @media (max-width: 768px) {
+  .item-list-container {
+    padding-left: .5rem;
+    padding-right: .5rem;
+  }
   .item-grid {
     display: grid;
     width: 100%;
     grid-template-columns: repeat(2, 1fr);
+    grid-gap: 16px;
+    margin-bottom: 16px;
   }
 
   .item-list {
-    height: 100%;
-    width: 100%;
     display: grid;
-    grid-auto-rows: auto;
+    grid-template-columns: repeat(1,95%);
+    gap: 1rem;
     align-items: center;
-    gap: .5rem;
+    margin-bottom: 16px; /* Add margin at the bottom to prevent overlapping */
   }
+
 
   .container.thumbnail:hover,
   .container.list:hover {
     background-color: transparent;
-  }
-
-  .item-grid{
-    grid-template-columns: repeat(2, 49%);
-    gap: 2%;
   }
 }
 </style>
