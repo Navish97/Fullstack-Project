@@ -14,6 +14,7 @@ import { defineProps } from 'vue';
 import type { Item } from '@/types/ItemType';
 import ItemComponent from '@/components/Items/ItemComponent.vue';
 import PaginationComponent from './PaginationComponent.vue';
+
 const props = defineProps({
   items: {
     type: Array as () => Item[],
@@ -88,9 +89,7 @@ img {
   }
 
 
-  .container.thumbnail:hover,
-  .container.list:hover {
-    background-color: transparent;
-  }
+
+
 }
 </style>
