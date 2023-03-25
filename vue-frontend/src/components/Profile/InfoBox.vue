@@ -1,83 +1,68 @@
 <template>
-  <div class="profile-wrapper">
-    <MyProfile></MyProfile>
-    <button @click="handleLogOut" class="log-out-btn">Log Out</button>
+  <div class="box">
+    <div class="inner">
+      <div class="header-container">
+        <h1>{{ title }}</h1>
+        <font-awesome-icon class="icon" :icon="icon" />
+
+      </div>
+      <p>{{ content }}</p>
+    </div>
   </div>
 </template>
 
 
 <script setup lang="ts">
-import MyProfile from "@/components/Profile/MyProfile.vue";
-import {useUserStore} from "@/stores/User";
-import {onMounted, ref} from "vue";
-import {User} from "@/types/UserType";
-import axiosInstance from "@/service/AxiosInstance";
-import {getUserData} from "@/service/Authentication/AuthenticationService";
 
+import type {IconDefinition} from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
-const userStore = useUserStore();
+const props = defineProps<{
+  title: string;
+  content: string;
+  icon: IconDefinition;
+}>();
 
-const user = ref({} as User);
-
-onMounted(() => {
-  loadData();
-});
-
-async function logOut() {
-  try{
-    await axiosInstance.post('/api/auth/logout');
-    userStore.logOut();
-  }
-  catch (error) {
-    console.error(error);
-  }
-}
-
-async function handleLogOut() {
-  await logOut();
-}
-
-async function loadData() {
-  try {
-    const response = await getUserData();
-    if (response) {
-      user.value = response;
-    } else {
-      await userStore.logOut();
-    }
-  } catch (error) {
-    console.error(error);
-  }
-}
 
 </script>
 
 <style scoped>
+p{
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #000000;
+  margin-top: 10px;
 
-.profile-wrapper{
-  position: relative;
-  width: 800px;
-  height: 50%;
-  flex-direction: column;
-  align-items: flex-start;
-  border: solid 3px white;
+}
+.box {
+  width: 350px !important;
+  height: 150px !important;
+  background-color: white;
   border-radius: 20px;
-  padding: 2rem;
-  margin: auto;
+  margin-right: 0;
 }
 
-.log-out-btn {
-  position: absolute;
-  bottom: -20px;
-  left: 40px;
-  font-size: 1.25rem;
-  color: black;
-  background-color: white;
-  border: none;
-  padding: 10px 20px;
+.inner {
+  margin: 20px;
+  height: calc(100% - 40px);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon {
+  margin-right: 10px;
+  font-size: 3rem;
+  padding-top: 5px;
+}
+
+.box:hover {
+  background-color: #efefef;
   cursor: pointer;
-  transition: background-color 0.3s;
-  border-radius: 20px;
-  z-index: 1;
+  transform: scale(1.05);
+  transition: transform .5s ease-out;
 }
 </style>

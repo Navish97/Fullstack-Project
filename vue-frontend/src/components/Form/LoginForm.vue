@@ -226,4 +226,11 @@ h1{
   font-size: 15px;
   text-decoration: underline;
 }
+
+@media (max-width: 768px) {
+  .form{
+    width: 370px;
+  }
+
+}
 </style>

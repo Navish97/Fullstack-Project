@@ -26,5 +26,11 @@ import RegisterForm from '@/components/Form/RegisterForm.vue'
   margin-top: 150px;
 }
 
+@media (max-width: 768px) {
+  #register-form{
+    margin: auto
+  }
+}
+
 
 </style>

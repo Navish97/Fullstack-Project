@@ -2,23 +2,11 @@
   <div class="container">
 
     <div class="content-wrapper">
-      <InfoBox />
+      <ProfileBox />
       <div class="grid">
-        <div class="box">hold kjeft a</div>
-        <div class="box">endre profil</div>
-        <div class="box">mine annonser</div>
-        <div class="box">mine bokmerker</div>
-        <div class="box">mine bokmerker</div>
-        <div class="box">mine bokmerker</div>
-        <div class="box">mine bokmerker</div>
-        <div class="box">mine bokmerker</div>
-        <div class="box">mine bokmerker</div>
-        <div class="box">mine bokmerker</div>
-        <div class="box">mine bokmerker</div>
-        <div class="box">mine bokmerker</div>
-        <div class="box">mine bokmerker</div>
-        <div class="box">mine bokmerker</div>
-        <div class="box">mine bokmerker</div>
+        <InfoBox :icon="faUser" title="My account" content="View and edit my account details"/>
+        <InfoBox :icon="faTag" title="My listings" content="View all my listings"/>
+        <InfoBox :icon="faBookmark" title="My bookmarks" content="View all my bookmarks"/>
 
       </div>
     </div>
@@ -34,8 +22,11 @@
 
 <script setup lang="ts">
 import Wave from '@/components/Wave/Wave.vue'
-import MyProfile from "@/components/Profile/MyProfile.vue";
 import InfoBox from "@/components/Profile/InfoBox.vue";
+import ProfileBox from "@/components/Profile/ProfileBox.vue";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faTag } from "@fortawesome/free-solid-svg-icons";
+import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 
 
 </script>
@@ -47,18 +38,9 @@ import InfoBox from "@/components/Profile/InfoBox.vue";
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 20px;
-  width: 60%;
-  margin: 40px auto 0;
-  gap: 10px;
-}
-
-.box {
-  width: 200px;
-  height: 200px;
-  background-color: white;
-  border: 4px solid #000000;
-  border-radius: 20px;
-  margin-right: 0;
+  width: fit-content;
+  margin: 50px auto 0;
+  gap: 50px;
 }
 
 .content-wrapper{
@@ -132,6 +114,26 @@ Wave {
   }
   100% {
     transform: translate3d(85px,0,0);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin: 0 auto 0;
+  }
+
+  .content-wrapper{
+    margin: 60px auto;
+  }
+
+  .wave-container {
+  }
+
+  .container {
+    height: fit-content;
   }
 }
 </style>

@@ -12,6 +12,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
 /* import specific icons */
 import { faShirt  } from '@fortawesome/free-solid-svg-icons'
@@ -21,10 +22,11 @@ import { faCouch  } from '@fortawesome/free-solid-svg-icons'
 import { faPuzzlePiece  } from '@fortawesome/free-solid-svg-icons'
 import { faVolleyball  } from '@fortawesome/free-solid-svg-icons'
 import { faTag } from '@fortawesome/free-solid-svg-icons'
+import { faUser} from '@fortawesome/free-solid-svg-icons'
 
 
 /* add icons to the library */
-library.add(faShirt, faBook, faBolt, faCouch, faPuzzlePiece, faVolleyball, faTag)
+library.add(faShirt, faBook, faBolt, faCouch, faPuzzlePiece, faVolleyball, faTag, fas)
 
 const pinia = createPinia();
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)

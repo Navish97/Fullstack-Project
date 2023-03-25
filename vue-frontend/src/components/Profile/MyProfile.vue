@@ -116,4 +116,14 @@ p {
   color: white;
 }
 
+@media (max-width: 768px) {
+  .profile-picture{
+    width: 75px;
+    height: 75px;
+  }
+
+  .profile-container{
+    height: 150px;
+  }
+}
 </style>

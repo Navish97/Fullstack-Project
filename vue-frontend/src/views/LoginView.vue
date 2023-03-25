@@ -29,5 +29,11 @@ import LoginForm from '@/components/Form/LoginForm.vue'
   justify-content: center;
 }
 
+@media (max-width: 768px) {
+  #loginForm{
+    margin: auto
+  }
+}
+
 
 </style>
