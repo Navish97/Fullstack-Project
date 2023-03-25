@@ -7,6 +7,7 @@ import ntnu.idatt2105.project.backend.model.Item;
 import ntnu.idatt2105.project.backend.repository.ItemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -44,6 +45,10 @@ public class ItemService {
         int maxPrice = filter.getMaxPrice();
         long category = filter.getCategory();
         return itemRepository.getItemsFiltered(minPrice, maxPrice, category, PageRequest.of(pageNr, pageSize));
+    }
+
+    public Page<Item> getItemsByUserIdPageable(String userId, Pageable pageable) {
+        return itemRepository.findByUserId(userId, pageable);
     }
 
     public Item saveItem(Item item) {
