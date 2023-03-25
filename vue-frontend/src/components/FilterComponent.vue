@@ -22,6 +22,7 @@
       </select>
       </div>
         <button class="apply" @click = "sendQuery()">Apply</button>
+        <button class="reset" @click="resetFilters()">Reset</button>
     </div>
 </template>
 
@@ -64,6 +65,12 @@ interface Category {
 const categories = ref<Category[]>([]);
 const selectedCategory = ref<string>('');
 
+function resetFilters() {
+  minPrice.value = null;
+  maxPrice.value = null;
+  selectedCategory.value = "";
+  sendQuery();
+}
 
 onMounted(async () => {
   try {
@@ -83,24 +90,23 @@ onMounted(() => {
     if(queryParams.has("maxPrice") && queryParams.get("maxPrice") !== ""){
         maxPrice.value = parseInt(queryParams.get("maxPrice")!);
     }
-    if(queryParams.has("newValue")){
-        usedBox.value = JSON.parse(queryParams.get("usedValue")!);
-    }
-    if(queryParams.has("oldValue")){
-        usedBox.value = JSON.parse(queryParams.get("usedValue")!);
-    }
-
 })
-
     const minPrice = ref<number | null>(null);
     const maxPrice = ref<number | null>(null);
-    const usedBox = ref<boolean>(true);
-    const newBox = ref<boolean>(true);
-
 </script>
 
 
 <style scoped>
+
+.reset {
+  border-radius: 4px;
+  border: 1px solid #646464;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 5px 8px;
+  margin: 0 5px 5px 0;
+}
+
     .filter-wrapper{
         width: 200px;
         background-color: rgba(30, 29, 29, 0.99);
