@@ -5,12 +5,12 @@
             <label>Price</label>
             <div class = "price-input">
                 <div>
-                    <input type="number" id="min-price" name ="min-price" v-model="minPrice">
-                    <label for="min-price">From</label>
+                  <label for="min-price">From</label>
+                  <input type="number" id="min-price" name ="min-price" v-model="minPrice">
                 </div>
                 <div>
-                    <input type="number" id="max-price" name ="max-price" v-model="maxPrice">
-                    <label for="max-price">To</label>
+                  <label for="max-price">To</label>
+                  <input type="number" id="max-price" name ="max-price" v-model="maxPrice">
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import {ref, computed, onMounted, watch} from 'vue';
 import router from '@/router';
 
 const filterState = computed(() => {
@@ -86,13 +86,11 @@ onMounted(() => {
         border-radius: 4px;
         border: 1px solid #646464;
         font-size: 14px;
-        cursor: pointer;
         text-align: left;
         align-content: center;
     }
     .price-input{
         display: inline-flex;
-        margin: 3%;
     }
     .price-input input{
         width: 97%;
@@ -118,10 +116,21 @@ onMounted(() => {
         cursor: pointer;
         font-size: 14px;
         padding:5px 8px;
-        margin:5px;
-        margin-top: 0;
-        margin-left: auto;
+      margin: 0 5px 5px auto;
     }
-    
+
+    @media (max-width: 768px) {
+      .filter-wrapper {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background-color: white;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.15);
+        transition: transform 1s ease;
+      }
+    }
 
 </style>
