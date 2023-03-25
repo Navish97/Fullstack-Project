@@ -70,7 +70,8 @@ async function sendMessageService(){
 
 <style>
 .details {
-  width: 100%;
+  height: 12%;
+  width: auto;
   position: sticky;
   display: flex;
   z-index: 1;

@@ -1,18 +1,18 @@
 <template>
   <div class="pagination">
     <a href="#" @click.prevent="emitNavPage(-1)" :class="{ disabled: props.currentPage === 1 }">&lt;&lt; Previous</a>
-    <a v-if="props.currentPage > 10"
-      :href="getPageHref(1)"
+    <a v-if="props.currentPage > pageSize" 
+      :href="getPageHref(1)" 
       @click.prevent="emitLoadPage(1)">1</a>
-    <a v-if="props.currentPage > 11"
-      @click.prevent="emitLoadPage(props.currentPage - 10)">...</a>
-    <a v-for="page in visiblePages"
-    :key="page" :href="getPageHref(page)"
-    @click.prevent="emitLoadPage(page)"
+    <a v-if="props.currentPage > pageSize + 1" 
+      @click.prevent="emitLoadPage(props.currentPage - pageSize)">...</a>
+    <a v-for="page in visiblePages" 
+    :key="page" :href="getPageHref(page)" 
+    @click.prevent="emitLoadPage(page)" 
     :class="{ active: page === props.currentPage }">{{ page }}</a>
-    <a v-if="props.pages.length > visiblePages[visiblePages.length - 1] + 1"
-      @click.prevent="emitLoadPage(props.currentPage + 10)">...</a>
-    <a v-if="props.pages.length > visiblePages[visiblePages.length - 1]"
+    <a v-if="props.pages.length > visiblePages[visiblePages.length - 1] + pageSize" 
+      @click.prevent="emitLoadPage(props.currentPage + pageSize)">...</a>
+    <a v-if="props.pages.length > visiblePages[visiblePages.length - 1]" 
       :href="getPageHref(props.pages.length)"
       @click.prevent="emitLoadPage(props.pages.length)">{{ props.pages.length }}</a>
     <a href="#"
@@ -58,14 +58,20 @@ function emitNavPage(direction: number) {
 const visiblePages = computed(() => {
   const total = props.pages.length;
   const current = props.currentPage;
-  const last = Math.ceil(total / 10) * 10;
-  const start = Math.max(1, Math.floor((current - 1) / 10) * 10);
-  const end = Math.min(start + 9, last, total);
+  const last = Math.ceil(total / pageSize) * pageSize;
+  const start = Math.max(1, Math.floor((current - 1) / pageSize) * pageSize);
+  const end = Math.min(start + pageSize - 1, last, total);
   const pages = [];
   for (let i = start; i <= end; i++) {
     pages.push(i);
   }
   return pages;
+});
+
+let pageSize = window.innerWidth < 768 ? 3 : 10;
+
+window.addEventListener('resize', () => {
+  pageSize = window.innerWidth < 768 ? 3 : 10;
 });
 
 </script>
