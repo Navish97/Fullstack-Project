@@ -66,6 +66,7 @@ img {
 
   .item-list {
     height: 100%;
+    width: 100%;
     display: grid;
     grid-auto-rows: auto;
     align-items: center;

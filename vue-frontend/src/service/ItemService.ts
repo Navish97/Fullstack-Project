@@ -19,3 +19,12 @@ export async function getItems(pageNr : number, pageSize : number, filter : obje
 export async function getItemDetails(itemId: String): Promise<any> {
     return await axiosInstance.get(`/api/items/details/${itemId}`);
 }
+
+export async function getMyItems(pageNr: number, pageSize: number): Promise<any> {
+    return await axiosInstance.get('/api/items/my-listings', {
+        params: {
+            pageNumber: pageNr,
+            size: pageSize,
+        }
+    });
+}

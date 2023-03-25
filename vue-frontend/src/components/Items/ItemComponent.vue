@@ -56,6 +56,9 @@ const formattedPrice = computed(() => {
 </script>
 
 <style scoped>
+.container {
+  color: white;
+}
 @media (min-width: 768px) {
   .container:hover {
     cursor: pointer;
