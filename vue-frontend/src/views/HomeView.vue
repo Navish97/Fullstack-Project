@@ -10,10 +10,10 @@
     </div>
     <div class="wrapper">
       <div class="grid-container">
-        <FilterComponent v-show="showFilter" />
         <div class="listing-type">
           <ListingTypeButton />
-          <button class="filter-toggle" :class="{ 'show': showFilter }" @click="toggleFilter">Toggle Filter</button>
+          <button class="filter-toggle" @click="toggleFilter">Toggle Filter</button>
+          <FilterComponent v-show="showFilter" />
         </div>
 
         <div class="items">
@@ -62,9 +62,9 @@ const pages = computed(() => {
   return pageArray;
 });
 
-let showFilter = false;
+const showFilter = ref(window.innerWidth >= 769);
 function toggleFilter() {
-  showFilter = !showFilter;
+  showFilter.value = !showFilter.value;
 }
 
 function setPage(page : number){
@@ -145,22 +145,6 @@ onMounted(() => {
   width: 250px;
   position: relative;
   overflow: hidden;
-}
-
-FilterComponent {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background-color: white;
-  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.15);
-  transform: translateY(100%);
-  transition: transform 0.3s ease;
-}
-
-FilterComponent.show {
-  transform: translateY(0);
 }
 
 .main-container {

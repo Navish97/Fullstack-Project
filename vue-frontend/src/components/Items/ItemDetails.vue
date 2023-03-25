@@ -206,13 +206,15 @@ function nextImage() {
 }
 .toolbar{
   display: flex;
-  justify-content: space-between;
-  width: 28%;
+  gap: .5rem;
+  align-items: start;
+  width: 100%;
   padding-top: 8px;
 }
 .contact-button {
   display: inline-block;
-  padding: 8px 8px;
+  width: 9rem;
+  padding: .3rem;
   border-radius: 4px;
   border: 1px solid #000000;
   background-color: #1c1b1b;

@@ -80,7 +80,7 @@
     justify-content:center;
     align-items: flex-start;
     height: 100vh;
-    padding: 20px; /* add some padding to the outside */
+    padding-top: 4rem /* add some padding to the outside */
   }
   
   .chat-wrapper {
@@ -95,5 +95,17 @@
   .chat-list-item.selected {
   background-color: #555;
 }
+
+  @media (max-width: 768px) {
+    .wrapper {
+      flex-direction: column;
+    }
+
+    .chat-wrapper {
+      width: 100%;
+      height: 100%;
+      margin-bottom: 1rem;
+    }
+  }
 
   </style>
