@@ -1,12 +1,23 @@
 <template>
   <div class="pagination">
     <a href="#" @click.prevent="emitNavPage(-1)" :class="{ disabled: props.currentPage === 1 }">&lt;&lt; Previous</a>
-    <a v-if="props.currentPage > 10" :href="getPageHref(1)" @click.prevent="emitLoadPage(1)">1</a>
-    <a v-if="props.currentPage > 11" @click.prevent="emitLoadPage(props.currentPage - 10)">...</a>
-    <a v-for="page in visiblePages" :key="page" :href="getPageHref(page)" @click.prevent="emitLoadPage(page)" :class="{ active: page === props.currentPage }">{{ page }}</a>
-    <a v-if="props.pages.length > visiblePages[visiblePages.length - 1] + 1" @click.prevent="emitLoadPage(props.currentPage + 10)">...</a>
-    <a v-if="props.pages.length > visiblePages[visiblePages.length - 1]" :href="getPageHref(props.pages.length)" @click.prevent="emitLoadPage(props.pages.length)">{{ props.pages.length }}</a>
-    <a href="#" @click.prevent="emitNavPage(1)" :class="{ disabled: props.currentPage === props.pages.length }">Next >></a>
+    <a v-if="props.currentPage > 10" 
+      :href="getPageHref(1)" 
+      @click.prevent="emitLoadPage(1)">1</a>
+    <a v-if="props.currentPage > 11" 
+      @click.prevent="emitLoadPage(props.currentPage - 10)">...</a>
+    <a v-for="page in visiblePages" 
+    :key="page" :href="getPageHref(page)" 
+    @click.prevent="emitLoadPage(page)" 
+    :class="{ active: page === props.currentPage }">{{ page }}</a>
+    <a v-if="props.pages.length > visiblePages[visiblePages.length - 1] + 1" 
+      @click.prevent="emitLoadPage(props.currentPage + 10)">...</a>
+    <a v-if="props.pages.length > visiblePages[visiblePages.length - 1]" 
+      :href="getPageHref(props.pages.length)" 
+      @click.prevent="emitLoadPage(props.pages.length)">{{ props.pages.length }}</a>
+    <a href="#" 
+    @click.prevent="emitNavPage(1)" 
+    :class="{ disabled: props.currentPage === props.pages.length }">Next >></a>
   </div>
 </template>
 
