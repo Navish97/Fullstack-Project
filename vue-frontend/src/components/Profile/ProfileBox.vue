@@ -10,7 +10,7 @@
 import MyProfile from "@/components/Profile/MyProfile.vue";
 import {useUserStore} from "@/stores/User";
 import {onMounted, ref} from "vue";
-import {User} from "@/types/UserType";
+import type {User} from "@/types/UserType";
 import axiosInstance from "@/service/AxiosInstance";
 import {getUserData} from "@/service/Authentication/AuthenticationService";
 
