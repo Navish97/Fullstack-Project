@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`it renders the button properly 1`] = `
+"<div data-v-9539cc1b=\\"\\" class=\\"container\\">
+  <p data-v-9539cc1b=\\"\\">Change Listing:</p><button data-v-9539cc1b=\\"\\" class=\\"list-button\\">thumbnail</button>
+</div>"
+`;
