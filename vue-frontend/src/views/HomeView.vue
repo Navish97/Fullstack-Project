@@ -21,9 +21,15 @@
           :pages="pages" 
           :items="itemStore.items" 
           :listingType="currentListingType" 
-          :currentPage="currentPage" 
-          @load-page="(page) => setPage(page)"
-          @nav-page="(direction) => callPage(direction)" />
+           />
+          <div class ="page-nav">
+            <PaginationComponent 
+            :pages="pages" 
+            @load-page="(page) => setPage(page)" 
+            @previous-page="(direction) => callPage(direction)"
+            class = "pager"
+            :current-page="currentPage"/>
+          </div>
         </div>
       </div>
     </div>
@@ -41,6 +47,7 @@ import { getItems } from '@/service/ItemService';
 import { LocationQuery, onBeforeRouteUpdate, useRoute } from 'vue-router';
 import {getUserBookmarks} from "@/service/BookmarkService";
 import Waves from '@/components/Wave/Wave.vue'
+import PaginationComponent from '@/components/Items/PaginationComponent.vue';
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
@@ -107,6 +114,14 @@ onMounted(() => {
   }
 })
 
+const emit = defineEmits(["load-page",'nav-page']);
+function navigatePage(pageNav:number){
+  emit('nav-page', pageNav);
+}
+function emitLoadPage(page:number){
+  emit("load-page", page);
+}
+
 
 </script>
 
@@ -128,6 +143,13 @@ onMounted(() => {
   text-decoration: none;
   font-size: 16px;
   cursor: pointer;
+}
+.pager{
+  padding-top: 1.5rem;
+  padding-bottom: 3rem;
+  display: flex;
+  width: inherit;
+  justify-content: center;
 }
 
 

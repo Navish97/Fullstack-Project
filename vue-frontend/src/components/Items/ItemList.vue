@@ -7,12 +7,6 @@
       <ItemComponent v-for="item in items" :item="item" :key="item.id" listing-type="thumbnail" />
     </div>
   </div>
-  <PaginationComponent 
-  :pages="props.pages" 
-  @load-page="(page) => emitLoadPage(page)" 
-  @previous-page="(direction) => navigatePage(direction)"
-  class = "pager"
-  :current-page="props.currentPage"/>
 </template>
 
 <script setup lang="ts">
@@ -28,24 +22,9 @@ const props = defineProps({
   listingType: {
     type: String,
     default: 'thumbnail'
-  },
-  currentPage: {
-    type: Number,
-    default: 1,
-  },
-  pages: {
-    type: Array as () => number[],
-    required: true,
-  },
+  }
 });
 
-const emit = defineEmits(["load-page",'nav-page']);
-function navigatePage(pageNav:number){
-  emit('nav-page', pageNav);
-}
-function emitLoadPage(page:number){
-  emit("load-page", page);
-}
 </script>
 
 <style scoped>
@@ -61,13 +40,7 @@ img {
   width: 90%;
   vertical-align: center;
 }
-.page-count{
-  color: black;
-  font-weight: bolder;
-  font-size: 120%;
-  vertical-align: center;
-  text-align: center;
-}
+
 .arrow {
   background-color: transparent;
   border: 0;
@@ -76,20 +49,6 @@ img {
 }
 .arrow :hover {
   transform: scale(1.1);
-}
-.page-buttons{
-  padding-top: 1.5rem;
-  padding-bottom: 3rem;
-  display: flex;
-  width: inherit;
-  justify-content: center;
-}
-.pager{
-  padding-top: 1.5rem;
-  padding-bottom: 3rem;
-  display: flex;
-  width: inherit;
-  justify-content: center;
 }
 
 .item-grid {
