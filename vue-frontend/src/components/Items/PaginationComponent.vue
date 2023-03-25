@@ -1,6 +1,6 @@
 <template>
     <div class = "pagination">
-        <a href="#" @click.prevent="emitNavPage(-1)">&lt;&lt; Previous</a>
+        <a href="#" @click.prevent="emitNavPage(-1)" :class="{ disabled: props.currentPage === 1 }">&lt;&lt; Previous</a>
         <a 
         v-for="page in pages" 
         :key="page" 
@@ -8,7 +8,7 @@
         @click.prevent="emitLoadPage(page)"
         :class ="{ 'active': page === props.currentPage }">
          {{  page }}</a>
-        <a href="#" @click.prevent="emitNavPage(1)"> Next >></a>
+        <a href="#" @click.prevent="emitNavPage(1)" :class="{ disabled: props.currentPage === props.pages.length }"> Next >></a>
     </div>
 </template>
 
@@ -36,8 +36,14 @@ function emitLoadPage(page : number){
     emit('load-page', page);
 }
 
-function emitNavPage(direction : number){
-    emit('previous-page', direction);
+function emitNavPage(direction: number) {
+  if (
+    (direction === -1 && props.currentPage === 1) ||
+    (direction === 1 && props.currentPage === props.pages.length)
+  ) {
+    return; // do nothing if previous or next button is disabled
+  }
+  emit('previous-page', direction);
 }
 </script>
 
@@ -64,6 +70,19 @@ function emitNavPage(direction : number){
   .pagination a.active {
   background-color: cornflowerblue;
   color: white;
+}
+
+.pagination a.disabled {
+  color: black;
+  cursor: not-allowed;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.pagination a.disabled:hover {
+  background-color: inherit;
+  color: inherit;
+  cursor: not-allowed;
 }
  
 </style>
