@@ -7,22 +7,20 @@
       <ItemComponent v-for="item in items" :item="item" :key="item.id" listing-type="thumbnail" />
     </div>
   </div>
-  <div class ="page-buttons">
-    <button class = "arrow" id="go-back" @click="leftArrow">
-      <img src = "@/assets/arrow-left.png">
-    </button>
-    <div class = "page-count"> {{ currentPage }} / {{ totalPages }}</div>
-    <button class = "arrow" id="go-forward" @click="rightArrow">
-      <img src = "@/assets/arrow-right.png">
-    </button>
-  </div>
+  <PaginationComponent 
+  :pages="props.pages" 
+  @load-page="(page) => emitLoadPage(page)" 
+  @previous-page="(direction) => navigatePage(direction)"
+  class = "pager"
+  :current-page="props.currentPage"/>
 </template>
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
 import type { Item } from '@/types/ItemType';
 import ItemComponent from '@/components/Items/ItemComponent.vue';
-
+import PaginationComponent from './PaginationComponent.vue';
+import { directive } from '@babel/types';
 const props = defineProps({
   items: {
     type: Array as () => Item[],
@@ -36,23 +34,18 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
-  totalPages: {
-    type: Number,
-    default: 1,
+  pages: {
+    type: Array as () => number[],
+    required: true,
   },
 });
 
-const emit = defineEmits(["pagedown","pageup"]);
-
-function leftArrow(){
-  if(props.currentPage > 0){
-    emit("pagedown");
-  }
+const emit = defineEmits(["load-page",'nav-page']);
+function navigatePage(pageNav:number){
+  emit('nav-page', pageNav);
 }
-function rightArrow(){
-  if(props.currentPage < props.totalPages){
-    emit("pageup");
-  }
+function emitLoadPage(page:number){
+  emit("load-page", page);
 }
 </script>
 
@@ -86,6 +79,13 @@ img {
   transform: scale(1.1);
 }
 .page-buttons{
+  padding-top: 1.5rem;
+  padding-bottom: 3rem;
+  display: flex;
+  width: inherit;
+  justify-content: center;
+}
+.pager{
   padding-top: 1.5rem;
   padding-bottom: 3rem;
   display: flex;

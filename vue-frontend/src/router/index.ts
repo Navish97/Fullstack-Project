@@ -3,10 +3,8 @@ import LoginView from '../views/LoginView.vue'
 import MyProfile from '../views/ProfileView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import HomeView from '../views/HomeView.vue'
-import FilterComponent from '@/components/FilterComponent.vue'
 import ItemDetailsView from '../views/ItemDetailsView.vue'
 import NewListingView from "../views/NewListingView.vue";
-import { getItems } from '@/service/ItemService';
 import { useUserStore } from '@/stores/User';
 import MessagesView from '@/views/MessagesView.vue'
 

@@ -14,6 +14,7 @@ export const useItemStore = defineStore({
     items : [
    ] as Item[],
     NewListingCategory: 0 as number,
+    pageSize: 18 as number,
   }),
   getters: {
     isCurrentItemBookmarked: (state): boolean => {
@@ -34,6 +35,9 @@ export const useItemStore = defineStore({
     getListingTypes: (state) => {
       return state.listingTypes;
     },
+    getPageSize: (state) => {
+      return state.pageSize;
+    },
     getItems: (state) => {
       return state.items;
     },
@@ -44,6 +48,9 @@ export const useItemStore = defineStore({
   actions: {
     setCurrentItemBookmarked(bookmarked: boolean) {
         this.currentItemBookmarked = bookmarked;
+    },
+    setPageSize(size: number) {
+      this.pageSize = size;
     },
     setCurrentItem(item: Item) {
       this.currentItem = item;

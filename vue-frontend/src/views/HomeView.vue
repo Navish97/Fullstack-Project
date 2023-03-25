@@ -17,20 +17,25 @@
         </div>
 
         <div class="items">
-          <ItemList :items="itemStore.items" :listingType="currentListingType" :currentPage="currentPage" :totalPages="totalPages" @pageup="pageUp" @pagedown="pageDown" />
+          <ItemList 
+          :pages="pages" 
+          :items="itemStore.items" 
+          :listingType="currentListingType" 
+          :currentPage="currentPage" 
+          :totalPages="totalPages" 
+          @load-page="(page) => setPage(page)"
+          @nav-page="(direction) => callPage(direction)" />
         </div>
       </div>
     </div>
   </div>
 </template>
 
-
-
 <script setup lang="ts">
 import ItemList from '@/components/Items/ItemList.vue';
 import ListingTypeButton from '@/components/ButtonChangeListingType.vue';
 import FilterComponent from '@/components/FilterComponent.vue';
-import {computed, onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
 import { useItemStore } from '@/stores/Item';
 import { useUserStore } from '@/stores/User';
 import { getItems } from '@/service/ItemService';
@@ -46,39 +51,55 @@ const currentListingType = computed(() => {
   return itemStore.currentListingType;
 });
 
-let currentPage = 1;
-let totalPages = 1;
+let currentPage = ref(1);
+let totalPages = ref(1);
+
+const pages = computed(() => {
+  const pageArray = [];
+  for (let i = 1; i <= totalPages.value; i++) {
+    pageArray.push(i);
+  }
+  return pageArray;
+});
+
 let showFilter = false;
 function toggleFilter() {
   showFilter = !showFilter;
 }
 
-function pageUp(){
-  if(currentPage < totalPages){
-    currentPage++;
-    loadItems();
-  }
+function setPage(page : number){
+  currentPage.value = page;
+  loadItems();
 }
-function pageDown(){
-  if(currentPage > 1){
-    currentPage--;
-    loadItems();
+function callPage(direction : number){
+  if(direction > 0){
+    if(currentPage.value < totalPages.value){
+      currentPage.value = currentPage.value  +direction;
+    }
   }
+  else{
+    if(currentPage.value > 1){
+      currentPage.value = currentPage.value + direction;
+    }
+  }
+  loadItems();
 }
 async function loadItems(){
-    await getItems(currentPage-1, 9, route.query)
+    await getItems(currentPage.value-1, itemStore.pageSize, route.query)
     .then((response) => {
       itemStore.setLists(response.data.items);
-      currentPage = response.data['current-page']+1;
-      totalPages = response.data['total-pages'];
+      currentPage.value = response.data['current-page']+1;
+      totalPages.value = response.data['total-pages'];
     })
     .catch((error) => {
       console.log(error);
     });
+
+    console.log(pages);
 }
 onBeforeRouteUpdate(async (to, from) => {
   console.log("route updated");
-  getItems(currentPage, 9, to.query)
+  getItems(currentPage.value, itemStore.pageSize, to.query)
     .then((response) => {
       itemStore.setLists(response.data.items);
       currentPage = response.data['current-page']+1;
