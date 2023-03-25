@@ -112,4 +112,27 @@ onMounted(async () => {
   font-size: 30px;
   color: white;
 }
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    width: 100%;
+  }
+  .categories-container {
+    width: 100%;
+  }
+  .categories-wrapper {
+    font-size: 2rem;
+  }
+  .category > .text-container > span {
+    margin-left: 0.5rem;
+  }
+  .icon-container {
+    width: 40px;
+  }
+  #header {
+    width: 80%;
+    font-size: 20px;
+    padding-bottom: 20px;
+  }
+}
 </style>
