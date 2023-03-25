@@ -1,22 +1,22 @@
 <template>
   <div class="pagination">
     <a href="#" @click.prevent="emitNavPage(-1)" :class="{ disabled: props.currentPage === 1 }">&lt;&lt; Previous</a>
-    <a v-if="props.currentPage > 10" 
-      :href="getPageHref(1)" 
+    <a v-if="props.currentPage > 10"
+      :href="getPageHref(1)"
       @click.prevent="emitLoadPage(1)">1</a>
-    <a v-if="props.currentPage > 11" 
+    <a v-if="props.currentPage > 11"
       @click.prevent="emitLoadPage(props.currentPage - 10)">...</a>
-    <a v-for="page in visiblePages" 
-    :key="page" :href="getPageHref(page)" 
-    @click.prevent="emitLoadPage(page)" 
+    <a v-for="page in visiblePages"
+    :key="page" :href="getPageHref(page)"
+    @click.prevent="emitLoadPage(page)"
     :class="{ active: page === props.currentPage }">{{ page }}</a>
-    <a v-if="props.pages.length > visiblePages[visiblePages.length - 1] + 1" 
+    <a v-if="props.pages.length > visiblePages[visiblePages.length - 1] + 1"
       @click.prevent="emitLoadPage(props.currentPage + 10)">...</a>
-    <a v-if="props.pages.length > visiblePages[visiblePages.length - 1]" 
-      :href="getPageHref(props.pages.length)" 
+    <a v-if="props.pages.length > visiblePages[visiblePages.length - 1]"
+      :href="getPageHref(props.pages.length)"
       @click.prevent="emitLoadPage(props.pages.length)">{{ props.pages.length }}</a>
-    <a href="#" 
-    @click.prevent="emitNavPage(1)" 
+    <a href="#"
+    @click.prevent="emitNavPage(1)"
     :class="{ disabled: props.currentPage === props.pages.length }">Next >></a>
   </div>
 </template>
@@ -72,19 +72,22 @@ const visiblePages = computed(() => {
 
 <style scoped>
 .pagination {
-  position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .pagination a {
   color: black;
-  padding: 10px 18px;
+  padding: 10px 12px;
   text-decoration: none;
+  text-align: center;
+  min-width: 30px;
+  box-sizing: border-box;
 }
 .pagination a:hover:not(.active) {
   background-color: #031f3b;
   color: white;
 }
-
 
 .pagination a.active {
   background-color: cornflowerblue;
@@ -94,7 +97,6 @@ const visiblePages = computed(() => {
 .pagination a.disabled {
   color: black;
   cursor: not-allowed;
-  cursor: not-allowed;
   opacity: 0.6;
 }
 
@@ -102,6 +104,13 @@ const visiblePages = computed(() => {
   background-color: inherit;
   color: inherit;
   cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .pagination a {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
 }
 
 </style>
