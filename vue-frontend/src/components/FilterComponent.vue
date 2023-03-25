@@ -31,6 +31,7 @@ import {ref, computed, onMounted, watch} from 'vue';
 import router from '@/router';
 import { useItemStore } from '@/stores/Item';
 import  axiosInstance  from '@/service/AxiosInstance';
+import type {Category} from "@/types/CategoryType";
 
 const itemStore = useItemStore();
 
@@ -54,13 +55,6 @@ function sendQuery(){
     })
 }
 
-
-
-interface Category {
-  id: number;
-  type: string;
-  iconUrl: string;
-}
 
 const categories = ref<Category[]>([]);
 const selectedCategory = ref<string>('');
