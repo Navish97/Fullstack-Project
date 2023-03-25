@@ -79,7 +79,6 @@ const itemIsBookmarked = computed(() => {
 });
 
 const currentImage = computed(() => {
-  console.log(props.item.images[currentImageIndex.value].data)
   if (props.item.images.length > 0) {
     return props.item.images[currentImageIndex.value].data.toString();
   }
