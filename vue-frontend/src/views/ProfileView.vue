@@ -1,21 +1,29 @@
 <template>
   <div class="container">
-
     <div class="content-wrapper">
       <ProfileBox />
       <div class="grid">
         <InfoBox :icon="faUser" title="My account" content="View and edit my account details"/>
-        <InfoBox :icon="faTag" title="My listings" content="View all my listings"/>
+        <InfoBox :icon="faTag" title="My listings" @click="loadItems" content="View all my listings"/>
         <InfoBox :icon="faBookmark" title="My bookmarks" content="View all my bookmarks"/>
-
       </div>
     </div>
     <div class="wave-container">
       <Wave></Wave>
     </div>
+    <div v-if="showItems" class="overlay">
+      <div class="item-list-wrapper">
+        <button @click="closeItems" class="close-btn">X</button>
+        <ItemList
+            :pages="pages"
+            :items="itemStore.items"
+            :listingType="'thumbnail'"
+            :currentPage="currentPage"
+            @load-page="(page) => setPage(page)"
+            @nav-page="(direction) => callPage(direction)" />
+      </div>
+    </div>
   </div>
-
-
 </template>
 
 
@@ -27,12 +35,99 @@ import ProfileBox from "@/components/Profile/ProfileBox.vue";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faTag } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
+import ItemList from "@/components/Items/ItemList.vue";
+import { ref, computed} from 'vue';
+import {getMyItems} from '@/service/ItemService';
+import {useItemStore} from "@/stores/Item";
+import {useUserStore} from "@/stores/User";
+const itemStore = useItemStore();
+const userStore = useUserStore();
 
+const currentPage = ref(1);
+const totalPages = ref(1);
+const showItems = ref(false);
 
+const pages = computed(() => {
+  const pageArray = [];
+  for (let i = 1; i <= totalPages.value; i++) {
+    pageArray.push(i);
+  }
+  return pageArray;
+});
+
+function callPage(direction : number){
+  if(direction > 0){
+    if(currentPage.value < totalPages.value){
+      currentPage.value = currentPage.value  +direction;
+    }
+  }
+  else{
+    if(currentPage.value > 1){
+      currentPage.value = currentPage.value + direction;
+    }
+  }
+  loadItems();
+}
+
+function setPage(page : number){
+  currentPage.value = page;
+  loadItems();
+}
+async function loadItems() {
+  showItems.value = true;
+
+  await getMyItems(currentPage.value - 1, itemStore.pageSize)
+      .then((response) => {
+        itemStore.setLists(response.data.items);
+        currentPage.value = response.data["current-page"] + 1;
+        totalPages.value = response.data["total-pages"];
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+}
+
+function closeItems() {
+  showItems.value = false;
+}
 </script>
 
 <style scoped>
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
 
+.item-list-wrapper {
+  padding-top: 1rem;
+  width: 70%;
+  height: 90%;
+  background-color: white;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  z-index: 1000;
+  font-weight: bold;
+  color: #000000;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
 .grid {
   display: flex;
   flex-wrap: wrap;
@@ -118,13 +213,28 @@ Wave {
 }
 
 @media (max-width: 768px) {
+  item-list {
+    width: 100%;
+  }
+  .item-list-wrapper {
+    padding-top: 1rem;
+    width: 95%;
+    height: 95%;
+    background-color: rgba(255, 255, 255, 0.46);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+  }
   .grid {
     flex-direction: column;
     align-items: center;
     gap: 30px;
     margin: 0 auto 0;
   }
-
+  .overlay {
+    width: 100%;
+    height: 100%;
+  }
   .content-wrapper{
     margin: 60px auto;
   }
