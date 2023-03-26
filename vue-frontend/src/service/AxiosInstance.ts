@@ -18,8 +18,13 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     (error) => {
-        if (error.response.status === 401 && useUserStore().isLoggedIn) {
-            console.log(useUserStore().isLoggedIn);
+        console.log(error.response.headers)
+        if (error.response.headers['error-message']) {
+            alert("Old password is incorrect. Please try again.");
+            return;
+        }
+        else if (error.response.status === 401 && useUserStore().isLoggedIn) {
+            console.log("Session has expired. You've been logged out.");
             alert("Session has expired. You've been logged out.");
             useUserStore().logOut()
         }
