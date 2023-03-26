@@ -13,6 +13,7 @@
       <BaseInput id="inpPrice" class="input-container" type="number" label="Price" v-model="form.price" />
       <BaseInput id="inpLongitude" class="input-container" type="number" label="Longitude" v-model="form.longitude" />
       <BaseInput id="inpLatitude" class="input-container" type="number" label="Latitude" v-model="form.latitude" />
+      <MapComponent :latitude="form.latitude" :longitude="form.longitude" @set-location="(lat, long) => setLocation(lat,long)" />
       <div class="input-container">
         <input id="inpImages" type="file" @change="onImagesChange" multiple />
       </div>
@@ -29,6 +30,7 @@ import {ref, onMounted, computed} from "vue";
 import axiosInstance from "@/service/AxiosInstance";
 import { useItemStore } from "@/stores/Item";
 import ErrorMessage from "@/components/Errors/ErrorMessage.vue";
+import MapComponent from "../Map/MapComponent.vue";
 
 const itemStore = useItemStore();
 
@@ -43,20 +45,25 @@ interface Form {
   title: string;
   description: string;
   price: string;
-  longitude: string;
-  latitude: string;
+  longitude: number;
+  latitude: number;
   images: File[];
-  [key: string]: string | File[];
+  [key: string]: string | File[] | number;
 }
 
 const form = ref<Form>({
   title: "",
   description: "",
   price: "",
-  longitude: "",
-  latitude: "",
+  longitude: 60,
+  latitude: 10,
   images: [],
 });
+
+function setLocation(newLatitude : number, newLongitude:number){
+  form.value.latitude = newLatitude;
+  form.value.longitude = newLongitude;
+}
 
 let icon = ref({
   type: "",
@@ -113,8 +120,8 @@ const sendForm = async () => {
     formData.append("description", form.value.description);
     formData.append("price", form.value.price);
     formData.append("category_id", itemStore.getNewListingCategory.toString());
-    formData.append("longitude", form.value.longitude);
-    formData.append("latitude", form.value.latitude);
+    formData.append("longitude", form.value.longitude.toString());
+    formData.append("latitude", form.value.latitude.toString());
     for (let i = 0; i < form.value.images.length; i++) {
       const file = new File([form.value.images[i]], "image_" + i, { type: form.value.images[i].type });
       formData.append("images", file);
@@ -128,8 +135,8 @@ const sendForm = async () => {
       form.value.title = "";
       form.value.description = "";
       form.value.price = "";
-      form.value.longitude = "";
-      form.value.latitude = "";
+      form.value.longitude = 60;
+      form.value.latitude = 10;
       form.value.images = [];
       images.value = [];
       await router.push("/"); // Redirect to the desired page after successful listing creation

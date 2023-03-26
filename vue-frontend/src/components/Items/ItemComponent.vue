@@ -219,6 +219,14 @@ const formattedPrice = computed(() => {
     -webkit-line-clamp: 3;
   }
 
+  .content-wrapper.thumbnail {
+    max-width: 170px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: .2rem;
+  }
+
   .image-wrapper img:not(.bookmark-icon) {
     position: absolute;
     top: 0;

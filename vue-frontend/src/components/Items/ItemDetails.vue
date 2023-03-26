@@ -14,10 +14,11 @@
       </div>
       <div class="item-info">
         <h2>{{ item.title }}</h2>
-        <p>(DD): {{ item.latitude }}, {{ item.longitude }}</p>
         <p>Selger Id: {{ item.userId }}</p>
         <h3>Pris: {{ formattedPrice }}</h3>
         <h4>{{ item.description }}</h4>
+        <p>(DD): {{ item.latitude }}, {{ item.longitude }}</p>
+        <MapComponent id="map" :latitude="item.latitude" :longitude="item.longitude" :fixed-map="true" />
         <br>
       </div>
     </div>
@@ -25,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, ref, watch } from 'vue';
+import {defineProps, computed, ref, watch, onMounted} from 'vue';
 import type { Item } from '@/types/ItemType';
 import BookmarkComponent from "@/components/Items/BookmarkButton.vue";
 import {useItemStore} from "@/stores/Item";
@@ -34,6 +35,7 @@ import {useUserStore} from "@/stores/User";
 import { RouterLink } from 'vue-router';
 import type { Chat } from '@/types/ChatType';
 import { useChatStore } from '@/stores/Chat';
+import MapComponent from '../Map/MapComponent.vue';
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
@@ -105,10 +107,26 @@ function nextImage() {
     currentImageIndex.value = 0;
   }
 }
+
+onMounted(() => {
+  const imageContainer = document.querySelector(".image-container") as HTMLDivElement;
+  if (imageContainer && (window.innerWidth > window.innerHeight)){
+    imageContainer.style.width = `${window.innerWidth * 0.8}px`;
+    imageContainer.style.height = `${window.innerHeight * 0.9}px`;
+  } else if (imageContainer && (window.innerWidth < window.innerHeight)) {
+    imageContainer.style.width = `${window.innerWidth * 0.9}px`;
+    imageContainer.style.height = `${window.innerWidth * 0.9}px`;
+  }
+});
 </script>
 
 <style scoped>
 
+#map{
+  height: 400px;
+  width: 400px;
+  margin-top: 1%;
+}
 .bookmark-icon {
   position: absolute;
   top: 0;
@@ -132,10 +150,6 @@ function nextImage() {
   display: grid;
   grid-template-columns: 1fr;
   width: 80%;
-}
-
-.bookmarkbutton {
-  width:100%;
 }
 
 .item-details {
@@ -228,5 +242,17 @@ function nextImage() {
 
 .contact-button:hover {
   background: #4d4d4d;
+}
+
+@media screen and (max-width: 768px) {
+  .flex-container {
+    padding-top: 4rem;
+    width: 90%;
+    align-items: center;
+  }
+
+  .image-container {
+    margin: 0 auto;
+  }
 }
 </style>

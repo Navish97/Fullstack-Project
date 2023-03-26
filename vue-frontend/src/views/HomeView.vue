@@ -4,7 +4,7 @@
       <div class="title">
         <h1>MyMarketPlace</h1>
       </div>
-      <div class="wave-container">
+      <div class="wave-container" id="wave-container">
         <Waves />
       </div>
     </div>
@@ -13,10 +13,12 @@
         <div class="listing-type">
           <ListingTypeButton />
           <button class="filter-toggle" @click="toggleFilter">Toggle Filter</button>
-          <FilterComponent v-show="showFilter" />
+          <div class="filter-container">
+            <FilterComponent v-show="showFilter" @close="toggleFilter" />
+          </div>
         </div>
 
-        <div class="items">
+        <div class="items" id="listing-items">
           <ItemList 
           :pages="pages" 
           :items="itemStore.items" 
@@ -39,14 +41,13 @@
 <script setup lang="ts">
 import ItemList from '@/components/Items/ItemList.vue';
 import ListingTypeButton from '@/components/ButtonChangeListingType.vue';
-import FilterComponent from '@/components/FilterComponent.vue';
+import FilterComponent from '@/components/Filter/FilterComponent.vue';
 import {computed, onMounted, ref} from "vue";
 import { useItemStore } from '@/stores/Item';
 import { useUserStore } from '@/stores/User';
 import { getItems } from '@/service/ItemService';
 import { onBeforeRouteUpdate, useRoute } from 'vue-router';
-import type { LocationQuery } from 'vue-router';
-import {getUserBookmarks} from "@/service/BookmarkService";
+import type {LocationQuery} from "vue-router";
 import Waves from '@/components/Wave/Wave.vue'
 import PaginationComponent from '@/components/Items/PaginationComponent.vue';
 
@@ -61,6 +62,13 @@ const currentListingType = computed(() => {
 let currentPage = ref(1);
 let totalPages = ref(1);
 
+function scrollToTop() {
+  const element = document.getElementById("wave-container");
+  if(element) {
+    element.scrollIntoView({ block: "start", behavior: "auto" });
+  }
+}
+
 const pages = computed(() => {
   const pageArray = [];
   for (let i = 1; i <= totalPages.value; i++) {
@@ -69,12 +77,17 @@ const pages = computed(() => {
   return pageArray;
 });
 
-const showFilter = ref(window.innerWidth >= 769);
+const isDesktop = ref(window.innerWidth >= 769);
+const showFilter = ref(isDesktop.value);
+
 function toggleFilter() {
-  showFilter.value = !showFilter.value;
+  if (!isDesktop.value) {
+    showFilter.value = !showFilter.value;
+  }
 }
 
 function setPage(page : number){
+  scrollToTop();
   currentPage.value = page;
   loadItems(route.query);
 }

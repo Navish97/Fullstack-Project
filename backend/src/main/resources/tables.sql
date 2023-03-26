@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS items (
     title VARCHAR(255),
     description TEXT,
     price DECIMAL,
-    longitude VARCHAR(255),
-    latitude VARCHAR(255),
+    longitude DOUBLE,
+    latitude DOUBLE,
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id),

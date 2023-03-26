@@ -27,6 +27,8 @@
   const messageStore = useMessageStore();
   const selectedChatId = ref(-1);
 
+
+
   onMounted(() => {
     const tempChat : Chat | undefined = chatStore.findChatById(-1);
     getChats()

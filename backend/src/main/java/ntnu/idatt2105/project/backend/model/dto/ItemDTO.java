@@ -23,8 +23,8 @@ public class ItemDTO {
     private String title;
     private String description;
     private BigDecimal price;
-    private String longitude;
-    private String latitude;
+    private Double longitude;
+    private Double latitude;
     private List<ItemImageDTO> images;
 
     /**

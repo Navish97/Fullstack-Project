@@ -86,7 +86,7 @@ public class LoginController {
                                     schema = @Schema(implementation = AuthenticationResponse.class)))
             })
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response, HttpServletRequest request){
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response, HttpServletRequest request) throws InvalidCredentialsException {
         try {
             logger.info("Authenticating user " + authenticationRequest.getEmail());
             AuthenticationResponse authResponse = authenticationService.authenticate(authenticationRequest);
@@ -106,7 +106,8 @@ public class LoginController {
             authResponse.setUserRole(user.getRole().toString());
             return ResponseEntity.ok(authResponse);
         } catch (InvalidCredentialsException e) {
-            return ResponseEntity.badRequest().body(AuthenticationResponse.builder().errorMessage(e.getMessage()).build());
+            logger.info("Authentication failed");
+            throw new InvalidCredentialsException("Email or password is incorrect.");
         }
     }
 

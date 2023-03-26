@@ -88,6 +88,9 @@ router.beforeEach(async (to, from, next) => {
     if(to.meta.requiresAuth && !useUserStore().isLoggedIn) {
         next({name: 'login'});
     }
+    else if(to.name === 'login' && userStore.isLoggedIn){
+        next({name: 'home'});
+    }
     else{
       next();
     }
