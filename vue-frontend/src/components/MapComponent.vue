@@ -34,7 +34,7 @@ const props = defineProps({
 
 const emit = defineEmits(['setLocation']);
 onMounted(() => {
-    let map = leaflet.map('map').setView([60, 10],3);
+    let map = leaflet.map('map').setView([60, 10],3, {animate: false});
     leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
