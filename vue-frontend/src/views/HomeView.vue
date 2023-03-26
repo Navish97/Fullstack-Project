@@ -1,53 +1,55 @@
 <template>
-  <div class="wave-wrapper">
+  <div class="main-container">
+    <div class="home-container">
+      <div class="title">
+        <h1>MyMarketPlace</h1>
+      </div>
+      <div class="wave-container" id="wave-container">
+        <Waves />
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="grid-container">
+        <div class="listing-type">
+          <ListingTypeButton />
+          <button class="filter-toggle" @click="toggleFilter">Toggle Filter</button>
+          <div class="filter-container">
+            <FilterComponent v-show="showFilter" @close="toggleFilter" />
+          </div>
+        </div>
 
-    <div class="title">
-      <h1>MyMarketPlace</h1>
-    </div>
-    <div>
-      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-           viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-        <defs>
-          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-        </defs>
-        <g class="parallax">
-          <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
-          <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
-          <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
-          <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
-        </g>
-      </svg>
-    </div>
-  </div>
-  <div class="wrapper">
-    <div class="grid-container">
-      <div class="listing-type">
-        <FilterComponent />
-      </div>
-      <div class="items">
-        <ItemList :items="itemStore.items" :listingType="currentListingType" :currentPage="currentPage" :totalPages="totalPages" @pageup="pageUp" @pagedown="pageDown" />
-      </div>
-      <div class="right-sidebar">
-        <ListingTypeButton />
-        <div>test</div>
+        <div class="items" id="listing-items">
+          <ItemList 
+          :pages="pages" 
+          :items="itemStore.items" 
+          :listingType="currentListingType" 
+           />
+          <div class ="page-nav">
+            <PaginationComponent 
+            :pages="pages" 
+            @load-page="(page) => setPage(page)" 
+            @previous-page="(direction) => callPage(direction)"
+            class = "pager"
+            :current-page="currentPage"/>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
 </template>
-
-
 
 <script setup lang="ts">
 import ItemList from '@/components/Items/ItemList.vue';
 import ListingTypeButton from '@/components/ButtonChangeListingType.vue';
 import FilterComponent from '@/components/FilterComponent.vue';
-import {computed, onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
 import { useItemStore } from '@/stores/Item';
 import { useUserStore } from '@/stores/User';
 import { getItems } from '@/service/ItemService';
 import { onBeforeRouteUpdate, useRoute } from 'vue-router';
-import {getUserBookmarks} from "@/service/BookmarkService";
+import type {LocationQuery} from "vue-router";
+import Waves from '@/components/Wave/Wave.vue'
+import PaginationComponent from '@/components/Items/PaginationComponent.vue';
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
@@ -57,56 +59,152 @@ const currentListingType = computed(() => {
   return itemStore.currentListingType;
 });
 
-let currentPage = 1;
-let totalPages = 1;
+let currentPage = ref(1);
+let totalPages = ref(1);
 
-function pageUp(){
-  if(currentPage < totalPages){
-    currentPage++;
-    loadItems();
+function scrollToTop() {
+  const element = document.getElementById("wave-container");
+  if(element) {
+    element.scrollIntoView({ block: "start", behavior: "auto" });
   }
 }
-function pageDown(){
-  if(currentPage > 0){
-    currentPage--;
-    loadItems();
+
+const pages = computed(() => {
+  const pageArray = [];
+  for (let i = 1; i <= totalPages.value; i++) {
+    pageArray.push(i);
+  }
+  return pageArray;
+});
+
+const isDesktop = ref(window.innerWidth >= 769);
+const showFilter = ref(isDesktop.value);
+
+function toggleFilter() {
+  if (!isDesktop.value) {
+    showFilter.value = !showFilter.value;
   }
 }
-async function loadItems(){
-    await getItems(currentPage-1, 9, route.query)
+
+function setPage(page : number){
+  scrollToTop();
+  currentPage.value = page;
+  loadItems(route.query);
+}
+function callPage(direction : number){
+  if(direction > 0){
+    if(currentPage.value < totalPages.value){
+      currentPage.value = currentPage.value  +direction;
+    }
+  }
+  else{
+    if(currentPage.value > 1){
+      currentPage.value = currentPage.value + direction;
+    }
+  }
+  loadItems(route.query);
+}
+async function loadItems(route : LocationQuery){
+    await getItems(currentPage.value-1, itemStore.pageSize, route)
     .then((response) => {
       itemStore.setLists(response.data.items);
-      currentPage = response.data['current-page']+1;
-      totalPages = response.data['total-pages'];
+      currentPage.value = response.data['current-page']+1;
+      totalPages.value = response.data['total-pages'];
     })
     .catch((error) => {
       console.log(error);
     });
+
 }
 onBeforeRouteUpdate(async (to, from) => {
   console.log("route updated");
-  getItems(currentPage, 9, to.query)
-    .then((response) => {
-      itemStore.setLists(response.data.items);
-      currentPage = response.data['current-page']+1;
-      totalPages = response.data['total-pages'];
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  loadItems(to.query);
 })
 
 onMounted(() => {
-  loadItems();
-  if (userStore.isLoggedIn()) {
+  loadItems(route.query);
+  if (userStore.isLoggedIn) {
     userStore.fetchBookmarks();
   }
 })
+
+const emit = defineEmits(["load-page",'nav-page']);
+function navigatePage(pageNav:number){
+  emit('nav-page', pageNav);
+}
+function emitLoadPage(page:number){
+  emit("load-page", page);
+}
 
 
 </script>
 
 <style scoped>
+@media (min-width: 769px) {
+  .filter-toggle {
+    display: none;
+  }
+}
+
+.filter-toggle {
+  background-color: #23d5ab;
+  border: none;
+  color: white;
+  height: 100%;
+  width: 10rem;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+.pager{
+  padding-top: 1.5rem;
+  padding-bottom: 3rem;
+  display: flex;
+  width: inherit;
+  justify-content: center;
+}
+
+
+.listing-type {
+  width: 250px;
+  position: relative;
+  overflow: hidden;
+}
+
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.page-count{
+  color: black;
+  font-weight: bolder;
+  font-size: 120%;
+  vertical-align: center;
+  text-align: center;
+}
+
+.arrow {
+  background-color: transparent;
+  border: 0;
+  width: 3%;
+  height: 10%;
+}
+
+.arrow:hover {
+  transform: scale(1.1);
+}
+
+.wave-container{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
 
 .title{
   font-weight: 300;
@@ -115,6 +213,7 @@ onMounted(() => {
   font-size: 4rem;
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .title h1{
@@ -122,24 +221,18 @@ onMounted(() => {
   font-size: 4rem;
   display: flex;
   justify-content: center;
+  text-align: center;
 }
-.wave-wrapper {
-  height: 25rem;
+
+.home-container {
   background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   position: relative;
   overflow: hidden;
+  height: 25rem;
 }
 
-.waves {
-  position:relative;
-  width: 100%;
-  height:15vh;
-  min-height:100px;
-  max-height:150px;
-  margin-top: 6.5rem;
-}
 
 
 @keyframes gradient {
@@ -154,12 +247,8 @@ onMounted(() => {
   }
 }
 
-.justify-content-center {
-  display: flex;
-  justify-content: center;
-}
 .wrapper {
-  display: flex;
+  display: grid;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -168,7 +257,7 @@ onMounted(() => {
 
 .grid-container {
   display: grid;
-  grid-template-columns: auto 60% auto;
+  grid-template-columns: 250px auto;
   grid-gap: 20px;
   justify-content: center;
   width: 80%;
@@ -176,13 +265,8 @@ onMounted(() => {
 
 .listing-type {
   width: 250px;
-  padding: 20px;
 }
 
-
-.items {
-  padding: 20px;
-}
 
 .right-sidebar {
   width: 250px;
@@ -197,19 +281,19 @@ onMounted(() => {
 }
 .parallax > use:nth-child(1) {
   animation-delay: -2s;
-  animation-duration: 7s;
+  animation-duration: 10s;
 }
 .parallax > use:nth-child(2) {
   animation-delay: -3s;
-  animation-duration: 10s;
+  animation-duration: 13s;
 }
 .parallax > use:nth-child(3) {
   animation-delay: -4s;
-  animation-duration: 13s;
+  animation-duration: 16s;
 }
 .parallax > use:nth-child(4) {
   animation-delay: -5s;
-  animation-duration: 20s;
+  animation-duration: 23s;
 }
 @keyframes move-forever {
   0% {
@@ -217,6 +301,53 @@ onMounted(() => {
   }
   100% {
     transform: translate3d(85px,0,0);
+  }
+}
+
+@media (max-width: 768px) {
+  .title{
+    padding-top: 1.5rem;
+  }
+  .home-container {
+    height: 15rem;
+  }
+  .listing-type {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+  }
+  .filter-toggle {
+    display: inline-block;
+  }
+
+  .title {
+    margin-top: 2rem;
+  }
+
+  .title h1 {
+    font-size: 2.5rem;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    gap: 0;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .listing-type {
+    width: 100%;
+  }
+
+  .items {
+    width: 100%;
+  }
+
+  .wrapper {
+    position: relative;
+    top:0;
   }
 }
 </style>

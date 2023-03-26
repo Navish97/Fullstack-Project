@@ -3,6 +3,7 @@ package ntnu.idatt2105.project.backend.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,6 +20,9 @@ import java.util.logging.Logger;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
+/**
+ * Security configuration class for the application.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -30,6 +34,13 @@ public class SecurityConfig {
     private final Environment env;
     Logger logger = Logger.getLogger(SecurityConfig.class.getName());
 
+    /**
+     * Configures the security filter chain.
+     *
+     * @param http the HttpSecurity object to configure.
+     * @return the configured SecurityFilterChain.
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         if (Arrays.asList(env.getActiveProfiles()).contains("dev")){
@@ -40,7 +51,7 @@ public class SecurityConfig {
                     .csrf().disable()
                     .authorizeHttpRequests()
                     .requestMatchers("/api/**").permitAll()
-                    .requestMatchers("/h2-ui/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                    .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                     //.requestMatchers("/my-profile").permitAll()
                     .requestMatchers(toH2Console()).permitAll()// Add this line if you want to access H2 console without authentication
                     .anyRequest()
@@ -76,6 +87,11 @@ public class SecurityConfig {
 
     }
 
+    /**
+     * Configures the CORS configuration source.
+     *
+     * @return the configured CorsConfigurationSource.
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

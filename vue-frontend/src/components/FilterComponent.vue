@@ -1,38 +1,65 @@
 <template>
     <div class = "filter-wrapper">
         <div class = "header">Filter</div>
-        <div class = "price">
+        <div class = "searchbar">
+          <label for="search">Search</label>
+          <textarea v-model="search" maxlength = "40" rows="2" id="search" placeholder="Search in title/description"></textarea>
+        </div>
+        <div class = "dual-input-wrapper">
             <label>Price</label>
-            <div class = "price-input">
+            <div class = "dual-input">
                 <div>
-                    <input type="number" id="min-price" name ="min-price" v-model="minPrice">
-                    <label for="min-price">From</label>
+                  <label for="min-price">From</label>
+                  <input type="number" id="min-price" name ="min-price" v-model="minPrice">
                 </div>
                 <div>
-                    <input type="number" id="max-price" name ="max-price" v-model="maxPrice">
-                    <label for="max-price">To</label>
+                  <label for="max-price">To</label>
+                  <input type="number" id="max-price" name ="max-price" v-model="maxPrice">
                 </div>
             </div>
         </div>
-        <div class = "condition">
-            <div>Condition</div>
-            <div class = "condition-state">
-                <input type ="checkbox" id="used-box" v-model="usedBox">
-                <label for="used-box">Used</label>
-            </div>
-            <div class = "condition-state">
-                <input type ="checkbox" id="new-box" v-model="newBox">
-                <label for="new-box">New</label>
-            </div>
+        <div class="category">
+      <label>Category</label>
+      <select v-model="selectedCategory">
+        <option value="">All</option>
+        <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.type }}</option>
+      </select>
+      </div>
+      <div class="location-wrapper" id ="location">
+        <label>Location</label>
+        <div class ="dual-input">
+          <div>
+          <label for ="longitude">Longitude</label>
+          <input type="number" id ="longitude" name="longitude" v-model="longitude">
         </div>
+        <div>
+          <label for = "latitude">Latitude</label>
+          <input type="number" id = "latitude" name = "latitude" v-model ="latitude">
+        </div>
+        </div>
+        <div>
+          <label for ="maxDistance">Max distance (m)</label>
+          <input type="number" id ="maxDistance" name="maxDistance" v-model="maxDistance">
+        </div>
+        <div>
+        </div>
+      </div>
+      <MapComponent id="map" :latitude="latitude!" :longitude="longitude!" :maxDistance="maxDistance!" :radiusOn="true" @setLocation="(lat, long) => setLocation(lat, long)" />
         <button class="apply" @click = "sendQuery()">Apply</button>
+        <button class="reset" @click="resetFilters()">Reset</button>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import {ref, computed, onMounted, defineEmits} from 'vue';
 import router from '@/router';
+import { useItemStore } from '@/stores/Item';
+import  axiosInstance  from '@/service/AxiosInstance';
+import type {Category} from "@/types/CategoryType";
+import MapComponent from './MapComponent.vue';
 
+const itemStore = useItemStore();
+const emit = defineEmits(['close']);
 const filterState = computed(() => {
     const query: {[key: string]: string} = {};
     if(minPrice.value !== null) {
@@ -41,16 +68,60 @@ const filterState = computed(() => {
     if(maxPrice.value !== null) {
         query.maxPrice = maxPrice.value.toString();
     }
-    query.usedValue = usedBox.value.toString();
-    query.newValue = newBox.value.toString();
+    if (selectedCategory.value !== null) {
+    query.category = selectedCategory.value.toString();
+  }
+    if (search.value !== ""){
+      query.search = search.value!;
+    }
+    if (longitude.value !== null){
+      query.longitude = longitude.value.toString();
+    }
+    if (latitude.value !== null) {
+      query.latitude = latitude.value.toString();
+    }
+    if (maxDistance.value !== null) {
+      query.maxDistance = maxDistance.value.toString();
+    }
+    
     return query;
 })
+
+function setLocation(newLatitude : number, newLongitude:number){
+  latitude.value = newLatitude;
+  longitude.value = newLongitude;
+}
 function sendQuery(){
     router.push({
         path:'/',
         query: filterState.value,
-    })
+    }).then((response) => {emit('close');})
 }
+
+const zoom = 2;
+
+
+
+function resetFilters() {
+  minPrice.value = null;
+  maxPrice.value = null;
+  selectedCategory.value = null;
+  search.value = "";
+  longitude.value = 10;
+  latitude.value = 60;
+  maxDistance.value = 5000;
+  sendQuery();
+}
+
+onMounted(async () => {
+  try {
+    const response = await axiosInstance.get('/api/categories');
+    categories.value = response.data;
+
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 onMounted(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -60,24 +131,58 @@ onMounted(() => {
     if(queryParams.has("maxPrice") && queryParams.get("maxPrice") !== ""){
         maxPrice.value = parseInt(queryParams.get("maxPrice")!);
     }
-    if(queryParams.has("newValue")){
-        usedBox.value = JSON.parse(queryParams.get("usedValue")!);
+    if(queryParams.has("category") && queryParams.get("category") !== ""){
+      selectedCategory.value = parseInt(queryParams.get("category")!);
     }
-    if(queryParams.has("oldValue")){
-        usedBox.value = JSON.parse(queryParams.get("usedValue")!);
+    if(queryParams.has("search") && queryParams.get("search") !== ""){
+      search.value = queryParams.get("search")!;
     }
-
+    if(queryParams.has("longitude") && queryParams.get("longitude") !== ""){
+      longitude.value = parseInt(queryParams.get("longitude")!);
+    }
+    if(queryParams.has("latitude") && queryParams.get("latitude") !== ""){
+      latitude.value = parseInt(queryParams.get("latitude")!);
+    }
+    if(queryParams.has("maxDistance") && queryParams.get("maxDistance") !== ""){
+      latitude.value = parseInt(queryParams.get("maxDistance")!);
+    }
 })
-
     const minPrice = ref<number | null>(null);
     const maxPrice = ref<number | null>(null);
-    const usedBox = ref<boolean>(true);
-    const newBox = ref<boolean>(true);
-
+    const categories = ref<Category[]>([]);
+    const selectedCategory = ref<number | null>(null);
+    const search = ref<string>('');
+    const longitude = ref<number | null>(10);
+    const latitude = ref<number | null>(60);
+    const maxDistance = ref<number |null>(5000);
 </script>
 
 
 <style scoped>
+
+.map-wrapper{
+  width: 100%;
+  height: auto;
+}
+.reset {
+  border-radius: 4px;
+  border: 1px solid #646464;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 5px 8px;
+  margin: 5px 5px 5px 0;
+}
+#search {
+  padding: 3%;
+  margin-top: 1%;
+  resize: none;
+  height: auto;
+}
+.searchbar {
+  display: flex;
+  flex-direction: column;
+}
+
     .filter-wrapper{
         width: 200px;
         background-color: rgba(30, 29, 29, 0.99);
@@ -86,15 +191,13 @@ onMounted(() => {
         border-radius: 4px;
         border: 1px solid #646464;
         font-size: 14px;
-        cursor: pointer;
         text-align: left;
         align-content: center;
     }
-    .price-input{
+    .dual-input{
         display: inline-flex;
-        margin: 3%;
     }
-    .price-input input{
+    .dual-input input{
         width: 97%;
     }
     .header{
@@ -118,10 +221,44 @@ onMounted(() => {
         cursor: pointer;
         font-size: 14px;
         padding:5px 8px;
-        margin:5px;
-        margin-top: 0;
-        margin-left: auto;
+      margin: 5px 5px 5px auto;
     }
-    
+    .category {
+  margin-top: 10px;
+}
+
+.category label {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.category select {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #646464;
+  background-color: #ffffff;
+  color: #333333;
+  margin-bottom: 5%;
+}
+
+    @media (max-width: 768px) {
+      .filter-wrapper {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background-color: white;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.15);
+        transition: transform 1s ease;
+      }
+      #map{
+        width: auto;
+      }
+    }
 
 </style>

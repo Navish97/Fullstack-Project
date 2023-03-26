@@ -8,32 +8,45 @@ import {getUserBookmarks} from "@/service/BookmarkService";
 export const useUserStore = defineStore({
     id: 'user',
     state: () => ({
+        loggedInId: '' as string,
         bookmarks: [] as Bookmark[],
-        authenticated: false as boolean
+        authenticated: false as boolean,
+        role: '' as string,
     }),
     persist: {
         storage: sessionStorage,
     },
     getters: {
+        getLoggedInId: (state) => {
+            return state.loggedInId;
+        },
+        getRole: (state) => {
+            return state.role;
+        },
         getBookmarks: (state) => {
             return state.bookmarks
         },
         isItemBookmarked: (state) => (item: Item) => {
                 return state.bookmarks.some(bookmark => bookmark.itemId === item.id);
         },
-        addBookmark: (state) => (item: Item) => {
-            //Axios call for adding bookmark to database
-        },
-        isLoggedIn: (state) => () => {
+        isLoggedIn: (state) => {
             return state.authenticated;
         }
 
     },
     actions: {
+        setLoggedInId(id: string) {
+            this.loggedInId = id;
+        },
+        setRole(role: string) {
+            this.role = role;
+        },
         logOut() {
             router.push("/")
             this.bookmarks = [];
             this.authenticated = false;
+            this.loggedInId = '';
+            this.role = '';
         },
         setLoggedIn(loggedIn: boolean) {
             this.authenticated = loggedIn
@@ -52,7 +65,7 @@ export const useUserStore = defineStore({
         },
         async checkAuthStatus() {
             try {
-                if (this.isLoggedIn()) {
+                if (this.isLoggedIn) {
                     const response = await axiosInstance.get('/api/user-status');
                     this.authenticated = true; // Set authenticated to true on successful response
                 }

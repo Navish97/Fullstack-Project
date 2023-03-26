@@ -1,7 +1,6 @@
 package ntnu.idatt2105.project.backend.service;
 
 import lombok.RequiredArgsConstructor;
-import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.model.dto.Filter;
 import ntnu.idatt2105.project.backend.model.Item;
@@ -9,7 +8,14 @@ import ntnu.idatt2105.project.backend.repository.ItemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Item Service class which contains methods used to retrieve and handle items from the database.
@@ -19,11 +25,12 @@ import org.springframework.stereotype.Service;
 public class ItemService {
     private final ItemRepository itemRepository;
 
-    public ItemDTO getItemById(Long id){
-        Item item = itemRepository.findById(id).orElse(null);
-        if(item == null){
-            return null;
+    public ItemDTO getItemById(Long id) {
+        Optional<Item> optionalItem = itemRepository.findById(id);
+        if (optionalItem.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid item id, item not found");
         }
+        Item item = optionalItem.get();
         return new ItemDTO(item);
     }
 
@@ -36,38 +43,50 @@ public class ItemService {
      * @param filter
      * @return
      */
-    public Page<ItemDTO> getItemPage(int pageNr, int pageSize, Filter filter){
+    public Page<Item> getItemPage(int pageNr, int pageSize, Filter filter) {
         int minPrice = filter.getMinPrice();
         int maxPrice = filter.getMaxPrice();
-        Page<Item> itemPage;
-        if(minPrice == 0 && maxPrice == 0){
-            itemPage = itemRepository
-                    .getItems(PageRequest.of(pageNr, pageSize));
+        long category = filter.getCategory();
+        String search = filter.getSearch();
+        Double longitude = filter.getLongitude();
+        Double latitude = filter.getLatitude();
+        Double maxDistance = filter.getMaxDistance();
+
+        Page<Item> page = itemRepository.getItemsFiltered(minPrice, maxPrice, category, search, PageRequest.of(pageNr, pageSize));
+
+        if (longitude != null && latitude != null && maxDistance != null) {
+            List<Item> filteredItems = page.getContent()
+                    .stream()
+                    .filter(item -> distance(latitude, longitude, item.getLatitude(), item.getLongitude()) <= maxDistance)
+                    .collect(Collectors.toList());
+            page = new PageImpl<>(filteredItems, PageRequest.of(pageNr, pageSize), filteredItems.size());
         }
-        else{
-            itemPage = itemRepository
-                    .getItemsByPrice(minPrice, maxPrice, PageRequest.of(pageNr, pageSize));
-        }
-        Page<ItemDTO> copyPage = itemPage.map(ItemDTO::new);
 
-        return new PageImpl<>(copyPage.getContent(), copyPage.getPageable(), copyPage.getTotalElements());
-
-
-
-
+        return page;
     }
 
-    public ItemDTO saveItem(ItemDTO itemDTO, User user){
-        Item item = new Item();
-        item.setTitle(itemDTO.getTitle());
-        item.setDescription(itemDTO.getDescription());
-        item.setPrice(itemDTO.getPrice());
-        item.setLongitude(itemDTO.getLongitude());
-        item.setLatitude(itemDTO.getLatitude());
-        item.setImageUrls(itemDTO.getImageUrls());
-        item.setUser(user);
-        itemRepository.save(item);
-        return new ItemDTO(item);
+    public Page<Item> getItemsByUserIdPageable(String userId, Pageable pageable) {
+        return itemRepository.findByUserId(userId, pageable);
     }
 
+    public Item saveItem(Item item) {
+        return itemRepository.save(item);
+    }
+
+    /**
+     * Calculates the distance between two coordinates using the haversine formula.
+     */
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+
+        double a = Math.pow(Math.sin(dLat / 2), 2) +
+                Math.pow(Math.sin(dLon / 2), 2) *
+                        Math.cos(lat1) *
+                        Math.cos(lat2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        return 6371 * c; // Radius of the earth in km
+    }
 }

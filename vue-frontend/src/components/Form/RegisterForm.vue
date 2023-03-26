@@ -7,6 +7,7 @@
       <BaseInput id="inpPassword" class="input-container" type="password" label="Password" v-model="form.password"/>
       <span class="text">Already have an account?</span> <router-link class="link" to="/login">Login</router-link>
       <button id="button">Register</button>
+      <ErrorMessage v-if="errorMessage" :message="errorMessage" @clear-error="errorMessage=''"/>
     </form>
   </div>
 </template>
@@ -15,19 +16,23 @@
 import BaseInput from "@/components/Form/BaseInput.vue";
 import router from "@/router";
 import {postRegister} from "@/service/Authentication/AuthenticationService";
+import errorMessage from "@/components/Errors/ErrorMessage.vue";
+import {ref} from "vue";
+import ErrorMessage from "@/components/Errors/ErrorMessage.vue";
 
 
 
 export default {
   name: 'RegisterForm',
-  components: {BaseInput},
+  components: {ErrorMessage, BaseInput},
   data() {
     return {
       form: {
         name: "",
         email: "",
         password: "",
-      }
+      },
+      errorMessage: "",
     }
   },
   methods: {
@@ -43,9 +48,7 @@ export default {
 
           })
           .catch((error) => {
-            alert(error.response); //todo: make a nice error message
-
-            // Handle registration error, e.g., show an error message
+            this.errorMessage = "Error " + error.request.status + ": " + error.response.data;
           });
     }
   },
@@ -66,7 +69,6 @@ textarea{
   margin-top: 20px;
 }
 .form {
-  margin: 50px auto 0 auto;
   width: 400px;
   height: fit-content;
   background-image: linear-gradient(to bottom right, rgb(92, 88, 88), rgb(37, 33, 33));
@@ -239,6 +241,12 @@ textarea{
   color: white;
   font-size: 15px;
   text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .form {
+    width: 100%;
+  }
 }
 
 

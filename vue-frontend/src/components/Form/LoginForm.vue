@@ -4,8 +4,9 @@
     <form @submit.prevent="sendForm" class="form">
       <h1>Login</h1>
       <BaseInput id="inpEmail" class="input-container" type="text" label="Email" v-model="form.email"/>
-      <BaseInput id="inpPassord" class="input-container" type="text" label="Passord" v-model="form.password"/> <!-- TODO: type="password" -->
+      <BaseInput id="inpPassord" class="input-container" type="text" label="Passord" v-model="form.password"/>
       <span class="text">Dont have an account?</span> <router-link class="link" to="/register">Register</router-link>      <button id="button">Send</button>
+      <ErrorMessage v-if="errorMessage" :message="errorMessage" @clear-error="errorMessage=''"/>
     </form>
   </div>
 </template>
@@ -15,9 +16,11 @@ import BaseInput from '@/components/Form/BaseInput.vue';
 import { postLogin } from '@/service/Authentication/AuthenticationService';
 import router from '@/router/index';
 import { useUserStore } from '@/stores/User';
-import { reactive } from 'vue';
+import {reactive, ref} from 'vue';
+import ErrorMessage from "@/components/Errors/ErrorMessage.vue";
 
 const userStore = useUserStore();
+const errorMessage = ref("");
 
 const form = reactive({
   email: '',
@@ -27,15 +30,16 @@ const form = reactive({
 const sendForm = async () => {
   try {
     const response = await postLogin(form);
-
     if (response.status === 200) {
       userStore.setLoggedIn(true);
+      userStore.setRole(response.data.userRole);
+      userStore.setLoggedInId(response.data.userId);
       form.email = '';
       form.password = '';
       await router.push('/');
     }
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    errorMessage.value = error.response.data;
   }
 };
 </script>
@@ -53,7 +57,6 @@ h1{
 }
 
 .form {
-  margin: 50px auto 0 auto;
   width: 400px;
   height: fit-content;
   background-image: linear-gradient(to bottom right, rgb(92, 88, 88), rgb(37, 33, 33));
@@ -226,5 +229,12 @@ h1{
   color: white;
   font-size: 15px;
   text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .form{
+    width: 370px;
+  }
+
 }
 </style>

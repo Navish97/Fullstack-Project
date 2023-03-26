@@ -25,10 +25,6 @@ import { ref, onMounted } from 'vue';
 import axiosInstance from '@/service/AxiosInstance';
 import { useItemStore } from '@/stores/Item';
 import router from '@/router/index';
-
-
-import { computed } from 'vue';
-
 interface Category {
   id: number;
   type: string;
@@ -60,27 +56,26 @@ onMounted(async () => {
 <style scoped>
 .wrapper {
   width: 55%;
-  margin: 75px auto;
+  margin: 95px auto;
   height: fit-content;
 }
 .categories-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 70%; /* Set the width to fill the viewport width */
-  margin: 5px auto 0 auto;
+  width: 70%;
   color: white;
 }
 
 .categories-wrapper {
   display: flex;
   justify-content: center;
-  font-size: 2rem; /* Increase the font size for everything within the wrapper */
+  font-size: 2rem;
 }
 
 .categories-grid {
   display: grid;
-//grid-template-columns: 1fr 3fr; /* create two columns, one for the icons and the other for the category names */
+/*grid-template-columns: 1fr 3fr;*/
   gap: 1rem;
 }
 
@@ -92,16 +87,16 @@ onMounted(async () => {
 }
 
 .icon-container {
-  width: 60px; /* Increase the fixed width for the icon container */
-  text-align: center; /* Center the icon within the container */
+  width: 60px;
+  text-align: center;
 }
 
 .text-container {
-  width: 100%; /* Set a fixed width for the text container */
+  width: 100%;
 }
 
 .category > .text-container > span {
-  margin-left: 1rem; /* add some space between the icon and the category name */
+  margin-left: 1rem;
 }
 
 #header {
@@ -112,5 +107,28 @@ onMounted(async () => {
   margin: auto;
   font-size: 30px;
   color: white;
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    width: 100%;
+  }
+  .categories-container {
+    width: 100%;
+  }
+  .categories-wrapper {
+    font-size: 2rem;
+  }
+  .category > .text-container > span {
+    margin-left: 0.5rem;
+  }
+  .icon-container {
+    width: 40px;
+  }
+  #header {
+    width: 80%;
+    font-size: 20px;
+    padding-bottom: 20px;
+  }
 }
 </style>

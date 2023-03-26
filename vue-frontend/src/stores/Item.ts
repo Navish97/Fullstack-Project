@@ -14,6 +14,7 @@ export const useItemStore = defineStore({
     items : [
    ] as Item[],
     NewListingCategory: 0 as number,
+    pageSize: 18 as number,
   }),
   getters: {
     isCurrentItemBookmarked: (state): boolean => {
@@ -28,8 +29,14 @@ export const useItemStore = defineStore({
     getCurrentListingType: (state) => {
       return state.currentListingType;
     },
+    getImages: (state) => {
+        return state.currentItem.images;
+    },
     getListingTypes: (state) => {
       return state.listingTypes;
+    },
+    getPageSize: (state) => {
+      return state.pageSize;
     },
     getItems: (state) => {
       return state.items;
@@ -42,6 +49,9 @@ export const useItemStore = defineStore({
     setCurrentItemBookmarked(bookmarked: boolean) {
         this.currentItemBookmarked = bookmarked;
     },
+    setPageSize(size: number) {
+      this.pageSize = size;
+    },
     setCurrentItem(item: Item) {
       this.currentItem = item;
     },
@@ -51,19 +61,25 @@ export const useItemStore = defineStore({
     addItem(item: Item) {
       this.items.push(item);
     },
-    responseToItem(response: any){
+    responseToItem(response: any) {
       const data = JSON.parse(JSON.stringify(response));
-        return {
-            id: data.id,
-            description: data.description,
-            price: data.price,
-            imageURLs: [data.imageUrls],
-            categoryId: data.categoryid,
-            title: data.title,
-            latitude: parseFloat(data.latitude),
-            longitude: parseFloat(data.longitude),
-            userId: data.userid,
-          };
+      const images = data.images.map((image: any) => ({
+        data: image.data,
+        contentType: image.contentType
+      }));
+      return {
+        id: data.id,
+        description: data.description,
+        price: data.price,
+        images: images,
+        categoryId: data.categoryId,
+        title: data.title,
+        latitude: parseFloat(data.latitude),
+        longitude: parseFloat(data.longitude),
+        userId: data.userId,
+        userName: data.userName,
+        userEmail: data.userEmail,
+      };
     },
     setLists(list : []){
       const newItems:Item[] = [];

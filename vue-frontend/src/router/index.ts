@@ -1,13 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
-import MyProfile from '../views/MyProfile.vue'
+import MyProfile from '../views/ProfileView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import HomeView from '../views/HomeView.vue'
-import FilterComponent from '@/components/FilterComponent.vue'
 import ItemDetailsView from '../views/ItemDetailsView.vue'
 import NewListingView from "../views/NewListingView.vue";
-import { getItems } from '@/service/ItemService';
 import { useUserStore } from '@/stores/User';
+import MessagesView from '@/views/MessagesView.vue'
 
 
 const router = createRouter({
@@ -18,7 +17,6 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       beforeEnter: async (to, from, next) => {
-        const userStore = useUserStore();
         next();
       },
     },
@@ -54,14 +52,27 @@ const router = createRouter({
       component: ItemDetailsView,
       props: true
     },
+    {
+      path: '/chats',
+      name: 'chats',
+      component: MessagesView,
+    },
+    {
+      path: '/chats/new-chat:item',
+      name: 'new-chat',
+      component: MessagesView,
+    },
   ]
 })
 
 router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
     await userStore.checkAuthStatus()
-    if(to.meta.requiresAuth && !userStore.isLoggedIn()) {
+    if(to.meta.requiresAuth && !userStore.isLoggedIn) {
         next({name: 'login'});
+    }
+    else if(to.name === 'login' && userStore.isLoggedIn){
+        next({name: 'home'});
     }
     else{
       next();

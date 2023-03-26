@@ -1,20 +1,24 @@
 <template>
-  <div class="item-details" v-if="props.item.imageURLs">
+  <div class="item-details" v-if="props.item.images">
     <div class="flex-container">
       <div class="image-container">
         <img :src="bookmark" alt="bookmarked" class="bookmark-icon" v-if="itemIsBookmarked"/>
         <img :src="currentImage" class="item-image" alt="item-image" />
-        <button class="image-btn prev" @click="prevImage" v-if="props.item.imageURLs.length>1">&lt;</button>
-        <button class="image-btn next" @click="nextImage" v-if="props.item.imageURLs.length>1">&gt;</button>
-        <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.imageURLs.length }}</div>
+        <button class="image-btn prev" @click="prevImage" v-if="props.item.images.length>1">&lt;</button>
+        <button class="image-btn next" @click="nextImage" v-if="props.item.images.length>1">&gt;</button>
+        <div class="image-index">{{ currentImageIndex + 1 }} / {{ props.item.images.length }}</div>
       </div>
-      <bookmark-component />
+      <div class="toolbar">
+        <bookmark-component />
+        <RouterLink to="/chats" v-if="showContactButton" @click="preLoadChat()" class="contact-button">Contact seller</RouterLink>
+      </div>
       <div class="item-info">
         <h2>{{ item.title }}</h2>
-        <p>(DD): {{ item.latitude }}, {{ item.longitude }}</p>
         <p>Selger Id: {{ item.userId }}</p>
         <h3>Pris: {{ formattedPrice }}</h3>
         <h4>{{ item.description }}</h4>
+        <p>(DD): {{ item.latitude }}, {{ item.longitude }}</p>
+        <MapComponent id="map" :latitude="item.latitude" :longitude="item.longitude" :fixed-map="true" />
         <br>
       </div>
     </div>
@@ -22,13 +26,25 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, ref, watch } from 'vue';
+import {defineProps, computed, ref, watch, onMounted} from 'vue';
 import type { Item } from '@/types/ItemType';
 import BookmarkComponent from "@/components/Items/BookmarkButton.vue";
 import {useItemStore} from "@/stores/Item";
 import bookmark from '@/assets/bookmark.png';
+import {useUserStore} from "@/stores/User";
+import { RouterLink } from 'vue-router';
+import type { Chat } from '@/types/ChatType';
+import { useChatStore } from '@/stores/Chat';
+import MapComponent from '../MapComponent.vue';
 
 const itemStore = useItemStore();
+const userStore = useUserStore();
+const chatStore = useChatStore();
+
+const showContactButton = computed(() => {
+  return userStore.getLoggedInId !== props.item.userId
+      && userStore.isLoggedIn;
+});
 
 const props = defineProps({
   item: {
@@ -37,9 +53,26 @@ const props = defineProps({
   },
 });
 
+function bufferToImage(buffer: ArrayBuffer, type: string): string {
+  const blob = new Blob([buffer], { type });
+  return URL.createObjectURL(blob);
+}
+
 watch(() => props.item, () => {
   currentImageIndex.value = 0;
 });
+
+function preLoadChat() {
+  const newChat: Chat = {
+        id: -1,
+        userId:props.item.userId,
+        userName:props.item.userName,
+        userEmail:props.item.userEmail,
+        item:props.item,
+      }
+
+  chatStore.newChat(newChat);
+}
 
 const currentImageIndex = ref(0);
 
@@ -48,8 +81,8 @@ const itemIsBookmarked = computed(() => {
 });
 
 const currentImage = computed(() => {
-  if (props.item !== undefined && props.item.imageURLs !== undefined) {
-    return props.item.imageURLs[currentImageIndex.value];
+  if (props.item.images.length > 0) {
+    return props.item.images[currentImageIndex.value].data.toString();
   }
 });
 
@@ -62,22 +95,38 @@ function prevImage() {
     currentImageIndex.value -= 1;
   }
   else {
-    currentImageIndex.value = props.item.imageURLs.length - 1;
+    currentImageIndex.value = props.item.images.length - 1;
   }
 }
 
 function nextImage() {
-  if (currentImageIndex.value < props.item.imageURLs.length - 1) {
+  if (currentImageIndex.value < props.item.images.length - 1) {
     currentImageIndex.value += 1;
   }
   else {
     currentImageIndex.value = 0;
   }
 }
+
+onMounted(() => {
+  const imageContainer = document.querySelector(".image-container") as HTMLDivElement;
+  if (imageContainer && (window.innerWidth > window.innerHeight)){
+    imageContainer.style.width = `${window.innerWidth * 0.8}px`;
+    imageContainer.style.height = `${window.innerHeight * 0.9}px`;
+  } else if (imageContainer && (window.innerWidth < window.innerHeight)) {
+    imageContainer.style.width = `${window.innerWidth * 0.9}px`;
+    imageContainer.style.height = `${window.innerWidth * 0.9}px`;
+  }
+});
 </script>
 
 <style scoped>
 
+#map{
+  height: 400px;
+  width: 400px;
+  margin-top: 1%;
+}
 .bookmark-icon {
   position: absolute;
   top: 0;
@@ -89,36 +138,44 @@ function nextImage() {
   border-top-right-radius: 24px;
 }
 
+.item-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  padding-top: 16px;
+}
+
 .flex-container {
-  padding-top: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  padding-top: 55px;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 80%;
 }
 
 .item-details {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 auto;
   width: 100%;
   height: 100%;
+  word-wrap: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
-.item-info {
-  padding-top: 16px;
-}
 
 .image-container {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 60vw;
-  height: 80vh;
+  width: 100%;
+  height: 100%;
 }
 
 .image-index {
+  color: white;
   position: absolute;
   object-fit: contain;
   bottom: 0;
@@ -155,12 +212,47 @@ function nextImage() {
   border-top-left-radius: 24px;
   border-bottom-left-radius: 24px;
 }
-
 .prev {
   left: 0;
 }
-
 .next {
   right: 0;
+}
+.toolbar{
+  display: flex;
+  gap: .5rem;
+  align-items: start;
+  width: 100%;
+  padding-top: 8px;
+}
+.contact-button {
+  display: inline-block;
+  width: 9rem;
+  padding: .3rem;
+  border-radius: 4px;
+  border: 1px solid #000000;
+  background-color: #1c1b1b;
+  color: #FFFFFF;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  vertical-align: middle;
+}
+
+.contact-button:hover {
+  background: #4d4d4d;
+}
+
+@media screen and (max-width: 768px) {
+  .flex-container {
+    padding-top: 4rem;
+    width: 90%;
+    align-items: center;
+  }
+
+  .image-container {
+    margin: 0 auto;
+  }
 }
 </style>

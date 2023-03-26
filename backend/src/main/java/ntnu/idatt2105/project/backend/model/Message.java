@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "messages")
 @Schema(description = "Represents a message that is sent between two users")
 public class Message {
@@ -27,12 +26,13 @@ public class Message {
     @Schema(description = "The id of the user who received the message")
     private User receiver;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id")
-    @Schema(description = "The id of the item of interest")
-    private Item item;
-
     @Column(name = "message")
     @Schema(description = "The text that is sent in the message")
     private String message;
+
+    @ManyToOne
+    @JoinColumn(name = "chat_id")
+    @Schema(description = "The chat the message was sent in")
+    private Chat chat;
+
 }

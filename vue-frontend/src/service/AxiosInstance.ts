@@ -18,11 +18,14 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     (error) => {
-        if (error.response.status === 401 && useUserStore().isLoggedIn()) {
+        if (error.response.status === 401 && useUserStore().isLoggedIn) {
+            console.log(useUserStore().isLoggedIn);
+            alert("Session has expired. You've been logged out.");
             useUserStore().logOut()
-            console.log("401 error, logging out");
         }
-
+        else if(error.response.status !== 401) {
+            console.log("An error has occurred. Errorcode: " + error.response.status);
+        }
         return Promise.reject(error);
     }
 );

@@ -1,20 +1,11 @@
 <template>
-  <div class="item-list">
-    <div v-if="listingType==='list'">
+  <div class="item-list-container">
+    <div v-if="listingType==='list'" class="item-list">
       <ItemComponent v-for="item in items" :item="item" :key="item.id" listing-type="list" />
     </div>
     <div v-else-if="listingType==='thumbnail'" class="item-grid">
       <ItemComponent v-for="item in items" :item="item" :key="item.id" listing-type="thumbnail" />
     </div>
-  </div>
-  <div class ="page-buttons">
-    <button class = "arrow" id="go-back" @click="leftArrow">
-      <img src = "@/assets/arrow-left.png">
-    </button>
-    <div class = "page-count"> {{ currentPage }} / {{ totalPages }}</div>
-    <button class = "arrow" id="go-forward" @click="rightArrow">
-      <img src = "@/assets/arrow-right.png">
-    </button>
   </div>
 </template>
 
@@ -22,6 +13,7 @@
 import { defineProps } from 'vue';
 import type { Item } from '@/types/ItemType';
 import ItemComponent from '@/components/Items/ItemComponent.vue';
+import PaginationComponent from './PaginationComponent.vue';
 
 const props = defineProps({
   items: {
@@ -31,35 +23,27 @@ const props = defineProps({
   listingType: {
     type: String,
     default: 'thumbnail'
-  },
-  currentPage: {
-    type: Number,
-    default: 1,
-  },
-  totalPages: {
-    type: Number,
-    default: 1,
-  },
+  }
 });
 
-const emit = defineEmits(["pagedown","pageup"]);
-
-function leftArrow(){
-  if(props.currentPage > 0){
-    emit("pagedown");
-  }
-}
-function rightArrow(){
-  if(props.currentPage < props.totalPages){
-    emit("pageup");
-  }
-}
 </script>
 
 <style scoped>
+.item-list-container {
+  padding-top: 2rem;
+  max-width: 854px;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 3rem;
+}
+
 .item-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(1,95%);
+  gap: 1rem;
   justify-content: center;
 }
 img {
@@ -68,13 +52,7 @@ img {
   width: 90%;
   vertical-align: center;
 }
-.page-count{
-  color: black;
-  font-weight: bolder;
-  font-size: 120%;
-  vertical-align: center;
-  text-align: center;
-}
+
 .arrow {
   background-color: transparent;
   border: 0;
@@ -84,14 +62,36 @@ img {
 .arrow :hover {
   transform: scale(1.1);
 }
-.page-buttons{
-  display: flex;
-  width: inherit;
-  justify-content: center;
-}
 
 .item-grid {
   display: grid;
+  gap: 1rem;
   grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 768px) {
+  .item-list-container {
+    padding-left: .5rem;
+    padding-right: .5rem;
+  }
+  .item-grid {
+    display: grid;
+    max-width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .item-list {
+    display: grid;
+    grid-template-columns: repeat(1,95%);
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+
+
+
 }
 </style>

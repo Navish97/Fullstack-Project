@@ -2,6 +2,8 @@
   <div id="wrapper">
     <AllCategories v-if="!hasChosenCategory"></AllCategories>
     <NewListing v-else></NewListing>
+    <IconPicker></IconPicker>
+
   </div>
 </template>
 
@@ -11,6 +13,7 @@ import type { Item } from '@/types/ItemType';
 import { useItemStore } from '@/stores/Item';
 import AllCategories from "@/components/Items/AllCategories.vue";
 import NewListing from "@/components/Items/NewListing.vue";
+import IconPicker from "@/components/Icon/IconPicker.vue";
 
 const itemStore = useItemStore();
 

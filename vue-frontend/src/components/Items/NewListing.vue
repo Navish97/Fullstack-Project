@@ -11,11 +11,14 @@
       <BaseInput id="inpTitle" class="input-container" type="text" label="Title" v-model="form.title" />
       <BaseInput id="inpDescription" class="input-container" type="text" label="Description" v-model="form.description" />
       <BaseInput id="inpPrice" class="input-container" type="number" label="Price" v-model="form.price" />
-      <BaseInput id="inpLongitude" class="input-container" type="text" label="Longitude" v-model="form.longitude" />
-      <BaseInput id="inpLatitude" class="input-container" type="text" label="Latitude" v-model="form.latitude" />
-      <BaseInput id="inpImageUrls" class="input-container" type="text" label="Image URLs" v-model="form.imageUrls" />
+      <BaseInput id="inpLongitude" class="input-container" type="number" label="Longitude" v-model="form.longitude" />
+      <BaseInput id="inpLatitude" class="input-container" type="number" label="Latitude" v-model="form.latitude" />
+      <MapComponent :latitude="form.latitude" :longitude="form.longitude" @set-location="(lat, long) => setLocation(lat,long)" />
+      <div class="input-container">
+        <input id="inpImages" type="file" @change="onImagesChange" multiple />
+      </div>
       <button id="button">Create Listing</button>
-      <ErrorMessage v-if="errorMessage" :message="errorMessage" />
+      <ErrorMessage v-if="errorMessage" :message="errorMessage" @clear-error="errorMessage=''"/>
     </form>
   </div>
 </template>
@@ -23,13 +26,13 @@
 <script setup lang="ts">
 import BaseInput from "@/components/Form/BaseInput.vue";
 import router from "@/router";
-import {ref, onMounted} from "vue";
+import {ref, onMounted, computed} from "vue";
 import axiosInstance from "@/service/AxiosInstance";
 import { useItemStore } from "@/stores/Item";
 import ErrorMessage from "@/components/Errors/ErrorMessage.vue";
+import MapComponent from "../MapComponent.vue";
 
 const itemStore = useItemStore();
-//et chosenCategory = computed(() => itemStore.getNewListingCategory);
 
 const resetCategory = () => {
   itemStore.setNewListingCategory(0);
@@ -42,34 +45,68 @@ interface Form {
   title: string;
   description: string;
   price: string;
-  longitude: string;
-  latitude: string;
-  imageUrls: string;
-  [key: string]: string;
+  longitude: number;
+  latitude: number;
+  images: File[];
+  [key: string]: string | File[] | number;
 }
 
 const form = ref<Form>({
   title: "",
   description: "",
   price: "",
-  longitude: "",
-  latitude: "",
-  imageUrls: "",
+  longitude: 60,
+  latitude: 10,
+  images: [],
 });
+
+function setLocation(newLatitude : number, newLongitude:number){
+  form.value.latitude = newLatitude;
+  form.value.longitude = newLongitude;
+}
 
 let icon = ref({
   type: "",
   iconUrl: "",
-})
+});
 
+let images = ref<{ url: string; name: string }[]>([]);
 
 const validateForm = () => {
-  const requiredFields = ['title', 'description', 'price', 'longitude', 'latitude', 'imageUrls'];
-  for (let field of requiredFields) {
-    if (!form.value[field]) {
-      return false;
-    }
+  errorMessage.value = "";
+
+  if (!form.value.title || form.value.title.length < 3 || form.value.title.length > 50) {
+    errorMessage.value = "Title must be at least 3 characters and cannot exceed 50";
+    return false
   }
+
+  if (!form.value.description || form.value.description.length < 20 ||form.value.description.length > 1000) {
+    errorMessage.value = "Description must be at least 20 characters and cannot exceed 1000";
+    return false
+  }
+
+  if (!form.value.price || isNaN(Number(form.value.price)) || Number(form.value.price) < 10 || Number(form.value.price) > 10000000) {
+    errorMessage.value = "Price must be a valid number between 10 and 10.000.000";
+    return false;
+  }
+
+  if (!form.value.longitude || isNaN(Number(form.value.longitude))
+      || Number(form.value.longitude) < -180 || Number(form.value.longitude) > 180) {
+    errorMessage.value = "Longitude must be a valid number between -180 and 180";
+    return false;
+  }
+
+  if (!form.value.latitude || isNaN(Number(form.value.latitude))
+      || Number(form.value.latitude) < -90 || Number(form.value.latitude) > 90) {
+    errorMessage.value = "Latitude must be a valid number between -90 and 90";
+    return false;
+  }
+
+  if (form.value.images.length === 0 || form.value.images.length > 5) {
+    errorMessage.value = "You must upload at least one image, and can upload up to 5";
+    return false;
+  }
+
   return true;
 };
 
@@ -78,27 +115,57 @@ const sendForm = async () => {
     return;
   }
   try {
-    const response = await axiosInstance.post("/api/items/new-listing", form.value);
+    const formData = new FormData();
+    formData.append("title", form.value.title);
+    formData.append("description", form.value.description);
+    formData.append("price", form.value.price);
+    formData.append("category_id", itemStore.getNewListingCategory.toString());
+    formData.append("longitude", form.value.longitude.toString());
+    formData.append("latitude", form.value.latitude.toString());
+    for (let i = 0; i < form.value.images.length; i++) {
+      const file = new File([form.value.images[i]], "image_" + i, { type: form.value.images[i].type });
+      formData.append("images", file);
+    }
+    const response = await axiosInstance.post("/api/items/new-listing", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     if (response.status === 200) {
       form.value.title = "";
       form.value.description = "";
       form.value.price = "";
-      form.value.longitude = "";
-      form.value.latitude = "";
-      form.value.imageUrls = "";
+      form.value.longitude = 60;
+      form.value.latitude = 10;
+      form.value.images = [];
+      images.value = [];
       await router.push("/"); // Redirect to the desired page after successful listing creation
     }
   } catch (error: any) {
-    alert(error.response); // TODO: Display a user-friendly error message
+    errorMessage.value = "Error " + error.request.status + ": " + error.response.data;
   }
 };
 
+const onImagesChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (!target.files) {
+    return;
+  }
+  const files = Array.from(target.files);
+  form.value.images = files;
+  images.value = files.map((file) => ({ url: URL.createObjectURL(file), name: file.name }));
+};
+
+const removeImage = (image: { url: string; name: string }) => {
+  const index = images.value.findIndex((img) => img.url === image.url);
+  images.value.splice(index, 1);
+  form.value.images.splice(index, 1);
+};
 
 const fetchIcon = async (chosenCategory: any) => {
   try {
     const response = await axiosInstance.get(`/api/${chosenCategory}/icon`);
     icon.value = response.data;
-    console.log(icon);
   } catch (error) {
     console.error(error);
   }
@@ -325,6 +392,47 @@ textarea{
   color: white;
   font-size: 15px;
   text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+  .form {
+    width: 90%;
+    padding: 30px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 12px;
+  }
+
+  .input {
+    font-size: 16px;
+  }
+
+  #button {
+    font-size: 16px;
+    height: 40px;
+  }
+
+  .input-container {
+    margin-top: 30px;
+    height: 40px;
+  }
+
+  .cut {
+    width: 60px;
+  }
+
+  .placeholder {
+    font-size: 12px;
+  }
 }
 
 </style>
