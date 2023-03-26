@@ -76,7 +76,7 @@ img {
   }
   .item-grid {
     display: grid;
-    width: 100%;
+    max-width: 100%;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 16px;
     margin-bottom: 16px;
@@ -87,7 +87,7 @@ img {
     grid-template-columns: repeat(1,95%);
     gap: 1rem;
     align-items: center;
-    margin-bottom: 16px; /* Add margin at the bottom to prevent overlapping */
+    margin-bottom: 16px;
   }
 
 
