@@ -53,7 +53,15 @@ public class ItemController {
     private final CategoryService categoryService;
     private final CookieService cookieService;
 
-    @GetMapping("/details/{itemId}")
+    /**
+     * Retrieves details of an item based on its ID,
+     * including whether the item is bookmarked by the user if the user is authenticated.
+     *
+     * @param itemId The ID of the item to retrieve details for.
+     * @param jwtToken The JWT access token from myMarketPlaceAccessToken cookie, if authenticated.
+     *                 The jwtToken cookie is sent automatically by the browser.
+     * @return ResponseEntity containing the ItemDTO with an additional isBookmarked field.
+     */
     @Operation(summary = "Get item details",
             description = "This retrieves item details by itemId. If the user is logged in, the response will also include whether the item is bookmarked by the user. If the user is unauthenticated, it defaults to false",
             parameters = {
@@ -65,7 +73,8 @@ public class ItemController {
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ItemDTO.class)))
             })
-    public ResponseEntity<?> getItemDetails(@PathVariable Long itemId, @CookieValue(value = "myMarketPlaceAccessToken", required = false) String jwtToken) throws JsonProcessingException {
+    @GetMapping("/details/{itemId}")
+    public ResponseEntity<?> getItemDetails(@PathVariable Long itemId, @CookieValue(value = "myMarketPlaceAccessToken", required = false) String jwtToken) {
         logger.info("Received get item details request");
         ItemDTO item = itemService.getItemById(itemId);
         Map<String, Object> response = new HashMap<>();
@@ -187,6 +196,27 @@ public class ItemController {
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
+    /**
+     * Retrieves a pageable list of items belonging to the specific authenticated user.
+     *
+     * @param pageNumber The page number to retrieve.
+     * @param size The number of items per page.
+     * @param jwtToken JWT token containing the user's information.
+     * @return ResponseEntity containing a pageable list of items belonging to the user.
+     */
+    @Operation(summary = "Gets a of items belonging to the authenticated user.",
+            description = "Retrieves a pageable list of items belonging to the authenticated user." +
+                    " The user is also identified by the JWT token provided in the request.",
+            parameters = {
+                    @Parameter(name = "pageNumber", description = "The page number to retrieve.", required = true),
+                    @Parameter(name = "size", description = "The number of items per page.", required = true),
+                    @Parameter(name = "myMarketPlaceAccessToken", description = "JWT access token retrieved from the myMarketPlace cookie", required = true)
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "The pageable list of items belonging to the user.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ItemDTO.class)))
+            })
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/my-listings")
     public ResponseEntity<?> getMyUserItemsPageable(
