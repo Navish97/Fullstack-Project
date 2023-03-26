@@ -1,6 +1,10 @@
 package ntnu.idatt2105.project.backend.controller;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +38,22 @@ public class ProfileController {
 
     Logger logger = Logger.getLogger(ProfileController.class.getName());
 
-
+    /**
+     * Retrieves the profile of the authenticated user.
+     *
+     * @param request the HTTP request containing the JWT token in the cookie
+     * @return ResponseEntity containing the user's profile information
+     */
+    @Operation(summary = "Gets the profile of an authenticated user",
+            description = "Retrieves the profile information of the authenticated user.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "If authenticated, the authenticated user's profile information.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = UserProfileDTO.class))),
+                    @ApiResponse(responseCode = "401", description = "Returns error when authentication fails",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = UserProfileDTO.class)))
+            })
     @GetMapping("/my-profile")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getMyProfile(HttpServletRequest request) {
@@ -48,6 +67,23 @@ public class ProfileController {
         }
     }
 
+    /**
+     * Retrieves the authentication status of the user.
+     *
+     * @param request the HTTP request containing the JWT token in the cookie
+     * @return ResponseEntity with status code 200 if the user is authenticated, 401 if the user is not authenticated
+     */
+    @Operation(summary = "Gets the authentication status of a user",
+            description = "Retrieves the authentication status of the user.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "When user is authenticated.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AuthenticationState.class))),
+                    @ApiResponse(responseCode = "401", description = "When authentication fails.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AuthenticationState.class))),
+            })
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/user-status")
     public ResponseEntity<?> getUserStatus(HttpServletRequest request) {
         try {
