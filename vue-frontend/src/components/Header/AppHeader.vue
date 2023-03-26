@@ -124,7 +124,6 @@ a {
 
 @media (max-width: 768px) {
   #navbar {
-    background-color: rgba(0, 0, 0, 0.34);
     position: absolute;
     width: 100%;
   }
