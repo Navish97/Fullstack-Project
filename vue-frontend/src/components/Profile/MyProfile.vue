@@ -62,10 +62,9 @@ async function loadData() {
 .profile-container {
   display: grid;
   grid-template-columns: auto 1fr;
-  align-items: center;
   column-gap: 1rem;
   justify-items: end;
-  justify-content: end;
+  justify-content: space-evenly;
   height: 100%;
 }
 

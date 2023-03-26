@@ -12,47 +12,35 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import BaseInput from "@/components/Form/BaseInput.vue";
 import router from "@/router";
 import {postRegister} from "@/service/Authentication/AuthenticationService";
-import errorMessage from "@/components/Errors/ErrorMessage.vue";
 import {ref} from "vue";
 import ErrorMessage from "@/components/Errors/ErrorMessage.vue";
 
+const form = ref({
+  name: '',
+  email: '',
+  password: '',
+});
 
+const errorMessage = ref('');
 
-export default {
-  name: 'RegisterForm',
-  components: {ErrorMessage, BaseInput},
-  data() {
-    return {
-      form: {
-        name: "",
-        email: "",
-        password: "",
-      },
-      errorMessage: "",
-    }
-  },
-  methods: {
-    sendForm() {
-      postRegister(this.form)
-          .then((response) => {
-            if (response.status === 200) {
-              this.form.name = "";
-              this.form.email = "";
-              this.form.password = "";
-              router.push("/");
-            }
-
-          })
-          .catch((error) => {
-            this.errorMessage = "Error " + error.request.status + ": " + error.response.data;
-          });
-    }
-  },
-}
+const sendForm = () => {
+  postRegister(form.value)
+      .then((response) => {
+        if (response.status === 200) {
+          form.value.name = '';
+          form.value.email = '';
+          form.value.password = '';
+          router.push('/login');
+        }
+      })
+      .catch((error) => {
+        errorMessage.value = `Error ${error.request.status}: ${error.response.data}`;
+      });
+};
 
 </script>
 
