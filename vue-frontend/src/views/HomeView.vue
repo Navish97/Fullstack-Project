@@ -4,7 +4,7 @@
       <div class="title">
         <h1>MyMarketPlace</h1>
       </div>
-      <div class="wave-container">
+      <div class="wave-container" id="wave-container">
         <Waves />
       </div>
     </div>
@@ -18,7 +18,7 @@
           </div>
         </div>
 
-        <div class="items">
+        <div class="items" id="listing-items">
           <ItemList 
           :pages="pages" 
           :items="itemStore.items" 
@@ -63,6 +63,13 @@ const currentListingType = computed(() => {
 let currentPage = ref(1);
 let totalPages = ref(1);
 
+function scrollToTop() {
+  const element = document.getElementById("wave-container");
+  if(element) {
+    element.scrollIntoView({ block: "start", behavior: "auto" });
+  }
+}
+
 const pages = computed(() => {
   const pageArray = [];
   for (let i = 1; i <= totalPages.value; i++) {
@@ -81,6 +88,7 @@ function toggleFilter() {
 }
 
 function setPage(page : number){
+  scrollToTop();
   currentPage.value = page;
   loadItems(route.query);
 }
