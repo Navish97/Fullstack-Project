@@ -45,9 +45,11 @@
         <div>
         </div>
       </div>
-      <MapComponent id="map" :latitude="latitude!" :longitude="longitude!" :maxDistance="maxDistance!" :radiusOn="true" @setLocation="(lat, long) => setLocation(lat, long)" />
-        <button class="apply" @click = "sendQuery()">Apply</button>
-        <button class="reset" @click="resetFilters()">Reset</button>
+      <div class="map-container" ref="mapContainer">
+        <MapComponent id="map" :latitude="latitude!" :longitude="longitude!" :maxDistance="maxDistance!" :radiusOn="true" @setLocation="(lat, long) => setLocation(lat, long)" />
+      </div>
+      <button class="apply" @click = "sendQuery()">Apply</button>
+      <button class="reset" @click="resetFilters()">Reset</button>
     </div>
 </template>
 
