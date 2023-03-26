@@ -4,11 +4,13 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.model.authentication.AuthenticationRequest;
 import ntnu.idatt2105.project.backend.model.dto.AuthenticationResponse;
 import ntnu.idatt2105.project.backend.model.authentication.RegisterRequest;
 import ntnu.idatt2105.project.backend.exceptions.UserAlreadyExistsException;
 import ntnu.idatt2105.project.backend.service.AuthenticationService;
+import ntnu.idatt2105.project.backend.service.UserService;
 import org.apache.http.auth.InvalidCredentialsException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,8 @@ import java.util.logging.Logger;
 public class LoginController {
 
     private final AuthenticationService authenticationService;
+    private final UserService userService;
+
     Logger logger = Logger.getLogger(LoginController.class.getName());
 
 
@@ -51,6 +55,9 @@ public class LoginController {
                 cookie.setDomain("localhost");
                 response.addCookie(cookie);
             }
+            User user = userService.findByEmail(authenticationRequest.getEmail());
+            authResponse.setUserId(user.getId());
+            authResponse.setUserRole(user.getRole().toString());
             return ResponseEntity.ok(authResponse);
         } catch (InvalidCredentialsException e) {
             return ResponseEntity.badRequest().body(AuthenticationResponse.builder().errorMessage(e.getMessage()).build());

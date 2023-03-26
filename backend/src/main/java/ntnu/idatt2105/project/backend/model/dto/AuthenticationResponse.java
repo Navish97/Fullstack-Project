@@ -17,5 +17,7 @@ public class AuthenticationResponse {
     @JsonIgnore
     private String token;
     private String errorMessage;
+    private String userId;
+    private String userRole;
 
 }
