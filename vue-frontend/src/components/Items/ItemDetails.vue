@@ -161,6 +161,7 @@ function nextImage() {
 }
 
 .image-index {
+  color: white;
   position: absolute;
   object-fit: contain;
   bottom: 0;
