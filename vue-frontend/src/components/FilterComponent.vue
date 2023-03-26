@@ -25,19 +25,20 @@
         <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.type }}</option>
       </select>
       </div>
-        <button class="apply" @click = "sendQuery()">Apply</button>
+        <button class="apply"  @click = "sendQuery()">Apply</button>
         <button class="reset" @click="resetFilters()">Reset</button>
     </div>
 </template>
 
 <script setup lang="ts">
-import {ref, computed, onMounted, watch} from 'vue';
+import {ref, computed, onMounted, watch, defineEmits} from 'vue';
 import router from '@/router';
 import { useItemStore } from '@/stores/Item';
 import  axiosInstance  from '@/service/AxiosInstance';
 import type {Category} from "@/types/CategoryType";
 
 const itemStore = useItemStore();
+const emit = defineEmits(['close']);
 
 const filterState = computed(() => {
     const query: {[key: string]: string} = {};
@@ -59,7 +60,7 @@ function sendQuery(){
     router.push({
         path:'/',
         query: filterState.value,
-    })
+    }).then((response) => {emit('close');})
 }
 
 
