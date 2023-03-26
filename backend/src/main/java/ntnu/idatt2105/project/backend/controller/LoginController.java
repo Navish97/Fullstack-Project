@@ -52,7 +52,7 @@ public class LoginController {
                                     schema = @Schema(implementation = AuthenticationResponse.class)))
             })
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request, HttpServletResponse response){
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request, HttpServletResponse response) throws UserAlreadyExistsException {
         try {
             logger.info("Registering user " + request.getEmail());
             AuthenticationResponse authResponse = authenticationService.register(request);
@@ -61,7 +61,7 @@ public class LoginController {
             return ResponseEntity.ok(authResponse);
         } catch (UserAlreadyExistsException e) {
             logger.info("User " + request.getEmail() + " already exists");
-            return ResponseEntity.badRequest().body(AuthenticationResponse.builder().errorMessage(e.getMessage()).build());
+            throw new UserAlreadyExistsException("User " + request.getEmail() + " already exists");
         }
     }
 
