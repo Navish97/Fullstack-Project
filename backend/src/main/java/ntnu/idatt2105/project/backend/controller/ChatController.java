@@ -61,15 +61,17 @@ public class ChatController {
     @GetMapping("/load-chats")
     public ResponseEntity<?> getChats(HttpServletRequest request){
 
-        // Extract userID from JWT
+        logger.info("Received request for retrieving chats for user");
         String jwtToken = cookieService.extractTokenFromCookie(request);
         String email = jwtService.extractUsername(jwtToken);
         User user = userService.findByEmail(email);
 
         List<ChatDTO> chats = chatService.getChats(user);
         if(chats == null) {
+            logger.info("No chats found for user");
             return ResponseEntity.badRequest().build();
         }
+        logger.info("Returning the following chats for user " + user.getId() + user.getName() + " " + chats);
         return ResponseEntity.ok(generateResponseChats(chats));
 
     }
@@ -135,16 +137,18 @@ public class ChatController {
             })
     @PostMapping("/send-message")
     public ResponseEntity<?> sendMessage(HttpServletRequest request, @RequestBody Map<String, Object> requestBody){
-        // Extract userID from JWT
+        logger.info("Received request for sending message");
         String jwtToken = cookieService.extractTokenFromCookie(request);
         String email = jwtService.extractUsername(jwtToken);
         User user = userService.findByEmail(email);
 
+        logger.info("Extracted user from JWT");
         String message = (String) requestBody.get("message");
         Long chatId = ((Number) requestBody.get("chatId")).longValue();
         Long itemId = ((Number) requestBody.get("itemId")).longValue();
         ChatDTO chatDTO;
         if(chatId == -1){
+            logger.info("Chat ID is -1, creating new chat");
             logger.info("Creating new chat");
             chatDTO = chatService.newChat(user, itemId);
             chatId = chatDTO.getId();
