@@ -38,25 +38,28 @@
         </div>
         </div>
         <div>
-          <label for ="maxDistance">Max distance (km)</label>
+          <label for ="maxDistance">Max distance (m)</label>
           <input type="number" id ="maxDistance" name="maxDistance" v-model="maxDistance">
         </div>
+        <div>
+        </div>
       </div>
+      <MapComponent id="map" :latitude="latitude!" :longitude="longitude!" :maxDistance="maxDistance!" :radiusOn="true" @setLocation="(lat, long) => setLocation(lat, long)" />
         <button class="apply" @click = "sendQuery()">Apply</button>
         <button class="reset" @click="resetFilters()">Reset</button>
     </div>
 </template>
 
 <script setup lang="ts">
-import {ref, computed, onMounted, watch, defineEmits} from 'vue';
+import {ref, computed, onMounted, defineEmits} from 'vue';
 import router from '@/router';
 import { useItemStore } from '@/stores/Item';
 import  axiosInstance  from '@/service/AxiosInstance';
 import type {Category} from "@/types/CategoryType";
+import MapComponent from './MapComponent.vue';
 
 const itemStore = useItemStore();
 const emit = defineEmits(['close']);
-
 const filterState = computed(() => {
     const query: {[key: string]: string} = {};
     if(minPrice.value !== null) {
@@ -83,6 +86,11 @@ const filterState = computed(() => {
     
     return query;
 })
+
+function setLocation(newLatitude : number, newLongitude:number){
+  latitude.value = newLatitude;
+  longitude.value = newLongitude;
+}
 function sendQuery(){
     router.push({
         path:'/',
@@ -90,6 +98,7 @@ function sendQuery(){
     }).then((response) => {emit('close');})
 }
 
+const zoom = 2;
 
 
 
@@ -98,9 +107,9 @@ function resetFilters() {
   maxPrice.value = null;
   selectedCategory.value = null;
   search.value = "";
-  longitude.value = null;
-  latitude.value = null;
-  maxDistance.value = null;
+  longitude.value = 10;
+  latitude.value = 60;
+  maxDistance.value = 5000;
   sendQuery();
 }
 
@@ -143,14 +152,18 @@ onMounted(() => {
     const categories = ref<Category[]>([]);
     const selectedCategory = ref<number | null>(null);
     const search = ref<string>('');
-    const longitude = ref<number | null>(null);
-    const latitude = ref<number | null>(null);
-    const maxDistance = ref<number |null>(null);
+    const longitude = ref<number | null>(10);
+    const latitude = ref<number | null>(60);
+    const maxDistance = ref<number |null>(5000);
 </script>
 
 
 <style scoped>
 
+.map-wrapper{
+  width: 100%;
+  height: auto;
+}
 .reset {
   border-radius: 4px;
   border: 1px solid #646464;
@@ -242,6 +255,9 @@ onMounted(() => {
         background-color: white;
         box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.15);
         transition: transform 1s ease;
+      }
+      #map{
+        width: auto;
       }
     }
 
