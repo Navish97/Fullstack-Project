@@ -45,9 +45,11 @@
         <div>
         </div>
       </div>
-      <MapComponent id="map" :latitude="latitude!" :longitude="longitude!" :maxDistance="maxDistance!" :radiusOn="true" @setLocation="(lat, long) => setLocation(lat, long)" />
-        <button class="apply" @click = "sendQuery()">Apply</button>
-        <button class="reset" @click="resetFilters()">Reset</button>
+      <div class="map-container" ref="mapContainer">
+        <MapComponent id="map" :latitude="latitude!" :longitude="longitude!" :maxDistance="maxDistance!" :radiusOn="true" @setLocation="(lat, long) => setLocation(lat, long)" />
+      </div>
+      <button class="apply" @click = "sendQuery()">Apply</button>
+      <button class="reset" @click="resetFilters()">Reset</button>
     </div>
 </template>
 
@@ -180,10 +182,6 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.map-wrapper{
-  width: 100%;
-  height: auto;
-}
 .reset {
   border-radius: 4px;
   border: 1px solid #646464;
@@ -277,6 +275,7 @@ onMounted(() => {
         transition: transform 1s ease;
       }
       #map{
+        height: 200px;
         width: auto;
       }
     }
