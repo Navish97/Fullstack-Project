@@ -1,7 +1,5 @@
 package ntnu.idatt2105.project.backend;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import ntnu.idatt2105.project.backend.controller.CategoryController;
 import ntnu.idatt2105.project.backend.model.Category;
@@ -13,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
