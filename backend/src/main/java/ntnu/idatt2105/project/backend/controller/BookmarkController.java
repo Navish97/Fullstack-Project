@@ -87,6 +87,7 @@ public class BookmarkController {
      * @throws UserNotFoundException if the user is not found.
      * @throws BookmarkAlreadyExistsException if the bookmark already exists for the user.
      */
+    @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Add a bookmark for a specific item to a user's bookmarks",
             description = "Adds a bookmark for the given item to the authenticated user's bookmarks." +
                     " The user is not passed as a parameter, but the username is extracted from the JWT token." +
