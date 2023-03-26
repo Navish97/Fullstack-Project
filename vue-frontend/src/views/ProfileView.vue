@@ -17,10 +17,13 @@
         <ItemList
             :pages="pages"
             :items="itemStore.items"
-            :listingType="'thumbnail'"
-            :currentPage="currentPage"
+            :listingType="'thumbnail'"/>
+        <PaginationComponent
+            :pages="pages"
             @load-page="(page) => setPage(page)"
-            @nav-page="(direction) => callPage(direction)" />
+            @previous-page="(direction) => callPage(direction)"
+            class = "pager"
+            :current-page="currentPage"/>
       </div>
     </div>
   </div>
@@ -40,6 +43,7 @@ import { ref, computed} from 'vue';
 import {getMyItems} from '@/service/ItemService';
 import {useItemStore} from "@/stores/Item";
 import {useUserStore} from "@/stores/User";
+import PaginationComponent from "@/components/Items/PaginationComponent.vue";
 const itemStore = useItemStore();
 const userStore = useUserStore();
 
@@ -112,9 +116,12 @@ function closeItems() {
   height: 90%;
   background-color: white;
   position: absolute;
+  align-items: center;
   display: flex;
+  flex-direction: column;
   border-radius: 16px;
   overflow-y: auto;
+  padding-bottom: 2rem;
 }
 
 .close-btn {
@@ -124,11 +131,18 @@ function closeItems() {
   font-size: 24px;
   z-index: 1000;
   font-weight: bold;
-  color: #000000;
-  background: transparent;
+  color: #ffffff;
+  background-color: rgba(102, 0, 136, 0.51);
   border: none;
   cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .grid {
   display: flex;
   flex-wrap: wrap;
