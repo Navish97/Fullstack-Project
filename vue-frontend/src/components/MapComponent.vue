@@ -47,8 +47,16 @@ onMounted(() => {
         fillOpacity: 0.5,
         radius: 5000
     });
+    if(props.fixedMap){
+        map.dragging.disable();
+        map.doubleClickZoom.enable();
+        map.options.scrollWheelZoom = "center";
+        map.setView([props.latitude,props.longitude],3);
+        marker.setLatLng([props.latitude,props.longitude]);
+    }
     toggleRadius(props.radiusOn);
-    map.on("click", (loc) => {
+    if(!props.fixedMap){
+        map.on("click", (loc) => {
         map.setView(loc.latlng);
         if(props.radiusOn){
             circle.setLatLng(loc.latlng);
@@ -58,6 +66,7 @@ onMounted(() => {
         }
         emit('setLocation', loc.latlng.lat, loc.latlng.lng)
     })
+    }
     watch(
     () => [props.latitude, props.longitude, props.maxDistance],
     ([newLat, newLng, maxDistance]) => {

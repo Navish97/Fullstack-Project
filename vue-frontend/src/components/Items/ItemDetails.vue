@@ -14,10 +14,11 @@
       </div>
       <div class="item-info">
         <h2>{{ item.title }}</h2>
-        <p>(DD): {{ item.latitude }}, {{ item.longitude }}</p>
         <p>Selger Id: {{ item.userId }}</p>
         <h3>Pris: {{ formattedPrice }}</h3>
         <h4>{{ item.description }}</h4>
+        <p>(DD): {{ item.latitude }}, {{ item.longitude }}</p>
+        <MapComponent id="map" :latitude="item.latitude" :longitude="item.longitude" :fixed-map="true" />
         <br>
       </div>
     </div>
@@ -34,6 +35,7 @@ import {useUserStore} from "@/stores/User";
 import { RouterLink } from 'vue-router';
 import type { Chat } from '@/types/ChatType';
 import { useChatStore } from '@/stores/Chat';
+import MapComponent from '../MapComponent.vue';
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
@@ -121,6 +123,11 @@ onMounted(() => {
 
 <style scoped>
 
+#map{
+  height: 400px;
+  width: 400px;
+  margin-top: 1%;
+}
 .bookmark-icon {
   position: absolute;
   top: 0;
