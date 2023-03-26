@@ -29,7 +29,7 @@ export const useUserStore = defineStore({
         isItemBookmarked: (state) => (item: Item) => {
                 return state.bookmarks.some(bookmark => bookmark.itemId === item.id);
         },
-        isLoggedIn: (state) => () => {
+        isLoggedIn: (state) => {
             return state.authenticated;
         }
 
@@ -65,7 +65,7 @@ export const useUserStore = defineStore({
         },
         async checkAuthStatus() {
             try {
-                if (this.isLoggedIn()) {
+                if (this.isLoggedIn) {
                     const response = await axiosInstance.get('/api/user-status');
                     this.authenticated = true; // Set authenticated to true on successful response
                 }
