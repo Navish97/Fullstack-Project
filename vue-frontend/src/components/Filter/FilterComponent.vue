@@ -107,9 +107,9 @@ function resetFilters() {
   maxPrice.value = null;
   selectedCategory.value = null;
   search.value = "";
-  longitude.value = 10;
-  latitude.value = 60;
-  maxDistance.value = 5000;
+  longitude.value = null;
+  latitude.value = null;
+  maxDistance.value = null;
   sendQuery();
 }
 
