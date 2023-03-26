@@ -4,9 +4,10 @@ import MyProfile from '../views/ProfileView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import HomeView from '../views/HomeView.vue'
 import ItemDetailsView from '../views/ItemDetailsView.vue'
-import NewListingView from "../views/NewListingView.vue";
-import { useUserStore } from '@/stores/User';
+import NewListingView from "../views/NewListingView.vue"
+import { useUserStore } from '@/stores/User'
 import MessagesView from '@/views/MessagesView.vue'
+import EditItemView from '@/views/EditItemView.vue'
 
 
 const router = createRouter({
@@ -61,6 +62,11 @@ const router = createRouter({
       path: '/chats/new-chat:item',
       name: 'new-chat',
       component: MessagesView,
+    },
+    {
+      path: '/item/edit-item:id',
+      name: 'edit-item',
+      component: EditItemView,
     },
   ]
 })
