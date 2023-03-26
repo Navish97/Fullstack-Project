@@ -90,7 +90,7 @@ async function updatePassword() {
   padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s;
-  border-radius: 5px;
+  border-radius: 15px;
   margin-top: 20px;
   width: 50%;
 }
@@ -249,13 +249,16 @@ p {
 }
 
 @media (max-width: 768px) {
-  .profile-picture{
-    width: 75px;
-    height: 75px;
+  .header{
+    font-size: 3rem;
+  }
+  .edit-container{
+    width: 80%;
+    margin: auto;
   }
 
-  .profile-container{
-    height: 150px;
+  div, button{
+    margin-top: 50px;
   }
 }
 </style>

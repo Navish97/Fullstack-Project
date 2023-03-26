@@ -282,6 +282,7 @@ Wave {
   }
   .content-wrapper{
     margin: 60px auto;
+    width: 80%;
   }
 
   .wave-container {

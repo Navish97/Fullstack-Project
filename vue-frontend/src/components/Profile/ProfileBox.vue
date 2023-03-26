@@ -109,6 +109,8 @@ async function loadData() {
   .profile-wrapper{
     width: 100%;
     height: 40%;
+    padding: 20px 0;
+
   }
 
   .profile-wrapper{
@@ -121,5 +123,6 @@ async function loadData() {
     left: 0;
     margin-top: 40px;
   }
+
 }
 </style>
