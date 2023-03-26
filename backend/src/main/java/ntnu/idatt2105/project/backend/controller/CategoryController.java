@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import ntnu.idatt2105.project.backend.model.dto.ErrorResponse;
 import ntnu.idatt2105.project.backend.model.Category;
+import ntnu.idatt2105.project.backend.model.dto.response.SuccessResponse;
 import ntnu.idatt2105.project.backend.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,5 +80,29 @@ public class CategoryController {
         }
         logger.info("Icon URL: " + category);
         return ResponseEntity.ok(category);
+    }
+
+    @Operation(summary = "Delete category by ID",
+            description = "Delete a category by its ID",
+            parameters = {
+                    @Parameter(name = "id",
+                            description = "The ID of the category to delete")
+            },
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Category successfully deleted"),
+                    @ApiResponse(responseCode = "404", description = "Category not found")
+            })
+    @DeleteMapping("/categories/{id}")
+    @PreAuthorize("hasRole('ADMIN') and isAuthenticated()")
+    public ResponseEntity<?> deleteCategoryById(@PathVariable Long id) {
+        boolean isDeleted = categoryService.deleteCategoryById(id);
+        logger.info("Category deleted: " + isDeleted);
+
+        if (isDeleted) {
+            return ResponseEntity.ok(new SuccessResponse("Category was successfully deleted", 200));
+        } else {
+            logger.info("Category not deleted");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Category not deleted"));
+        }
     }
 }
