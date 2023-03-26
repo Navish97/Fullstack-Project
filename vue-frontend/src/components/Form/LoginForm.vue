@@ -27,9 +27,10 @@ const form = reactive({
 const sendForm = async () => {
   try {
     const response = await postLogin(form);
-
     if (response.status === 200) {
       userStore.setLoggedIn(true);
+      userStore.setRole(response.data.userRole);
+      userStore.setLoggedInId(response.data.userId);
       form.email = '';
       form.password = '';
       await router.push('/');

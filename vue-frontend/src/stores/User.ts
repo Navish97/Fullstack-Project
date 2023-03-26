@@ -8,13 +8,21 @@ import {getUserBookmarks} from "@/service/BookmarkService";
 export const useUserStore = defineStore({
     id: 'user',
     state: () => ({
+        loggedInId: '' as string,
         bookmarks: [] as Bookmark[],
-        authenticated: false as boolean
+        authenticated: false as boolean,
+        role: '' as string,
     }),
     persist: {
         storage: sessionStorage,
     },
     getters: {
+        getLoggedInId: (state) => {
+            return state.loggedInId;
+        },
+        getRole: (state) => {
+            return state.role;
+        },
         getBookmarks: (state) => {
             return state.bookmarks
         },
@@ -27,10 +35,18 @@ export const useUserStore = defineStore({
 
     },
     actions: {
+        setLoggedInId(id: string) {
+            this.loggedInId = id;
+        },
+        setRole(role: string) {
+            this.role = role;
+        },
         logOut() {
             router.push("/")
             this.bookmarks = [];
             this.authenticated = false;
+            this.loggedInId = '';
+            this.role = '';
         },
         setLoggedIn(loggedIn: boolean) {
             this.authenticated = loggedIn
