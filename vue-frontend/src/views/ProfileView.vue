@@ -111,14 +111,10 @@ function closeItems() {
   width: 70%;
   height: 90%;
   background-color: white;
-  position: relative;
-  overflow: hidden;
+  position: absolute;
   display: flex;
   border-radius: 16px;
-  justify-content: center;
-  align-items: center;
   overflow-y: auto;
-  max-height: 100%;
 }
 
 .close-btn {
@@ -239,12 +235,12 @@ Wave {
     width: 100%;
   }
   .item-list-wrapper {
-    padding-top: 5rem;
+    padding-top: 0;
     width: 95%;
     height: 95%;
     background-color: white;
     border-radius: 10px;
-    position: relative;
+    position: absolute;
   }
 
   .close-btn {
