@@ -32,6 +32,16 @@ public class JwTAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final CookieService cookieService;
 
+    /**
+     * Method for extracting the jwt token from the cookie.
+     * The method validates the extracted cookie and sets the authentication state of the request.
+     *
+     * @param request The HttpServletRequest object for this request.
+     * @param response The HttpServletResponse object for this request.
+     * @param filterChain FilterChain object for this request.
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
@@ -66,7 +76,6 @@ public class JwTAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
-        // Set AuthenticationState as a request attribute
         request.setAttribute("authState", authState);
 
         filterChain.doFilter(request, response);
