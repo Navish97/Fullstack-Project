@@ -58,9 +58,22 @@ async function updatePassword() {
   };
 
   try {
-    const response = await axiosInstance.post('/api/users/update-password', passwordData);
-    router.push('/my-profile');
-  } catch (error) {
+    const response = await axiosInstance.post('/api/my-profile/change-password', passwordData);
+    if (response.status === 200) {
+      alert('Password changed successfully!')
+      await router.push('/my-profile');
+    }
+    else if(response.status === 400){
+      alert('Old password is incorrect!')
+    }
+    else if(response.status === 401){
+      alert('You are not authorized to change password!')
+    }
+    else{
+      alert('Something went wrong!')
+    }
+  }
+    catch (error) {
     console.error(error);
   }
 }
