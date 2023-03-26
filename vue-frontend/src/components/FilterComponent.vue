@@ -1,6 +1,10 @@
 <template>
     <div class = "filter-wrapper">
         <div class = "header">Filter</div>
+        <div class = "searchbar">
+          <label for="search">Search</label>
+          <textarea v-model="search" maxlength = "40" rows="2" id="search" placeholder="Search in title/description"></textarea>
+        </div>
         <div class = "price">
             <label>Price</label>
             <div class = "price-input">
@@ -43,9 +47,12 @@ const filterState = computed(() => {
     if(maxPrice.value !== null) {
         query.maxPrice = maxPrice.value.toString();
     }
-    if (selectedCategory.value !== "") {
+    if (selectedCategory.value !== null) {
     query.category = selectedCategory.value.toString();
   }
+    if (search.value !== ""){
+      query.search = search.value!;
+    }
     return query;
 })
 function sendQuery(){
@@ -56,13 +63,13 @@ function sendQuery(){
 }
 
 
-const categories = ref<Category[]>([]);
-const selectedCategory = ref<string>('');
+
 
 function resetFilters() {
   minPrice.value = null;
   maxPrice.value = null;
-  selectedCategory.value = "";
+  selectedCategory.value = null;
+  search.value = "";
   sendQuery();
 }
 
@@ -84,9 +91,18 @@ onMounted(() => {
     if(queryParams.has("maxPrice") && queryParams.get("maxPrice") !== ""){
         maxPrice.value = parseInt(queryParams.get("maxPrice")!);
     }
+    if(queryParams.has("category") && queryParams.get("category") !== ""){
+      selectedCategory.value = parseInt(queryParams.get("category")!);
+    }
+    if(queryParams.has("search") && queryParams.get("search") !== ""){
+      search.value = queryParams.get("search")!;
+    }
 })
     const minPrice = ref<number | null>(null);
     const maxPrice = ref<number | null>(null);
+    const categories = ref<Category[]>([]);
+    const selectedCategory = ref<number | null>(null);
+    const search = ref<string>('');
 </script>
 
 
@@ -99,6 +115,16 @@ onMounted(() => {
   font-size: 14px;
   padding: 5px 8px;
   margin: 0 5px 5px 0;
+}
+#search {
+  padding: 3%;
+  margin-top: 1%;
+  resize: none;
+  height: auto;
+}
+.searchbar {
+  display: flex;
+  flex-direction: column;
 }
 
     .filter-wrapper{

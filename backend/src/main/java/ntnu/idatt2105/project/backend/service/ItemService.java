@@ -44,7 +44,8 @@ public class ItemService {
         int minPrice = filter.getMinPrice();
         int maxPrice = filter.getMaxPrice();
         long category = filter.getCategory();
-        return itemRepository.getItemsFiltered(minPrice, maxPrice, category, PageRequest.of(pageNr, pageSize));
+        String search = filter.getSearch();
+        return itemRepository.getItemsFiltered(minPrice, maxPrice, category, search, PageRequest.of(pageNr, pageSize));
     }
 
     public Page<Item> getItemsByUserIdPageable(String userId, Pageable pageable) {

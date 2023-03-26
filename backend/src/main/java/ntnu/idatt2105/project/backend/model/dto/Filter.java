@@ -14,6 +14,7 @@ public class Filter {
     boolean usedValue;
     boolean newValue;
     long category;
+    String search;
 
     /**
      * Default constructor for the Filter class.
@@ -22,13 +23,15 @@ public class Filter {
      * @param maxPrice
      * @param usedValue
      * @param newValue
+     * @param search
      */
-    public Filter(int minPrice, int maxPrice, boolean usedValue, boolean newValue, long category) {
+    public Filter(int minPrice, int maxPrice, boolean usedValue, boolean newValue, long category, String search) {
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
         this.usedValue = usedValue;
         this.newValue = newValue;
         this.category = category;
+        this.search = search;
     }
 
     /**
