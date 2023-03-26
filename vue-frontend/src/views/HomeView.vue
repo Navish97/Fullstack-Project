@@ -109,7 +109,7 @@ onBeforeRouteUpdate(async (to, from) => {
 
 onMounted(() => {
   loadItems(route.query);
-  if (userStore.isLoggedIn()) {
+  if (userStore.isLoggedIn) {
     userStore.fetchBookmarks();
   }
 })

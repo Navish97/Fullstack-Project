@@ -31,7 +31,7 @@ async function toggleBookmark() {
 }
 
 const isLoggedIn = computed(() => {
-  return userStore.isLoggedIn();
+  return userStore.isLoggedIn;
 });
 
 const isBookmarked = computed(() => {

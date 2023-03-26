@@ -54,5 +54,5 @@ it("It doesn't log in the user on failed login", async () => {
     wrapper.find("#inpPassord").setValue("123456");
     await wrapper.find("#button").trigger("click");
 
-    expect(userStore.isLoggedIn()).toBe(false);
+    expect(userStore.isLoggedIn).toBe(false);
 });

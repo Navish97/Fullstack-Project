@@ -26,7 +26,7 @@ import {useUserStore} from "@/stores/User";
 import {computed, ref, onMounted} from "vue";
 
 const userStore = useUserStore();
-const loggedIn = computed(() => userStore.isLoggedIn());
+const loggedIn = computed(() => userStore.isLoggedIn);
 
 const menuOpen = ref(false);
 const toggleMenu = () => {

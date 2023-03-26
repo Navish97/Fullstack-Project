@@ -68,7 +68,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
     await userStore.checkAuthStatus()
-    if(to.meta.requiresAuth && !userStore.isLoggedIn()) {
+    if(to.meta.requiresAuth && !userStore.isLoggedIn) {
         next({name: 'login'});
     }
     else{
