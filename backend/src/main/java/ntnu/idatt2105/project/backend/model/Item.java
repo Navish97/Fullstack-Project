@@ -46,11 +46,11 @@ public class Item {
 
     @Column(name = "longitude")
     @Schema(description = "The longitude position of the item")
-    private String longitude;
+    private Double longitude;
 
     @Column(name = "latitude")
     @Schema(description = "The latitude position of the item")
-    private String latitude;
+    private Double latitude;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     @Schema(description = "List of images for the item")
