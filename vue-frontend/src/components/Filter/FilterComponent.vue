@@ -1,6 +1,7 @@
 <template>
     <div class = "filter-wrapper">
         <div class = "header">Filter</div>
+      <button class="close-button" @click="emit('close')">X</button>
         <div class = "searchbar">
           <label for="search">Search</label>
           <textarea v-model="search" maxlength = "40" rows="2" id="search" placeholder="Search in title/description"></textarea>
@@ -107,9 +108,9 @@ function resetFilters() {
   maxPrice.value = null;
   selectedCategory.value = null;
   search.value = "";
-  longitude.value = 10;
-  latitude.value = 60;
-  maxDistance.value = 5000;
+  longitude.value = null;
+  latitude.value = null;
+  maxDistance.value = null;
   sendQuery();
 }
 
@@ -159,6 +160,25 @@ onMounted(() => {
 
 
 <style scoped>
+@media (min-width: 769px) {
+  .close-button {
+    display: none;
+  }
+}
+
+.close-button {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  background-color: rgba(30, 29, 29, 0.99);
+  color: #ffffff;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
 
 .map-wrapper{
   width: 100%;
