@@ -35,7 +35,7 @@ import {useUserStore} from "@/stores/User";
 import { RouterLink } from 'vue-router';
 import type { Chat } from '@/types/ChatType';
 import { useChatStore } from '@/stores/Chat';
-import MapComponent from '../MapComponent.vue';
+import MapComponent from '../Map/MapComponent.vue';
 
 const itemStore = useItemStore();
 const userStore = useUserStore();

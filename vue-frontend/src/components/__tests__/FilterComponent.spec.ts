@@ -1,7 +1,7 @@
 import {beforeEach, expect, it} from "vitest";
 import {createPinia} from "pinia";
 import {mount} from "@vue/test-utils";
-import FilterComponent from "@/components/FilterComponent.vue";
+import FilterComponent from "@/components/Filter/FilterComponent.vue";
 
 
 let wrapper: any;

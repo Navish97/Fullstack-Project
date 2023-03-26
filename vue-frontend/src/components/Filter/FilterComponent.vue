@@ -56,7 +56,7 @@ import router from '@/router';
 import { useItemStore } from '@/stores/Item';
 import  axiosInstance  from '@/service/AxiosInstance';
 import type {Category} from "@/types/CategoryType";
-import MapComponent from './MapComponent.vue';
+import MapComponent from '../Map/MapComponent.vue';
 
 const itemStore = useItemStore();
 const emit = defineEmits(['close']);
