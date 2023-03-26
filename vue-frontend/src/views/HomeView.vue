@@ -50,6 +50,7 @@ import { LocationQuery, onBeforeRouteUpdate, useRoute } from 'vue-router';
 import {getUserBookmarks} from "@/service/BookmarkService";
 import Waves from '@/components/Wave/Wave.vue'
 import PaginationComponent from '@/components/Items/PaginationComponent.vue';
+import MapComponent from '@/components/MapComponent.vue';
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
