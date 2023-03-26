@@ -153,9 +153,9 @@ public class ItemController {
             @RequestParam("title") String title,
             @RequestParam("description") String description,
             @RequestParam("price") BigDecimal price,
-            @RequestParam("longitude") String longitude,
+            @RequestParam("longitude") Double longitude,
             @RequestParam("category_id") Long categoryId,
-            @RequestParam("latitude") String latitude,
+            @RequestParam("latitude") Double latitude,
             @RequestParam("images") List<MultipartFile> images,
             HttpServletRequest request
     ) throws IOException {

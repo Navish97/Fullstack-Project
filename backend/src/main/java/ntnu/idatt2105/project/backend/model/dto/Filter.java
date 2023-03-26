@@ -15,6 +15,9 @@ public class Filter {
     boolean newValue;
     long category;
     String search;
+    Double longitude;
+    Double latitude;
+    Double maxDistance;
 
     /**
      * Default constructor for the Filter class.
@@ -25,13 +28,17 @@ public class Filter {
      * @param newValue
      * @param search
      */
-    public Filter(int minPrice, int maxPrice, boolean usedValue, boolean newValue, long category, String search) {
+    public Filter(int minPrice, int maxPrice, boolean usedValue, boolean newValue,
+                  long category, String search, Double longitude, Double latitude, Double maxDistance) {
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
         this.usedValue = usedValue;
         this.newValue = newValue;
         this.category = category;
         this.search = search;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.maxDistance = maxDistance;
     }
 
     /**
