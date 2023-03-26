@@ -1,5 +1,6 @@
 package ntnu.idatt2105.project.backend;
 
+import ntnu.idatt2105.project.backend.exceptions.UserAlreadyExistsException;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,5 +14,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleFileSizeLimitExceededException(FileSizeLimitExceededException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("The file size limit has been exceeded: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<String> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
     }
 }
