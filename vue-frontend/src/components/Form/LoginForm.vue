@@ -6,6 +6,7 @@
       <BaseInput id="inpEmail" class="input-container" type="text" label="Email" v-model="form.email"/>
       <BaseInput id="inpPassord" class="input-container" type="text" label="Passord" v-model="form.password"/>
       <span class="text">Dont have an account?</span> <router-link class="link" to="/register">Register</router-link>      <button id="button">Send</button>
+      <ErrorMessage v-if="errorMessage" :message="errorMessage" @clear-error="errorMessage=''"/>
     </form>
   </div>
 </template>
@@ -15,9 +16,11 @@ import BaseInput from '@/components/Form/BaseInput.vue';
 import { postLogin } from '@/service/Authentication/AuthenticationService';
 import router from '@/router/index';
 import { useUserStore } from '@/stores/User';
-import { reactive } from 'vue';
+import {reactive, ref} from 'vue';
+import ErrorMessage from "@/components/Errors/ErrorMessage.vue";
 
 const userStore = useUserStore();
+const errorMessage = ref("");
 
 const form = reactive({
   email: '',
@@ -35,8 +38,8 @@ const sendForm = async () => {
       form.password = '';
       await router.push('/');
     }
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    errorMessage.value = error.response.data;
   }
 };
 </script>

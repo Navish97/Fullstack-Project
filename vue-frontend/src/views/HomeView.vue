@@ -13,7 +13,9 @@
         <div class="listing-type">
           <ListingTypeButton />
           <button class="filter-toggle" @click="toggleFilter">Toggle Filter</button>
-          <FilterComponent v-show="showFilter" />
+          <div class="filter-container">
+            <FilterComponent v-show="showFilter" @close="toggleFilter" />
+          </div>
         </div>
 
         <div class="items">
@@ -68,9 +70,13 @@ const pages = computed(() => {
   return pageArray;
 });
 
-const showFilter = ref(window.innerWidth >= 769);
+const isDesktop = ref(window.innerWidth >= 769);
+const showFilter = ref(isDesktop.value);
+
 function toggleFilter() {
-  showFilter.value = !showFilter.value;
+  if (!isDesktop.value) {
+    showFilter.value = !showFilter.value;
+  }
 }
 
 function setPage(page : number){

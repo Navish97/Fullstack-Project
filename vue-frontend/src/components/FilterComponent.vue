@@ -48,13 +48,14 @@
 </template>
 
 <script setup lang="ts">
-import {ref, computed, onMounted, watch} from 'vue';
+import {ref, computed, onMounted, watch, defineEmits} from 'vue';
 import router from '@/router';
 import { useItemStore } from '@/stores/Item';
 import  axiosInstance  from '@/service/AxiosInstance';
 import type {Category} from "@/types/CategoryType";
 
 const itemStore = useItemStore();
+const emit = defineEmits(['close']);
 
 const filterState = computed(() => {
     const query: {[key: string]: string} = {};
@@ -86,7 +87,7 @@ function sendQuery(){
     router.push({
         path:'/',
         query: filterState.value,
-    })
+    }).then((response) => {emit('close');})
 }
 
 

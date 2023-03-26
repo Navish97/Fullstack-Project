@@ -135,7 +135,7 @@ const sendForm = async () => {
       await router.push("/"); // Redirect to the desired page after successful listing creation
     }
   } catch (error: any) {
-    errorMessage.value = error.status + ": " + error.response.data;
+    errorMessage.value = "Error " + error.request.status + ": " + error.response.data;
   }
 };
 

@@ -20,6 +20,9 @@ import java.util.logging.Logger;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
+/**
+ * Security configuration class for the application.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -31,6 +34,13 @@ public class SecurityConfig {
     private final Environment env;
     Logger logger = Logger.getLogger(SecurityConfig.class.getName());
 
+    /**
+     * Configures the security filter chain.
+     *
+     * @param http the HttpSecurity object to configure.
+     * @return the configured SecurityFilterChain.
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         if (Arrays.asList(env.getActiveProfiles()).contains("dev")){
@@ -77,6 +87,11 @@ public class SecurityConfig {
 
     }
 
+    /**
+     * Configures the CORS configuration source.
+     *
+     * @return the configured CorsConfigurationSource.
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
