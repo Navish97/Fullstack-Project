@@ -67,4 +67,27 @@ public class ProfileController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Token expired"));
         }
     }
+
+
+    @PostMapping("my-profile/edit")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> editMyProfile(@RequestBody UserProfileDTO userProfileDTO, HttpServletRequest request) {
+        logger.info("Received request to edit profile; name: " + userProfileDTO.getName() + ", email: " + userProfileDTO.getEmail() + "");
+
+        try {
+            User user = userService.findByEmail(jwtService.extractUsername(cookieService.extractTokenFromCookie(request)));
+            user.setName(userProfileDTO.getName());
+            user.setEmail(userProfileDTO.getEmail());
+            userService.save(user);
+            return ResponseEntity.ok(userProfileDTO);
+        }
+        catch (TokenExpiredException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Token expired"));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Bad request"));
+        }
+    }
+
+
 }
