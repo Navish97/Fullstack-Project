@@ -38,7 +38,7 @@
   import axiosInstance from "@/service/AxiosInstance";
   import { useItemStore } from "@/stores/Item";
   import ErrorMessage from "@/components/Errors/ErrorMessage.vue";
-  import MapComponent from "../MapComponent.vue";
+  import MapComponent from "@/components/Map/MapComponent.vue";
 import type { Item } from "@/types/ItemType";
 import type { Category } from "@/types/CategoryType";
   

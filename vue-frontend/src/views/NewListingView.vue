@@ -2,7 +2,6 @@
   <div id="wrapper">
     <AllCategories v-if="!hasChosenCategory"></AllCategories>
     <NewListing v-else></NewListing>
-    <IconPicker></IconPicker>
 
   </div>
 </template>
