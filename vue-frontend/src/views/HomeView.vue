@@ -234,7 +234,7 @@ function emitLoadPage(page:number){
 }
 
 .wrapper {
-  display: flex;
+  display: grid;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -243,7 +243,7 @@ function emitLoadPage(page:number){
 
 .grid-container {
   display: grid;
-  grid-template-columns: auto 60% auto;
+  grid-template-columns: 250px auto;
   grid-gap: 20px;
   justify-content: center;
   width: 80%;

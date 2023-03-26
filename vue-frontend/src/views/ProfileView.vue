@@ -11,8 +11,8 @@
     <div class="wave-container">
       <Wave></Wave>
     </div>
-    <div v-if="showItems" class="overlay">
-      <div class="item-list-wrapper">
+    <div v-if="showItems" class="overlay" @click="closeItems">
+      <div class="item-list-wrapper" @click.stop>
         <button @click="closeItems" class="close-btn">X</button>
         <ItemList
             :pages="pages"
@@ -100,11 +100,10 @@ function closeItems() {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 3;
 }
 
 .item-list-wrapper {
@@ -112,10 +111,16 @@ function closeItems() {
   width: 70%;
   height: 90%;
   background-color: white;
-  border-radius: 10px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  border-radius: 16px;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  max-height: 100%;
 }
+
 .close-btn {
   position: absolute;
   top: 20px;
@@ -169,6 +174,23 @@ Wave {
   justify-content: center;
 }
 
+.item-list-wrapper::-webkit-scrollbar {
+  width: 10px;
+}
+
+.item-list-wrapper::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 10px;
+}
+
+.item-list-wrapper::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+.item-list-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
 
 @keyframes gradient {
   0% {
@@ -217,15 +239,22 @@ Wave {
     width: 100%;
   }
   .item-list-wrapper {
-    padding-top: 1rem;
+    padding-top: 5rem;
     width: 95%;
     height: 95%;
-    background-color: rgba(255, 255, 255, 0.46);
+    background-color: white;
     border-radius: 10px;
     position: relative;
-    overflow: hidden;
+  }
+
+  .close-btn {
+    color: white;
+    position:fixed;
+    top: 5px;
+    right: 5px;
   }
   .grid {
+    padding-top: 2rem;
     flex-direction: column;
     align-items: center;
     gap: 30px;
