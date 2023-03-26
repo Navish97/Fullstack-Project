@@ -62,8 +62,6 @@ public class JwTAuthenticationFilter extends OncePerRequestFilter {
                 authorities = jwtService.extractRoles(jwt).stream()
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                         .collect(Collectors.toList());
-                logger.info("Extracted username: " + username);
-                logger.info("Extracted roles: " + authorities);
             } catch (ExpiredJwtException e) {
                 authState = AuthenticationState.TOKEN_EXPIRED;
                 username = null;
@@ -74,7 +72,6 @@ public class JwTAuthenticationFilter extends OncePerRequestFilter {
 
         if (username != null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            logger.info("UserDetails: " + userDetails);
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 authState = AuthenticationState.AUTHENTICATED;
@@ -87,9 +84,6 @@ public class JwTAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
-
-        logger.info("Authentication state: " + authState);
-
         request.setAttribute("authState", authState);
 
         filterChain.doFilter(request, response);
