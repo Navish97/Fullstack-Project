@@ -9,7 +9,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import ntnu.idatt2105.project.backend.model.dto.ErrorResponse;
+import ntnu.idatt2105.project.backend.model.dto.PasswordChangeDTO;
 import ntnu.idatt2105.project.backend.model.dto.UserProfileDTO;
+import ntnu.idatt2105.project.backend.model.dto.response.SuccessResponse;
 import ntnu.idatt2105.project.backend.model.enums.AuthenticationState;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.service.AuthenticationService;
@@ -19,6 +21,7 @@ import ntnu.idatt2105.project.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -35,6 +38,7 @@ public class ProfileController {
     private final UserService userService;
 
     private final CookieService cookieService;
+    private final PasswordEncoder passwordEncoder;
 
     Logger logger = Logger.getLogger(ProfileController.class.getName());
 
@@ -106,4 +110,57 @@ public class ProfileController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Token expired"));
         }
     }
+
+
+    @PostMapping("/my-profile/edit")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> editMyProfile(@RequestBody UserProfileDTO userProfileDTO, HttpServletRequest request) {
+        logger.info("Received request to edit profile; name: " + userProfileDTO.getName() + ", email: " + userProfileDTO.getEmail() + "");
+
+        try {
+            User user = userService.findByEmail(jwtService.extractUsername(cookieService.extractTokenFromCookie(request)));
+            user.setName(userProfileDTO.getName());
+            user.setEmail(userProfileDTO.getEmail());
+            userService.save(user);
+            return ResponseEntity.ok(userProfileDTO);
+        }
+        catch (TokenExpiredException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Token expired"));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Bad request"));
+        }
+    }
+
+    @PostMapping("/my-profile/change-password")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDTO passwordChangeDTO, HttpServletRequest request) {
+        logger.info("Received request to change password for user: " + jwtService.extractUsername(cookieService.extractTokenFromCookie(request)));
+
+        try {
+            User user = userService.findByEmail(jwtService.extractUsername(cookieService.extractTokenFromCookie(request)));
+
+            if (!passwordEncoder.matches(passwordChangeDTO.getOldPassword(), user.getPassword())) {
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .header("error-message", "Old password is incorrect.")
+                        .header("Access-Control-Expose-Headers", "error-message")
+                        .build();
+            }
+
+            user.setPassword(passwordEncoder.encode(passwordChangeDTO.getNewPassword()));
+            userService.save(user);
+
+            return ResponseEntity.ok(new SuccessResponse("Password changed successfully", 200));
+        }
+        catch (TokenExpiredException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Token expired"));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new SuccessResponse("An error occurred while changing password", 500));
+        }
+    }
+
+
+
 }

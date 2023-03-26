@@ -4,7 +4,6 @@
       <div class="header-container">
         <h1>{{ title }}</h1>
         <font-awesome-icon class="icon" :icon="icon" />
-
       </div>
       <p>{{ content }}</p>
     </div>

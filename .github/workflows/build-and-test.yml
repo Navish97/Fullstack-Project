@@ -1,0 +1,29 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Build and Test Frontend
+        run: |
+          cd vue-frontend
+          docker build -t my-frontend-image .
+          docker run my-frontend-image npm test
+
+      - name: Build and Test Backend
+        run: |
+          cd backend
+          docker build -t my-backend-image .
+          docker run my-backend-image mvn test

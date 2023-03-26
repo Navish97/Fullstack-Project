@@ -19,6 +19,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Optional<Item> findById(Long aLong);
     Page<Item> findByUserId(String userId, Pageable pageable);
 
+
     @Query(value = "SELECT i FROM Item i \n" +
             "WHERE (\n" +
             "    (:minPrice IS NULL AND :maxPrice IS NULL) OR \n" +

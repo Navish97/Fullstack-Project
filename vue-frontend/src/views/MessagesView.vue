@@ -82,17 +82,18 @@
     justify-content:center;
     align-items: flex-start;
     height: 100vh;
-    padding-top: 4rem /* add some padding to the outside */
+    background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
   }
   
   .chat-wrapper {
     width: 80%;
-    height: 100%;
+    height: 80%;
     background-color: rgba(30, 29, 29, 0.99);
     padding: 20px; /* add some padding to the inside */
     border-radius: 15px;
     display: flex;
     flex-direction: row;
+    margin-top: 100px;
   }
   
   .chat-list-item.selected {

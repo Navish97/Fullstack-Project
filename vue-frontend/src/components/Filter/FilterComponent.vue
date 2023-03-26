@@ -1,6 +1,7 @@
 <template>
     <div class = "filter-wrapper">
         <div class = "header">Filter</div>
+      <button class="close-button" @click="emit('close')">X</button>
         <div class = "searchbar">
           <label for="search">Search</label>
           <textarea v-model="search" maxlength = "40" rows="2" id="search" placeholder="Search in title/description"></textarea>
@@ -44,9 +45,11 @@
         <div>
         </div>
       </div>
-      <MapComponent id="map" :latitude="latitude!" :longitude="longitude!" :maxDistance="maxDistance!" :radiusOn="true" @setLocation="(lat, long) => setLocation(lat, long)" />
-        <button class="apply" @click = "sendQuery()">Apply</button>
-        <button class="reset" @click="resetFilters()">Reset</button>
+      <div class="map-container" ref="mapContainer">
+        <MapComponent id="map" :latitude="latitude!" :longitude="longitude!" :maxDistance="maxDistance!" :radiusOn="true" @setLocation="(lat, long) => setLocation(lat, long)" />
+      </div>
+      <button class="apply" @click = "sendQuery()">Apply</button>
+      <button class="reset" @click="resetFilters()">Reset</button>
     </div>
 </template>
 
@@ -56,7 +59,7 @@ import router from '@/router';
 import { useItemStore } from '@/stores/Item';
 import  axiosInstance  from '@/service/AxiosInstance';
 import type {Category} from "@/types/CategoryType";
-import MapComponent from './MapComponent.vue';
+import MapComponent from '../Map/MapComponent.vue';
 
 const itemStore = useItemStore();
 const emit = defineEmits(['close']);
@@ -107,9 +110,9 @@ function resetFilters() {
   maxPrice.value = null;
   selectedCategory.value = null;
   search.value = "";
-  longitude.value = 10;
-  latitude.value = 60;
-  maxDistance.value = 5000;
+  longitude.value = null;
+  latitude.value = null;
+  maxDistance.value = null;
   sendQuery();
 }
 
@@ -159,11 +162,26 @@ onMounted(() => {
 
 
 <style scoped>
-
-.map-wrapper{
-  width: 100%;
-  height: auto;
+@media (min-width: 769px) {
+  .close-button {
+    display: none;
+  }
 }
+
+.close-button {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  background-color: rgba(30, 29, 29, 0.99);
+  color: #ffffff;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 .reset {
   border-radius: 4px;
   border: 1px solid #646464;
@@ -257,6 +275,7 @@ onMounted(() => {
         transition: transform 1s ease;
       }
       #map{
+        height: 200px;
         width: auto;
       }
     }

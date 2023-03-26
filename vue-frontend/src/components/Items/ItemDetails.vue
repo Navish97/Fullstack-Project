@@ -11,6 +11,7 @@
       <div class="toolbar">
         <bookmark-component />
         <RouterLink to="/chats" v-if="showContactButton" @click="preLoadChat()" class="contact-button">Contact seller</RouterLink>
+        <RouterLink :to="{ name: 'edit-item', params: { id: item.id } }" v-if="showEditButton" class ="contact-button">Edit item</RouterLink>
       </div>
       <div class="item-info">
         <h2>{{ item.title }}</h2>
@@ -35,7 +36,7 @@ import {useUserStore} from "@/stores/User";
 import { RouterLink } from 'vue-router';
 import type { Chat } from '@/types/ChatType';
 import { useChatStore } from '@/stores/Chat';
-import MapComponent from '../MapComponent.vue';
+import MapComponent from '../Map/MapComponent.vue';
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
@@ -45,6 +46,10 @@ const showContactButton = computed(() => {
   return userStore.getLoggedInId !== props.item.userId
       && userStore.isLoggedIn;
 });
+
+const showEditButton = computed(() => {
+  return (userStore.getLoggedInId === props.item.userId || userStore.getRole === "ADMIN") && userStore.isLoggedIn;
+})
 
 const props = defineProps({
   item: {

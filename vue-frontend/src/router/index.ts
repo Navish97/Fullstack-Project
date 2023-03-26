@@ -4,9 +4,12 @@ import MyProfile from '../views/ProfileView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import HomeView from '../views/HomeView.vue'
 import ItemDetailsView from '../views/ItemDetailsView.vue'
-import NewListingView from "../views/NewListingView.vue";
-import { useUserStore } from '@/stores/User';
+import NewListingView from "../views/NewListingView.vue"
+import { useUserStore } from '@/stores/User'
 import MessagesView from '@/views/MessagesView.vue'
+import EditItemView from '@/views/EditItemView.vue'
+import MyAccountView from "@/views/MyAccountView.vue"
+import ChangePasswordView from "@/views/ChangePasswordView.vue"
 
 
 const router = createRouter({
@@ -24,6 +27,22 @@ const router = createRouter({
       path: '/new-listing',
       name: 'new-listing',
       component: NewListingView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/my-profile/edit',
+      name: 'edit-profile',
+      component: MyAccountView,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+      path: '/my-profile/edit/change-password',
+      name: 'change-password',
+      component: ChangePasswordView,
       meta: {
         requiresAuth: true
       }
@@ -62,17 +81,21 @@ const router = createRouter({
       name: 'new-chat',
       component: MessagesView,
     },
+    {
+      path: '/item/edit-item:id',
+      name: 'edit-item',
+      component: EditItemView,
+    },
   ]
 })
 
 router.beforeEach(async (to, from, next) => {
-    const userStore = useUserStore();
-    await userStore.checkAuthStatus()
-    if(to.meta.requiresAuth && !userStore.isLoggedIn) {
+    await useUserStore().checkAuthStatus()
+    if(to.meta.requiresAuth && !useUserStore().isLoggedIn) {
         next({name: 'login'});
     }
-    else if(to.name === 'login' && userStore.isLoggedIn){
-        next({name: 'home'});
+    else if (to.name === 'login' && useUserStore().isLoggedIn) {
+      next({name: 'home'});
     }
     else{
       next();

@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import ItemList from '@/components/Items/ItemList.vue';
 import ListingTypeButton from '@/components/ButtonChangeListingType.vue';
-import FilterComponent from '@/components/FilterComponent.vue';
+import FilterComponent from '@/components/Filter/FilterComponent.vue';
 import {computed, onMounted, ref} from "vue";
 import { useItemStore } from '@/stores/Item';
 import { useUserStore } from '@/stores/User';

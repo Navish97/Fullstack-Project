@@ -2,11 +2,6 @@
   <div class="container">
     <div class="content-wrapper">
       <ProfileBox />
-      <div class="grid">
-        <InfoBox @click="route('my-profile/edit')" :icon="faUser" title="My account" content="View and edit my account details"/>
-        <InfoBox :icon="faTag" title="My listings" @click="loadItems" content="View all my listings"/>
-        <InfoBox :icon="faBookmark" title="My bookmarks" content="View all my bookmarks"/>
-      </div>
     </div>
     <div class="wave-container">
       <Wave></Wave>
@@ -33,7 +28,6 @@
 
 <script setup lang="ts">
 import Wave from '@/components/Wave/Wave.vue'
-import InfoBox from "@/components/Profile/InfoBox.vue";
 import ProfileBox from "@/components/Profile/ProfileBox.vue";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faTag } from "@fortawesome/free-solid-svg-icons";
@@ -45,10 +39,10 @@ import {useItemStore} from "@/stores/Item";
 import {useUserStore} from "@/stores/User";
 import PaginationComponent from "@/components/Items/PaginationComponent.vue";
 import router from '@/router/index';
-import EditProfile from "@/components/Profile/EditProfile.vue";
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
+
 
 const currentPage = ref(1);
 const totalPages = ref(1);
@@ -149,21 +143,11 @@ function closeItems() {
   align-items: center;
 }
 
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 20px;
-  width: fit-content;
-  margin: 50px auto 0;
-  gap: 50px;
-}
-
 .content-wrapper{
   justify-content: center;
-  display: flex;
   margin-top: 120px;
   flex-direction: column;
+  height: fit-content;
 }
 
 
@@ -282,7 +266,6 @@ Wave {
   }
   .content-wrapper{
     margin: 60px auto;
-    width: 80%;
   }
 
   .wave-container {

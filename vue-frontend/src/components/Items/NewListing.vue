@@ -30,7 +30,7 @@ import {ref, onMounted, computed} from "vue";
 import axiosInstance from "@/service/AxiosInstance";
 import { useItemStore } from "@/stores/Item";
 import ErrorMessage from "@/components/Errors/ErrorMessage.vue";
-import MapComponent from "../MapComponent.vue";
+import MapComponent from "../Map/MapComponent.vue";
 
 const itemStore = useItemStore();
 
@@ -177,6 +177,10 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+
+.wrapper{
+  margin: 100px auto;
+}
 
 
 #changeCategoryBtn {

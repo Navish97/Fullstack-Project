@@ -62,11 +62,11 @@ async function loadData() {
 .profile-container {
   display: grid;
   grid-template-columns: auto 1fr;
-  align-items: center;
   column-gap: 1rem;
   justify-items: end;
-  justify-content: end;
+  justify-content: space-evenly;
   height: 100%;
+  align-items: center;
 }
 
 .user-details {
@@ -118,12 +118,18 @@ p {
 
 @media (max-width: 768px) {
   .profile-picture{
-    width: 75px;
-    height: 75px;
+    width: 100px;
+    height: 100px;
   }
 
   .profile-container{
     height: 150px;
   }
+
+  .profile-picture-container{
+    justify-content: center !important;
+  }
+
+
 }
 </style>
