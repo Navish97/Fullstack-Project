@@ -109,8 +109,7 @@ function nextImage() {
 }
 
 onMounted(() => {
-  const imageContainer = document.querySelector(".image-container");
-  console.log(imageContainer.offsetWidth + " " + imageContainer.offsetHeight)
+  const imageContainer = document.querySelector(".image-container") as HTMLDivElement;
   if (imageContainer && (window.innerWidth > window.innerHeight)){
     imageContainer.style.width = `${window.innerWidth * 0.8}px`;
     imageContainer.style.height = `${window.innerHeight * 0.9}px`;

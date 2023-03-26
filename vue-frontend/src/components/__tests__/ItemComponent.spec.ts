@@ -1,10 +1,10 @@
 import { beforeEach, expect, it, vi, afterEach } from "vitest";
 import { createPinia } from "pinia";
 import { mount } from "@vue/test-utils";
-import ItemComponent from "@/components/items/ItemComponent.vue";
+import ItemComponent from "@/components/Items/ItemComponent.vue";
 import { useItemStore } from "@/stores/Item";
 import { useUserStore } from "@/stores/User";
-import { Item } from "@/types/ItemType";
+import type { Item } from "@/types/ItemType";
 
 let wrapper: any;
 let item: Item;
