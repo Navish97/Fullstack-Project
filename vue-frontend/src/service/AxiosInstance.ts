@@ -24,7 +24,7 @@ axiosInstance.interceptors.response.use(
             useUserStore().logOut()
         }
         else if(error.response.status !== 401) {
-            alert("An error has occurred. Errorcode: " + error.response.status);
+            console.log("An error has occurred. Errorcode: " + error.response.status);
         }
         return Promise.reject(error);
     }

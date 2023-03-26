@@ -45,8 +45,10 @@ public class CategoryController {
         logger.info("Categories: " + categories);
 
         if (categories == null){
+            logger.info("No categories found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("No categories found"));
         }
+        logger.info("Categories: " + categories);
         return ResponseEntity.ok(categories);
     }
 
@@ -72,8 +74,10 @@ public class CategoryController {
         Optional<Category> category = categoryService.getCategoryById(id);
         logger.info("Icon URL: " + category);
         if (category.isEmpty()){
+            logger.info("No icon URL found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("No icon URL found"));
         }
+        logger.info("Icon URL: " + category);
         return ResponseEntity.ok(category);
     }
 }
