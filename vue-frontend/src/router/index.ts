@@ -10,6 +10,7 @@ import MessagesView from '@/views/MessagesView.vue'
 import EditItemView from '@/views/EditItemView.vue'
 import MyAccountView from "@/views/MyAccountView.vue"
 import ChangePasswordView from "@/views/ChangePasswordView.vue"
+import NewCategoryView from "@/views/NewCategoryView.vue"
 
 
 const router = createRouter({
@@ -85,6 +86,11 @@ const router = createRouter({
       path: '/item/edit-item:id',
       name: 'edit-item',
       component: EditItemView,
+    },
+    {
+      path: '/new-listing/new-category',
+      name: 'new-category',
+      component: NewCategoryView,
     },
   ]
 })

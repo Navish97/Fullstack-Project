@@ -24,7 +24,7 @@
 import { ref, onMounted } from 'vue';
 import axiosInstance from '@/service/AxiosInstance';
 import { useItemStore } from '@/stores/Item';
-import router from '@/router/index';
+import router from '@/router';
 interface Category {
   id: number;
   type: string;

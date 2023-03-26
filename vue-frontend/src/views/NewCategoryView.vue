@@ -1,11 +1,8 @@
 <template>
   <div id="wrapper1">
-    <AllCategories v-if="!hasChosenCategory"></AllCategories>
-    <div id="wrapper2" v-else>
-      <NewListing></NewListing>
+    <NewCategory v-if="!hasChosenCategory"></NewCategory>
     </div>
     <button class="btn" v-if="isAdmin && !hasChosenCategory" @click="addCategory">Add Category</button>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -17,6 +14,7 @@ import NewListing from "@/components/Items/NewListing.vue";
 import IconPicker from "@/components/Icon/IconPicker.vue";
 import { useUserStore } from '@/stores/User';
 import router from '@/router/index'
+import NewCategory from "@/components/Items/Category/NewCategory.vue";
 
 const itemStore = useItemStore();
 
@@ -33,7 +31,7 @@ function addCategory(){
 
 #wrapper1{
   background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
-  height: 100vh;
+  min-height: 100vh;
 }
 
 #wrapper2{
