@@ -10,8 +10,7 @@
       </div>
       <div class="toolbar">
         <bookmark-component />
-        <RouterLink to="/chats" v-if="isLoggedIn" @click="preLoadChat()" class="contact-button">Contact seller</RouterLink>
-        <RouterLink v-else to="/login" class="contact-button">Contact seller</RouterLink>
+        <RouterLink to="/chats" v-if="showContactButton" @click="preLoadChat()" class="contact-button">Contact seller</RouterLink>
       </div>
       <div class="item-info">
         <h2>{{ item.title }}</h2>
@@ -40,8 +39,9 @@ const itemStore = useItemStore();
 const userStore = useUserStore();
 const chatStore = useChatStore();
 
-const isLoggedIn = computed(() => {
-  return userStore.isLoggedIn();
+const showContactButton = computed(() => {
+  return userStore.getLoggedInId !== props.item.userId
+      && userStore.isLoggedIn;
 });
 
 const props = defineProps({
