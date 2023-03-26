@@ -148,7 +148,8 @@ public class ItemController {
 
     @PostMapping("/new-listing")
     @Operation(summary = "Register a new item", description = "Registers a new item in the database.")
-    public ResponseEntity createItem(
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> createItem(
             @RequestParam("title") String title,
             @RequestParam("description") String description,
             @RequestParam("price") BigDecimal price,
