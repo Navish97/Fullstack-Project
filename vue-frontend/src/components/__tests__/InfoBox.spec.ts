@@ -1,6 +1,6 @@
 import { expect, it, beforeEach } from "vitest";
 import { mount } from "@vue/test-utils";
-import InfoBox from "@/components/profile/InfoBox.vue";
+import InfoBox from "@/components/Profile/InfoBox.vue";
 import { defineComponent } from "vue";
 
 const TestComponent = defineComponent({
