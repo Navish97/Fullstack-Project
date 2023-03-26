@@ -58,11 +58,14 @@ public class ProfileController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getMyProfile(HttpServletRequest request) {
         try{
+            logger.info("Received request to get user profile");
             User user = userService.findByEmail(jwtService.extractUsername(cookieService.extractTokenFromCookie(request)));
             UserProfileDTO userProfileDTO = new UserProfileDTO(user.getName(), user.getEmail());
+            logger.info("Returning user profile");
             return ResponseEntity.ok(userProfileDTO);
         }
         catch (TokenExpiredException e) {
+            logger.info("Token expired");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Token expired"));
         }
     }
