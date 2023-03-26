@@ -5,8 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { booleanLiteral } from '@babel/types';
-import leaflet, { circle } from 'leaflet';
+import leaflet from 'leaflet';
 import { onMounted, defineProps, watch } from 'vue';
 
 const props = defineProps({
@@ -23,6 +22,10 @@ const props = defineProps({
         default: 5000,
     },
     radiusOn: {
+        type: Boolean,
+        default: false
+    },
+    fixedMap: {
         type: Boolean,
         default: false
     }
