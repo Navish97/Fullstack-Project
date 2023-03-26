@@ -41,16 +41,15 @@
 <script setup lang="ts">
 import ItemList from '@/components/Items/ItemList.vue';
 import ListingTypeButton from '@/components/ButtonChangeListingType.vue';
-import FilterComponent from '@/components/FilterComponent.vue';
+import FilterComponent from '@/components/Filter/FilterComponent.vue';
 import {computed, onMounted, ref} from "vue";
 import { useItemStore } from '@/stores/Item';
 import { useUserStore } from '@/stores/User';
 import { getItems } from '@/service/ItemService';
-import { LocationQuery, onBeforeRouteUpdate, useRoute } from 'vue-router';
-import {getUserBookmarks} from "@/service/BookmarkService";
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+import type {LocationQuery} from "vue-router";
 import Waves from '@/components/Wave/Wave.vue'
 import PaginationComponent from '@/components/Items/PaginationComponent.vue';
-import MapComponent from '@/components/MapComponent.vue';
 
 const itemStore = useItemStore();
 const userStore = useUserStore();

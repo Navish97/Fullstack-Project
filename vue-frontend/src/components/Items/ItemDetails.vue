@@ -36,7 +36,7 @@ import {useUserStore} from "@/stores/User";
 import { RouterLink } from 'vue-router';
 import type { Chat } from '@/types/ChatType';
 import { useChatStore } from '@/stores/Chat';
-import MapComponent from '../MapComponent.vue';
+import MapComponent from '../Map/MapComponent.vue';
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
@@ -114,8 +114,7 @@ function nextImage() {
 }
 
 onMounted(() => {
-  const imageContainer = document.querySelector(".image-container");
-  console.log(imageContainer.offsetWidth + " " + imageContainer.offsetHeight)
+  const imageContainer = document.querySelector(".image-container") as HTMLDivElement;
   if (imageContainer && (window.innerWidth > window.innerHeight)){
     imageContainer.style.width = `${window.innerWidth * 0.8}px`;
     imageContainer.style.height = `${window.innerHeight * 0.9}px`;

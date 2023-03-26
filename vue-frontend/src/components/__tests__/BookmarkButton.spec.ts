@@ -1,7 +1,7 @@
 import { beforeEach, expect, it, vi, afterEach } from "vitest";
 import { createPinia } from "pinia";
 import { mount } from "@vue/test-utils";
-import BookmarkButton from "@/components/items/BookmarkButton.vue";
+import BookmarkButton from "@/components/Items/BookmarkButton.vue";
 import { useItemStore } from "@/stores/Item";
 import { useUserStore } from "@/stores/User";
 import * as BookmarkService from "@/service/BookmarkService";
