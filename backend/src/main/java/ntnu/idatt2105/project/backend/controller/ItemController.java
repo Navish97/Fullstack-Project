@@ -127,8 +127,10 @@ public class ItemController {
         Filter f = this.parseFilter(filter);
         Page<Item> itemPage = itemService.getItemPage(pageNumber, size, f);
         if(itemPage == null){
+            logger.info("No items found");
             return ResponseEntity.badRequest().build();
         }
+        logger.info("Items found: " + itemPage.getTotalElements());
         Page<ItemDTO> itemDtoPage = itemPage.map(ItemDTO::new);
         return ResponseEntity.ok(generateResponse(itemDtoPage));
     }
@@ -178,9 +180,10 @@ public class ItemController {
         item.setUser(user);
 
         if (item.getImages() == null) {
+            logger.info("Images is null, inserting an empty list");
             item.setImages(new ArrayList<>());
         }
-
+        logger.info("Adding images to item");
         for (MultipartFile image : images) {
             ItemImage itemImage = new ItemImage();
             itemImage.setData(image.getBytes());
@@ -189,10 +192,8 @@ public class ItemController {
             item.getImages().add(itemImage);
         }
         logger.info("Saving item");
-        // Save the item to the database
         Item savedItem = itemService.saveItem(item);
         logger.info("Item saved, returning response");
-        // Return a 201 CREATED response with the saved item as the body
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
