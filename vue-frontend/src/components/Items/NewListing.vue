@@ -178,6 +178,10 @@ onMounted(async () => {
 
 <style scoped>
 
+.wrapper{
+  margin: 100px auto;
+}
+
 
 #changeCategoryBtn {
   cursor: pointer;

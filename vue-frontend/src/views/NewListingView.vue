@@ -1,8 +1,9 @@
 <template>
-  <div id="wrapper">
+  <div id="wrapper1">
     <AllCategories v-if="!hasChosenCategory"></AllCategories>
-    <NewListing v-else></NewListing>
-
+    <div id="wrapper2" v-else>
+      <NewListing></NewListing>
+    </div>
   </div>
 </template>
 
@@ -22,8 +23,12 @@ const hasChosenCategory = computed(() => chosenCategory.value !== 0);
 
 <style scoped>
 
-#wrapper{
+#wrapper1{
   background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
   height: 100vh;
+}
+
+#wrapper2{
+  background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
 }
 </style>
