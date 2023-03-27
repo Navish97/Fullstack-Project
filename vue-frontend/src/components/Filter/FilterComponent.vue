@@ -201,46 +201,51 @@ onMounted(() => {
   flex-direction: column;
 }
 
-    .filter-wrapper{
-        width: 200px;
-        background-color: rgba(30, 29, 29, 0.99);
-        color: #ffffff;
-        padding: 12px 16px;
-        border-radius: 4px;
-        border: 1px solid #646464;
-        font-size: 14px;
-        text-align: left;
-        align-content: center;
-    }
-    .dual-input{
-        display: inline-flex;
-    }
-    .dual-input input{
-        width: 97%;
-    }
-    .header{
-        text-align: center;
-        font-weight: bolder;
-    }
-    .condition-state{
-        padding: 5px;
-        align-items: center;
-    }
-    .condition-state input{
-        margin-right: 5px;
-        vertical-align: middle;
-    }
-    .condition-state label{
-        vertical-align: middle;
-    }
-    .apply {
-        border-radius: 4px;
-        border: 1px solid #646464;
-        cursor: pointer;
-        font-size: 14px;
-        padding:5px 8px;
-      margin: 5px 5px 5px auto;
-    }
+.filter-wrapper{
+  width: 400px;
+  background-color: #575656;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 15px;
+  font-size: 14px;
+  text-align: left;
+  align-content: center;
+}
+label{
+  color: white;
+  font-size: 1rem;
+}
+.dual-input{
+  display: inline-flex;
+}
+.dual-input input{
+  width: 97%;
+}
+.header{
+  text-align: center;
+  font-weight: bolder;
+  color: white;
+  font-size: 2rem;
+}
+.condition-state{
+  padding: 5px;
+  align-items: center;
+}
+.condition-state input{
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.condition-state label{
+  vertical-align: middle;
+}
+.apply {
+  border-radius: 4px;
+  border: 1px solid #646464;
+  cursor: pointer;
+  font-size: 14px;
+  padding:5px 8px;
+margin: 5px 5px 5px auto;
+}
     .category {
   margin-top: 10px;
 }
