@@ -139,7 +139,7 @@ To run vitest tests in frontend:
 npm run test
 ```
 
-To run cypress tests in frontend:
+In order to execute cypress tests on the frontend, it should be noted that the backend must be running. Hence, the inclusion of a cypress stage in the docker file is not feasible. To initiate the test, the following setup commands must be employed: "npm run dev" and "mvn spring-boot:run" for the frontend and backend, respectively. Once these commands have been executed, "npx cypress run" may be run on the frontend to execute all cypress tests.
 ```
 npm run cypress:open
 ```
