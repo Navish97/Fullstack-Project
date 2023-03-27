@@ -76,21 +76,33 @@ const router = createRouter({
       path: '/chats',
       name: 'chats',
       component: MessagesView,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
       path: '/chats/new-chat:item',
       name: 'new-chat',
       component: MessagesView,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/item/edit-item:id',
       name: 'edit-item',
       component: EditItemView,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
       path: '/new-listing/new-category',
       name: 'new-category',
       component: NewCategoryView,
+      meta: {
+        requiresAuth: true
+      }
     },
   ]
 })
