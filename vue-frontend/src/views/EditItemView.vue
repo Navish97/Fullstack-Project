@@ -14,5 +14,5 @@ import { getItemDetails } from '@/service/ItemService';
 const itemStore = useItemStore();
 </script>
 
-<style>
+<style scoped>
 </style>
