@@ -33,10 +33,10 @@ export const useChatStore = defineStore({
             }
         },
         findExistingChat(chat: Chat): Chat | undefined {
-            return this.chats.find((c) => c.userId === chat.userId 
+            return this.chats.find((c) => c.userId == chat.userId 
             && c.userName === chat.userName 
             && c.userEmail === chat.userEmail 
-            && c.item === chat.item);
+            && c.item.id === chat.item.id);
           }
 
 }});

@@ -1,7 +1,7 @@
 <template>
     <div class="parent">
       <div class = "details">
-        <ChatDetails :chat="props.chat" />
+        <ChatDetails :chat="chat" />
       </div>
       <div class="message-wrapper">
         <div class="messages">
@@ -9,7 +9,7 @@
         </div>
       </div>
         <div class="message-bar">
-            <input type = "text" placeholder="Send a message..." v-model="messageInput">
+            <input type = "text" placeholder="Send a message..." v-model="messageInput" id ="messageInput">
             <button class="send-button" @click="sendMessageService()">Send</button>
         </div>
     </div>
