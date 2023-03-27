@@ -13,6 +13,7 @@ import jakarta.annotation.PostConstruct;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Objects;
 
@@ -34,8 +35,9 @@ public class StartupImageInitializer {
         for (String path : imagePaths) {
             i++;
             logger.info("Inserting image: " + path);
-            File file = new File(Objects.requireNonNull(getClass().getResource("/images/" + path)).getFile());
-            byte[] data = Files.readAllBytes(file.toPath());
+            InputStream inputStream = Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/" + path));
+            byte[] data = inputStream.readAllBytes();
+
 
             ItemImage itemImage = new ItemImage();
             itemImage.setData(data);
