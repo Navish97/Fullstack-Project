@@ -70,9 +70,9 @@ When deployed on server it connects to a MySQLv8 database which is set up throug
 As mentioned earlier, this database is setup as a h2 database when run locally, but as a mysql database using MySQLv8.
 The local h2 database is saved in the backend project folder inside a database folder.
 
-The local database can be accessed here:
+The local h2 database is stored inside the backend project folder and the h2 console can be accessed here:
 
-localhost:8080/h2-ui
+http://localhost:8080/h2-ui/
 
 ## Installation and Setup
 
