@@ -13,7 +13,7 @@
           <button @click="route('/my-profile/edit')" class="update-btn" type="button">Cancel</button>
         </div>
         <div>
-          <button class="update-btn" type="submit">Change password</button>
+          <button id="changePasswordBtn" class="update-btn" type="submit">Change password</button>
         </div>
       </form>
     </div>

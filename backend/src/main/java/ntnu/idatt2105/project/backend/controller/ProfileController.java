@@ -127,6 +127,16 @@ public class ProfileController {
 
      @return A ResponseEntity containing either the updated UserProfileDTO if the request was successful, or an ErrorResponse if there was an error.
      */
+    @Operation(summary = "Changes the details of a user.",
+            description = "This method changes the email and/or name of a user.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "When password is changed successfully.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = SuccessResponse.class))),
+                    @ApiResponse(responseCode = "401", description = "When user is not authenticated.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class)))
+            })
     @PostMapping("/my-profile/edit")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> editMyProfile(@RequestBody UserProfileDTO userProfileDTO, HttpServletRequest request) {
@@ -160,6 +170,16 @@ public class ProfileController {
      */
     @PostMapping("/my-profile/change-password")
     @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Changes the password of an authenticated user",
+            description = "This endpoint changes the password of a user.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "When password is changed successfully.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = SuccessResponse.class))),
+                    @ApiResponse(responseCode = "401", description = "When user is not authenticated.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class))),
+            })
     public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDTO passwordChangeDTO, HttpServletRequest request) {
         logger.info("Received request to change password for user: " + jwtService.extractUsername(cookieService.extractTokenFromCookie(request)));
 

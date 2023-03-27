@@ -3,7 +3,7 @@
     <div class="content-wrapper">
       <ProfileBox />
       <div class="grid">
-        <InfoBox @click="route('my-profile/edit')" :icon="faUser" title="My account" content="View and edit my account details"/>
+        <InfoBox id="myAccountBtn" @click="route('my-profile/edit')" :icon="faUser" title="My account" content="View and edit my account details"/>
         <InfoBox :icon="faTag" title="My listings" @click="callLoadItems" content="View all my listings"/>
         <InfoBox :icon="faBookmark" title="My bookmarks" @click="loadBookmarkedItems" content="View all my bookmarks"/>
       </div>
@@ -131,6 +131,12 @@ function closeItems() {
 </script>
 
 <style scoped>
+
+@media screen and (max-width: 1000px) {
+  .container{
+    min-height: 100vh !important;
+  }
+}
 .overlay {
   position: fixed;
   top: 0;
@@ -192,6 +198,7 @@ function closeItems() {
   display: flex;
   margin-top: 120px;
   flex-direction: column;
+  margin-bottom: 120px;
 }
 
 
