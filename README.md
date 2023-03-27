@@ -37,7 +37,7 @@ Our backend runs on Spring Boot Maven 3.
 During the project, we put a lot of emphasis on simplifying the use of different databases between production and development stages.
 Therefore the backend project runs on different databases depending on if it's deployed on server or runs locally.
 
-When run on the local profile, it simply uses a H2 database in C:\FullstackProjectDatabase.
+When run on the local profile, it simply uses a H2 database saved inside a database folder in the directory of the backend project.
 When deployed on server it connects to a MySQLv8 database which is set up through Google's SQL service.
 
 #### Some important dependencies used by the backend are:
@@ -112,14 +112,30 @@ http://localhost:3000/
 For the backend google cloud run server, the swagger docs can be accessed here:
 https://fullstack-project-xt5ws57jza-lz.a.run.app/swagger-ui/index.html
 
+
 ## Server
 The servers were run as two Google Cloud Run services.
 
 The backend was setup through Google's Cloud SQL service, and the backend connects to it using the MySQL connector configuration defined in the application's production configuration. The configuration as mentioned earlier, also has the different sensitive credentials defined as environment variables so only the server has access to these credentials.
 
+NOTE: The servers will be taken down over the course of April 2023. The servers were set up for the purpose of gaining experience with developing a product while utilizing CD in a production environment.
 
 ## CI/CD
-For CI 
+For CI, github actions was used to run the tests for both front-end and back-end.
+The yml file was configured inside the .github/workflows folder, which runs the tests automatically every time there's a pull request or change is pushed to the development branch. Separate docker files for running the tests were created inside the respective folders.
+
+For CD we made use of Google Cloud Run's inbuilt feature for monitoring the github project repository. This was set to auto deploy and run the respective dockerfiles for both front-end and back-end whenever anything is pushed, either directly or through a pull request, into the main branch.
+
+The front-end cloud run url is this:
+https://mymarketplace-xt5ws57jza-lz.a.run.app
+
+The back-end is this:
+https://fullstack-project-xt5ws57jza-lz.a.run.app
+
+For the front end server, a custom domain was also mapped for the front-end server to make the url cleaner, the domain is this:
+(https://myserverprojects.store/)
+
+As mentioned earlier, these servers will most likely be taken down over the course of April 2023 due to cost. They have served their purpose and have helped us gain experience.
 
 ## Contributors
 Daniel Skymoen, Erik Skjellevik & Navid Muradi
