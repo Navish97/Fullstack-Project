@@ -75,7 +75,7 @@ const pages = computed(() => {
   return pageArray;
 });
 
-const isDesktop = ref(window.innerWidth >= 769);
+const isDesktop = ref(window.innerWidth >= 1500);
 const showFilter = ref(isDesktop.value);
 
 function toggleFilter() {
@@ -150,6 +150,12 @@ function emitLoadPage(page:number){
   }
 }
 
+  @media (max-width: 1400px) {
+    .items{
+      min-width: 0;
+    }
+  }
+
 .filter-toggle {
   background-color: #23d5ab;
   border: none;
@@ -172,9 +178,9 @@ function emitLoadPage(page:number){
 
 
 .listing-type {
-  width: 250px;
   position: relative;
   overflow: hidden;
+  width: fit-content;
 }
 
 .main-container {
@@ -297,6 +303,11 @@ function emitLoadPage(page:number){
   }
   100% {
     transform: translate3d(85px,0,0);
+  }
+}
+@media(max-width: 850px){
+  .grid-container {
+    padding: 0;
   }
 }
 

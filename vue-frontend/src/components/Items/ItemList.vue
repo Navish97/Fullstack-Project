@@ -68,6 +68,13 @@ img {
   grid-template-columns: repeat(3, 1fr);
 }
 
+@media (max-width: 1500px){
+  .item-grid{
+    grid-template-columns: 1fr;
+  }
+
+}
+
 @media (max-width: 768px) {
   .item-list-container {
     padding-left: .5rem;
