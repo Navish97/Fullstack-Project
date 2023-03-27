@@ -58,6 +58,7 @@ const props = defineProps({
   },
 });
 
+
 function bufferToImage(buffer: ArrayBuffer, type: string): string {
   const blob = new Blob([buffer], { type });
   return URL.createObjectURL(blob);
