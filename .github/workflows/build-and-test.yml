@@ -19,8 +19,8 @@ jobs:
       - name: Build and Test Frontend
         working-directory: ./vue-frontend
         run: |
-          docker build -t my-frontend-image .
-          docker run my-frontend-image npm test
+          docker build -t my-frontend-image -f Dockerfile-test .
+          docker run my-frontend-image
 
       - name: Build and Test Backend
         working-directory: ./backend
