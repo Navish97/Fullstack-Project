@@ -15,4 +15,7 @@ const itemStore = useItemStore();
 </script>
 
 <style scoped>
+.wrapper {
+  background: linear-gradient(-45deg, #cc63f1, #e73c7e, #23a6d5, #23d5ab);
+}
 </style>
