@@ -5,8 +5,8 @@ export {}
 describe('Login', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000/login')
-        cy.get('#inpEmail').type('erik.skjellevik@lyse.net')
-        cy.get('#inpPassword').type('1')
+        cy.get('#inpEmail').type('admin@localhost')
+        cy.get('#inpPassword').type('admin')
         cy.get('#button').click()
 
         //assert that the user is redirected to the home page, and that the url does not contain anything after the base url
@@ -31,11 +31,11 @@ describe('Login', () => {
         cy.get("#myAccountBtn").click(  )
         cy.url().should('eq', 'http://localhost:3000/my-profile/edit')
 
-        cy.get('#inpName').clear().type('Erik')
+        cy.get('#inpName').clear().type('Admin changed')
         cy.get("#update").click()
 
         cy.url().should('eq', 'http://localhost:3000/my-profile')
-        cy.get(".user-name").should('contain.text', 'Erik')
+        cy.get(".user-name").should('contain.text', 'Admin changed')
     })
 
     it('Cannot change password with wrong old password', () => {
@@ -61,8 +61,8 @@ describe('Login', () => {
 
         cy.url().should('eq', 'http://localhost:3000/my-profile/edit/change-password');
 
-        cy.get('#inpOldPassword').type('1');
-        cy.get('#inpNewPassword').type('1');
+        cy.get('#inpOldPassword').type('admin');
+        cy.get('#inpNewPassword').type('admin');
 
         cy.window().then((win) => {
             // Stub the window.alert method
