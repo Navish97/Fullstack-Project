@@ -3,7 +3,7 @@ This project was completed by three students from the fullstack development cour
 
 The project itself entailed creating a marketplace website with functionalities that would enable users to list and sell their items.
 
-Our solution was built using Vue for the frontend and Spring Boot Maven for the backend API calls.
+Our solution was built using Vue for the frontend and Spring Boot Maven for the backend.
 
 The application was designed while keeping both PC and Phone formats in mind.
 
