@@ -148,6 +148,22 @@ function emitLoadPage(page:number){
   .filter-toggle {
     display: none;
   }
+  .grid-container {
+    display: grid;
+    grid-gap: 20px;
+    justify-content: center;
+    grid-template-columns: auto 1fr;
+    margin: 50px auto auto;
+    min-width: 100%;
+  }
+
+  .listing-type {
+    position: relative;
+    padding-left: 100px;
+    padding-bottom: 100px;
+
+    z-index: 1000;
+  }
 }
 
   @media (max-width: 1400px) {
