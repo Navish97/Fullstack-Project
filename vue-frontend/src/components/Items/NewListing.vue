@@ -3,7 +3,7 @@
     <form @submit.prevent="sendForm" class="form">
       <h1>New Listing</h1>
       <div class="category">
-        <h3 v-if="icon">Current category: {{ icon.type }}</h3><font-awesome-icon :icon="icon.iconUrl" style="display: inline; padding-top: 4px" />
+        <h3 v-if="icon">Current category: {{ icon.type }}</h3><font-awesome-icon :icon="icon.icon_url" style="display: inline; padding-top: 4px" />
       </div>
 
       <h4 id="changeCategoryBtn" @click="resetCategory">Change category</h4>
@@ -67,7 +67,7 @@ function setLocation(newLatitude : number, newLongitude:number){
 
 let icon = ref({
   type: "",
-  iconUrl: "",
+  icon_url: "",
 });
 
 let images = ref<{ url: string; name: string }[]>([]);
@@ -162,7 +162,7 @@ const removeImage = (image: { url: string; name: string }) => {
   form.value.images.splice(index, 1);
 };
 
-const fetchIcon = async (chosenCategory: any) => {
+const fetchIconById = async (chosenCategory: any) => {
   try {
     const response = await axiosInstance.get(`/api/${chosenCategory}/icon`);
     icon.value = response.data;
@@ -172,7 +172,7 @@ const fetchIcon = async (chosenCategory: any) => {
 };
 
 onMounted(async () => {
-  await fetchIcon(itemStore.getNewListingCategory);
+  await fetchIconById(itemStore.getNewListingCategory);
 });
 </script>
 
