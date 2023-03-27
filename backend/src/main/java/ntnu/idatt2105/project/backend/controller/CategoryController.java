@@ -2,6 +2,8 @@ package ntnu.idatt2105.project.backend.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -105,4 +107,34 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Category not deleted"));
         }
     }
+
+    @Operation(summary = "Create new category",
+            description = "Create a new category",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Category object",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = Category.class))),
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Category successfully created",
+                            content = @Content(schema = @Schema(implementation = Category.class))),
+                    @ApiResponse(responseCode = "400", description = "Invalid request body")
+            })
+    @PostMapping("/categories/new")
+    @PreAuthorize("hasRole('ADMIN') and isAuthenticated()")
+    public ResponseEntity<?> createCategory(@RequestBody Category newCategoryRequest) {
+        try{
+            Category newCategory = new Category();
+            newCategory.setType(newCategoryRequest.getType());
+            newCategory.setIcon_url(newCategoryRequest.getIcon_url());
+            categoryService.createCategory(newCategory);
+            logger.info("Category created: " + newCategory);
+
+            return ResponseEntity.ok(new SuccessResponse("Category was successfully created", 200));
+        }
+        catch (Exception e){
+            logger.info("Category not created");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Category not created"));
+        }
+    }
+
+
 }
