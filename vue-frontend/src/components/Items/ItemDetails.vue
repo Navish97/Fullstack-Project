@@ -12,6 +12,7 @@
         <bookmark-component />
         <RouterLink to="/chats" v-if="showContactButton" @click="preLoadChat()" class="contact-button">Contact seller</RouterLink>
         <RouterLink :to="{ name: 'edit-item', params: { id: item.id } }" v-if="showEditButton" class ="contact-button">Edit item</RouterLink>
+        <RouterLink to="/" v-if="showEditButton" @click = "deleteCurrentItem()" class = "contact-button">Delete item</RouterLink>
       </div>
       <div class="item-info">
         <h2>{{ item.title }}</h2>
@@ -37,6 +38,7 @@ import { RouterLink } from 'vue-router';
 import type { Chat } from '@/types/ChatType';
 import { useChatStore } from '@/stores/Chat';
 import MapComponent from '../Map/MapComponent.vue';
+import { deleteItem } from '@/service/ItemService';
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
@@ -66,6 +68,16 @@ function bufferToImage(buffer: ArrayBuffer, type: string): string {
 watch(() => props.item, () => {
   currentImageIndex.value = 0;
 });
+
+async function deleteCurrentItem() {
+  await deleteItem(props.item.id.toString())
+  .then((response) => {
+    console.log("Item sucessfully deleted", response.data);
+  })
+  .catch((error) => {
+    console.log("Error occured while deleting item", error.message);
+  })
+}
 
 function preLoadChat() {
   const newChat: Chat = {

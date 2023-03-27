@@ -146,6 +146,24 @@ public class ItemController {
         return objectMapper.readValue(json, Filter.class);
     }
 
+    @PostMapping("/delete/{itemId}")
+    @Operation(summary = "Deletes an existing item", description = "Delete the item passed in parameter")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> deleteItem(@PathVariable Long itemId, @CookieValue(value = "myMarketPlaceAccessToken", required = true) String jwtToken){
+        logger.info("Received delete item request item:" + itemId);
+        User user = userService.findByEmail(jwtService.extractUsername(jwtToken));
+        ItemDTO item;
+        try {
+            item = itemService.deleteItem(itemId, user);
+        }catch(Exception e){
+            logger.info("Error occured while deleting item" + e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+        logger.info("Deleted item with ok response code");
+        return ResponseEntity.ok(item);
+
+    }
+
     @PostMapping("/edit-listing")
     @Operation(summary = "Edits a existing item", description = "Edits an existing item in the database")
     @PreAuthorize("isAuthenticated()")

@@ -1,5 +1,6 @@
 package ntnu.idatt2105.project.backend.repository;
 
+import jakarta.transaction.Transactional;
 import ntnu.idatt2105.project.backend.model.Category;
 import ntnu.idatt2105.project.backend.model.Item;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Optional<Item> findById(Long aLong);
     Page<Item> findByUserId(String userId, Pageable pageable);
 
-
     @Query(value = "SELECT i FROM Item i \n" +
             "WHERE (\n" +
             "    (:minPrice IS NULL AND :maxPrice IS NULL) OR \n" +
@@ -33,6 +33,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             "    LOWER(i.description) LIKE CONCAT('%', LOWER(:search), '%')\n" +
             ")")
     Page<Item> getItemsFiltered(int minPrice, int maxPrice, long category_id, String search, final Pageable pageable);
+
     @Query(value = "SELECT i FROM Item i")
     Page<Item> getItems(final Pageable pageable);
 

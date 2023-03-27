@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ntnu.idatt2105.project.backend.model.dto.BookmarkDTO;
 
+import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     @Query(value = "SELECT b FROM Bookmark b WHERE b.user.id = :userId")
     List<Bookmark> findAllBookmarksByUserId(String userId);
     Page<Bookmark> findBookmarkPageByUserId(String userId, Pageable pageable);
+    List<Bookmark> findAllByItemId(long itemId);
 
     Optional<Bookmark> findByUserIdAndItemId(String userId, Long itemId);
 }
