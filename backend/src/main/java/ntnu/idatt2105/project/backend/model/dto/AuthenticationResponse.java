@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+/**
+ * Class that represents a response for authentication
+ */
 @Data
 @Builder
 @AllArgsConstructor

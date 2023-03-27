@@ -3,7 +3,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+/**
+ * Class that represents a request for authentication
+ */
 @Data
 @Builder
 @NoArgsConstructor

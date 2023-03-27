@@ -3,7 +3,9 @@ package ntnu.idatt2105.project.backend.model.dto;
 import lombok.Getter;
 import lombok.Setter;
 import ntnu.idatt2105.project.backend.model.Bookmark;
-
+/**
+ * Data transfer object for the Bookmark class. Returns only the userId and itemId instead of entire item.
+ */
 @Getter
 @Setter
 public class BookmarkDTO {
