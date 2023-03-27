@@ -108,6 +108,7 @@ async function loadData() {
   border-radius: 5px;
   margin-top: 20px;
   width: 40%;
+  z-index: 1000;
 }
 
 .update-btn:hover{
