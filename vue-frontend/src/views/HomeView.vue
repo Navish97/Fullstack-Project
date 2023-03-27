@@ -140,6 +140,11 @@ function emitLoadPage(page:number){
 </script>
 
 <style scoped>
+  .items{
+    width: 100%;
+    flex: 1;
+    min-width: 60%;
+  }
 @media (min-width: 769px) {
   .filter-toggle {
     display: none;
@@ -343,6 +348,7 @@ function emitLoadPage(page:number){
 
   .items {
     width: 100%;
+    min-width: 0;
   }
 
   .wrapper {
