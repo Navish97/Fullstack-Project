@@ -25,5 +25,5 @@ jobs:
       - name: Build and Test Backend
         working-directory: ./backend
         run: |
-          docker build -t my-backend-image -f Dockerfile-test.
+          docker build -t my-backend-image -f Dockerfile-test .
           docker run my-backend-image mvn test
