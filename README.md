@@ -5,14 +5,13 @@ The project itself entailed creating a marketplace website with functionalities 
 
 Our solution was built using Vue for the frontend and Spring Boot Maven for the backend API calls.
 
-
-##Documentation
+## Documentation
 
 ### Front-end
 As mentioned, our front-end runs on vue3.
 For our frontend, we used a set of libraries and modules to enable ease of use.
 
-####Some of the more important ones are:
+#### Some of the more important ones are:
 Typescript for typescript support
 Leaflet for displaying DD coordinates in maps
 Vue Router for defining routes
@@ -22,25 +21,30 @@ Axios for api calls
 
 
 ###Back-end
-Our backend runs on spring boot maven.
+Our backend runs on Spring Boot Maven 3.
+During the project, we put a lot of emphasis on simplifying the use of different databases between production and development stages.
+Therefore the backend project runs on different databases depending on if it's deployed on server or runs locally.
 
+When run on the local profile, it simply uses a H2 database in C:\FullstackProjectDatabase.
+When deployed on server it connects to a MySQLv8 database which is set up through Google's SQL service.
 
+#### Some important dependencies used by the backend are:
+Spring-boot-starter for default configurations for the Spring Boot project.
+Springdoc-openapi used to generate OpenAPI documentation for the RESTful APIs in a Spring Boot project, including a web UI using Swagger.
+jakarta.persistence for managing and persisting Java objects to a relational database using ORM.
+h2 for databases run locally. Runs in memory when running tests, runs as a file when run during development.
+spring-boot-starter-data-jpa for using Spring Data JPA.
+spring-boot-starter-security for authentication and authorization.
+lombok for auto generating boilerplate code through annotations.
+mysql-socket-factory and mysql-connector-java for connecting to MySQL databases
 
+## Installation and Setup
 
-Description
-The project allows users to [add a description of the application's purpose and functionality]. Users can [add a list of features or use cases, such as signing up, logging in, creating and editing data, searching for data, etc.].
+### Clone the repo
+First step to getting the project running locally is by actually cloning the repo to local.
 
-
-
-Bootstrap
-Spring Boot
-Spring Security
-Spring Data JPA
-
-Installation and Setup
 
 Backend
-Clone the repository
 Open the backend directory in your preferred IDE
 Run the application
 
