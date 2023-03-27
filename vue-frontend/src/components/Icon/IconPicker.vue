@@ -1,7 +1,11 @@
 <template>
   <div class="icon-picker">
     <BaseInput type="text" v-model="search" label="Search icons..." />
-    <div class="icon-grid">
+    <div v-if="props.selectedCategory" class="chosen-category">
+      <h3>Chosen Category:</h3>
+      <font-awesome-icon :icon="props.selectedCategory" />
+    </div>
+    <div v-else class="icon-grid">
       <div
           v-for="(icon, index) in filteredIcons"
           :key="index"
@@ -14,8 +18,10 @@
   </div>
 </template>
 
+
+
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import BaseInput from "@/components/Form/BaseInput.vue";
@@ -24,6 +30,19 @@ const search = ref("");
 const regularIcons = Object.values(far);
 const solidIcons = Object.values(fas);
 const icons = [...solidIcons, ...regularIcons];
+
+const props = defineProps({
+  selectedCategory: String,
+});
+
+watch(
+    () => props.selectedCategory,
+    (newVal, oldVal) => {
+      if (newVal !== oldVal) {
+        search.value = ""; // Clear the search input when the selected category changes
+      }
+    }
+);
 
 const filteredIcons = computed(() => {
   if (search.value === "") {
