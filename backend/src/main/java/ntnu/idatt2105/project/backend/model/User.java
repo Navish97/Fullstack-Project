@@ -25,7 +25,6 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "The id of the user, automatically generated")
     private String id;
 
@@ -40,13 +39,6 @@ public class User implements UserDetails {
     @Column(name = "password")
     @Schema(description = "The password of the user")
     private String password;
-
-    /*
-    @Column(name = "is_admin")
-    @Schema(description = "The admin status of the user")
-    private boolean isAdmin;
-
-     */
 
     @Column(name = "role")
     @Schema(description = "The role of the user")

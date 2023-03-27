@@ -20,6 +20,10 @@ export async function getItemDetails(itemId: String): Promise<any> {
     return await axiosInstance.get(`/api/items/details/${itemId}`);
 }
 
+export async function deleteItem(itemId: String): Promise<any> {
+    return await axiosInstance.post(`/api/items/delete/${itemId}`);
+}
+
 export async function getMyItems(pageNr: number, pageSize: number): Promise<any> {
     return await axiosInstance.get('/api/items/my-listings', {
         params: {

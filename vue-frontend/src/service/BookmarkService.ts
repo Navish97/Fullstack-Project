@@ -11,3 +11,11 @@ export async function addBookmark(itemId: number): Promise<any> {
 export async function getUserBookmarks(): Promise<any> {
     return await axiosInstance.get(`/api/bookmarks/user`);
 }
+
+export async function getBookmarkedItemsPage(pageNr: number, pageSize: number): Promise<any> {
+    return await axiosInstance.get('/api/bookmarks/user/items', {
+        params: {
+            pageNumber: pageNr,
+            size: pageSize,
+        }});
+}

@@ -16,7 +16,7 @@ const props = defineProps({
 });
 
 </script>
-<style>
+<style scoped>
 .receive-label {
     font-size: 16px;
     font-weight: bold;

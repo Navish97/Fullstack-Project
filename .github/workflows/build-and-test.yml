@@ -17,13 +17,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build and Test Frontend
+        working-directory: ./vue-frontend
         run: |
-          cd vue-frontend
-          docker build -t my-frontend-image .
-          docker run my-frontend-image npm test
+          docker build -t my-frontend-image -f Dockerfile-test .
+          docker run my-frontend-image
 
       - name: Build and Test Backend
+        working-directory: ./backend
         run: |
-          cd backend
-          docker build -t my-backend-image .
+          docker build -t my-backend-image -f Dockerfile-test .
           docker run my-backend-image mvn test

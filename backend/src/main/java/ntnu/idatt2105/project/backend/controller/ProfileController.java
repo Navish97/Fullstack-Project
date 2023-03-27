@@ -12,6 +12,7 @@ import ntnu.idatt2105.project.backend.model.dto.ErrorResponse;
 import ntnu.idatt2105.project.backend.model.dto.PasswordChangeDTO;
 import ntnu.idatt2105.project.backend.model.dto.UserProfileDTO;
 import ntnu.idatt2105.project.backend.model.dto.response.SuccessResponse;
+import ntnu.idatt2105.project.backend.model.dto.response.UserStatusResponse;
 import ntnu.idatt2105.project.backend.model.enums.AuthenticationState;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.service.AuthenticationService;
@@ -102,16 +103,40 @@ public class ProfileController {
             User user = userService.findByEmail(jwtService.extractUsername(jwt)); // Pass the JWT token instead of the request
             logger.info("User: " + user);
             AuthenticationState state = jwtService.getAuthenticationState(jwt, user);
+            String role = user.getRole().toString();
 
-            logger.info("User status: " + state);
+            logger.info("User status: " + state + " Role: " + role);
 
-            return ResponseEntity.ok(state);
+            UserStatusResponse userStatusResponse = new UserStatusResponse(state, role);
+
+            return ResponseEntity.ok(userStatusResponse);
         } catch (TokenExpiredException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Token expired"));
         }
     }
 
 
+
+    /**
+
+     Handles a request to edit the user's name and email.
+
+     @param userProfileDTO A DTO representing the user's updated name and email.
+
+     @param request The HTTP request.
+
+     @return A ResponseEntity containing either the updated UserProfileDTO if the request was successful, or an ErrorResponse if there was an error.
+     */
+    @Operation(summary = "Changes the details of a user.",
+            description = "This method changes the email and/or name of a user.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "When password is changed successfully.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = SuccessResponse.class))),
+                    @ApiResponse(responseCode = "401", description = "When user is not authenticated.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class)))
+            })
     @PostMapping("/my-profile/edit")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> editMyProfile(@RequestBody UserProfileDTO userProfileDTO, HttpServletRequest request) {
@@ -132,8 +157,29 @@ public class ProfileController {
         }
     }
 
+
+    /**
+
+     Handles a request to change the user's password.
+
+     @param passwordChangeDTO A DTO representing the user's old and new passwords.
+
+     @param request The HTTP request.
+
+     @return A ResponseEntity containing either a SuccessResponse if the password was changed successfully, or an ErrorResponse if there was an error.
+     */
     @PostMapping("/my-profile/change-password")
     @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Changes the password of an authenticated user",
+            description = "This endpoint changes the password of a user.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "When password is changed successfully.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = SuccessResponse.class))),
+                    @ApiResponse(responseCode = "401", description = "When user is not authenticated.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class))),
+            })
     public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDTO passwordChangeDTO, HttpServletRequest request) {
         logger.info("Received request to change password for user: " + jwtService.extractUsername(cookieService.extractTokenFromCookie(request)));
 

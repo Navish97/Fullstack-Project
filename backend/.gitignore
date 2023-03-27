@@ -34,3 +34,6 @@ build/
 
 
 /src/main/resources/application-secrets.properties
+
+### Database
+database/

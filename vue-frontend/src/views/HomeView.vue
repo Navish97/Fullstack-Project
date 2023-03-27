@@ -8,7 +8,6 @@
         <Waves />
       </div>
     </div>
-    <div class="wrapper">
       <div class="grid-container">
         <div class="listing-type">
           <ListingTypeButton />
@@ -34,7 +33,6 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -77,7 +75,7 @@ const pages = computed(() => {
   return pageArray;
 });
 
-const isDesktop = ref(window.innerWidth >= 769);
+const isDesktop = ref(window.innerWidth >= 1500);
 const showFilter = ref(isDesktop.value);
 
 function toggleFilter() {
@@ -140,11 +138,39 @@ function emitLoadPage(page:number){
 </script>
 
 <style scoped>
+  .items{
+    width: 100%;
+    flex: 1;
+    min-width: 60%;
+    margin-top: 30px;
+  }
 @media (min-width: 769px) {
   .filter-toggle {
     display: none;
   }
+  .grid-container {
+    display: grid;
+    grid-gap: 20px;
+    justify-content: center;
+    grid-template-columns: auto 1fr;
+    margin: 50px auto auto;
+    min-width: 100%;
+  }
+
+  .listing-type {
+    position: relative;
+    padding-left: 100px;
+    padding-bottom: 100px;
+
+    z-index: 1000;
+  }
 }
+
+  @media (max-width: 1400px) {
+    .items{
+      min-width: 0;
+    }
+  }
 
 .filter-toggle {
   background-color: #23d5ab;
@@ -168,9 +194,9 @@ function emitLoadPage(page:number){
 
 
 .listing-type {
-  width: 250px;
   position: relative;
   overflow: hidden;
+  width: fit-content;
 }
 
 .main-container {
@@ -247,24 +273,16 @@ function emitLoadPage(page:number){
   }
 }
 
-.wrapper {
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding-top: 4rem;
-}
-
 .grid-container {
   display: grid;
-  grid-template-columns: 250px auto;
   grid-gap: 20px;
   justify-content: center;
-  width: 80%;
+  grid-template-columns: auto 1fr;
+  margin: 50px auto auto;
 }
 
 .listing-type {
-  width: 250px;
+  width: auto;
 }
 
 
@@ -301,6 +319,11 @@ function emitLoadPage(page:number){
   }
   100% {
     transform: translate3d(85px,0,0);
+  }
+}
+@media(max-width: 850px){
+  .grid-container {
+    padding: 0;
   }
 }
 
@@ -343,6 +366,7 @@ function emitLoadPage(page:number){
 
   .items {
     width: 100%;
+    min-width: 0;
   }
 
   .wrapper {

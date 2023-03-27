@@ -18,6 +18,7 @@ import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.model.authentication.RegisterRequest;
 import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.model.dto.Filter;
+import ntnu.idatt2105.project.backend.model.enums.AuthenticationState;
 import ntnu.idatt2105.project.backend.service.*;
 import org.apache.coyote.Response;
 import org.slf4j.Logger;
@@ -145,9 +146,75 @@ public class ItemController {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(json, Filter.class);
     }
+    /**
+     * Deletes an existing item. Only authenticated users who own the item or admins can use this endpoint.
+     * @param itemId ID of the item to be deleted.
+     * @param jwtToken JWT token of the authenticated user.
+     * @return ResponseEntity containing the deleted item.
+     */
+    @Operation(summary = "Deletes an existing item",
+            description = "Delete the item passed in parameter." +
+                    " Only authenticated users who own the item or admins can use this endpoint.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "The item was successfully deleted.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ItemDTO.class))),
+            })
+    @PostMapping("/delete/{itemId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> deleteItem(@PathVariable Long itemId, @CookieValue(value = "myMarketPlaceAccessToken", required = true) String jwtToken){
+        logger.info("Received delete item request item:" + itemId);
+        User user = userService.findByEmail(jwtService.extractUsername(jwtToken));
+        ItemDTO item;
+        try {
+            item = itemService.deleteItem(itemId, user);
+        }catch(Exception e){
+            logger.info("Error occured while deleting item" + e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+        logger.info("Deleted item with ok response code");
+        return ResponseEntity.ok(item);
 
+    }
+
+    /**
+
+         Edits an existing item in the database.
+
+         @param id the ID of the item to edit
+
+         @param title the new title of the item
+
+         @param description the new description of the item
+
+         @param price the new price of the item
+
+         @param longitude the new longitude of the item
+
+         @param categoryId the new category ID of the item
+
+         @param latitude the new latitude of the item
+
+         @param images the new images of the item
+
+         @param request the HTTP servlet request
+
+         @return the HTTP response indicating success or failure of the operation
+
+         @throws IOException if an I/O error occurs
+         */
+    @Operation(summary = "Edits an existing item",
+            description = "Edits an existing item in the database that is owned by the user." +
+                    " Only admins and the owner of the item can edit the item.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Item successfully edited.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ItemDTO.class))),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized access.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AuthenticationState.class)))
+            })
     @PostMapping("/edit-listing")
-    @Operation(summary = "Edits a existing item", description = "Edits an existing item in the database")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> editItem(
             @RequestParam("id") long id,
@@ -198,8 +265,32 @@ public class ItemController {
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
+
+    /**
+     * Registers a new item in the database.
+     *
+     * @param title the title of the item
+     * @param description the description of the item
+     * @param price the price of the item
+     * @param longitude the longitude of the item
+     * @param categoryId the category ID of the item
+     * @param latitude the latitude of the item
+     * @param images the images of the item
+     * @param request the HTTP servlet request
+     * @return the HTTP response indicating success or failure of the operation
+     * @throws IOException if an I/O error occurs
+     */
+    @Operation(summary = "Registers a new item",
+            description = "Registers a new item in the database, user has to be authenticated.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Item successfully registered.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ItemDTO.class))),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized access.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AuthenticationState.class)))
+            })
     @PostMapping("/new-listing")
-    @Operation(summary = "Register a new item", description = "Registers a new item in the database.")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> createItem(
             @RequestParam("title") String title,

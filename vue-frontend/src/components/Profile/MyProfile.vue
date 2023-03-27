@@ -4,10 +4,6 @@
       <h1 class="user-name">{{ user.name }}</h1>
       <p class="user-email">{{ user.email }}</p>
     </div>
-    <div class="profile-picture-container">
-      <img src="https://i.imgur.com/8Km9tLL.png" alt="profile" class="profile-picture" />
-    </div>
-<!--    <button @click="handleLogOut" class="log-out-btn">Log Out</button>-->
   </div>
 </template>
 
@@ -61,7 +57,6 @@ async function loadData() {
 
 .profile-container {
   display: grid;
-  grid-template-columns: auto 1fr;
   column-gap: 1rem;
   justify-items: end;
   justify-content: space-evenly;

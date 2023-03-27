@@ -13,8 +13,8 @@
         </div>
         <font-awesome-icon :icon="icon.iconUrl" style="display: inline; padding-top: 4px" />
         </div>
-  
-        
+
+
         <div v-if="icon" class="icon-container"></div>
         <BaseInput id="inpTitle" class="input-container" type="text" label="Title" v-model="form.title" />
         <BaseInput id="inpDescription" class="input-container" type="text" label="Description" v-model="form.description" />
@@ -22,6 +22,12 @@
         <BaseInput id="inpLongitude" class="input-container" type="number" label="Longitude" v-model="form.longitude" />
         <BaseInput id="inpLatitude" class="input-container" type="number" label="Latitude" v-model="form.latitude" />
         <MapComponent :latitude="form.latitude" :longitude="form.longitude" @set-location="(lat, long) => setLocation(lat,long)" />
+        <div class="image-gallery">
+          <div v-for="(image, index) in images" :key="index" class="image-wrapper">
+            <img :src="image.url" :alt="image.name" />
+            <button @click="removeImage(index)">Remove</button>
+          </div>
+        </div>
         <div class="input-container">
           <input id="inpImages" type="file" @change="onImagesChange" multiple />
         </div>
@@ -30,18 +36,18 @@
       </form>
     </div>
   </template>
-  
+
   <script setup lang="ts">
   import BaseInput from "@/components/Form/BaseInput.vue";
-  import {ref, onMounted, defineProps} from "vue";
+  import {defineProps, onMounted, ref} from "vue";
   import router from "@/router";
   import axiosInstance from "@/service/AxiosInstance";
-  import { useItemStore } from "@/stores/Item";
+  import {useItemStore} from "@/stores/Item";
   import ErrorMessage from "@/components/Errors/ErrorMessage.vue";
   import MapComponent from "@/components/Map/MapComponent.vue";
-import type { Item } from "@/types/ItemType";
-import type { Category } from "@/types/CategoryType";
-  
+  import type {Item} from "@/types/ItemType";
+  import type {Category} from "@/types/CategoryType";
+
   const itemStore = useItemStore();
 
   const props = defineProps({
@@ -50,10 +56,9 @@ import type { Category } from "@/types/CategoryType";
         required:true,
     }
   })
-  
-  
+
   const errorMessage = ref("");
-  
+
   interface Form {
     title: string;
     description: string;
@@ -63,7 +68,7 @@ import type { Category } from "@/types/CategoryType";
     images: File[];
     [key: string]: string | File[] | number;
   }
-  
+
   const form = ref<Form>({
     title: "",
     description: "",
@@ -72,70 +77,74 @@ import type { Category } from "@/types/CategoryType";
     latitude: 10,
     images: [],
   });
-  
+
   function setLocation(newLatitude : number, newLongitude:number){
     form.value.latitude = newLatitude;
     form.value.longitude = newLongitude;
   }
-  
+
   let icon = ref({
     type: "",
     iconUrl: "",
   });
-  
+
   let images = ref<{ url: string; name: string }[]>([]);
   const categories = ref<Category[]>([]);
   const selectedCategory = ref<number | null>(null);
-  
+
   const validateForm = () => {
     errorMessage.value = "";
-  
+
     if (!form.value.title || form.value.title.length < 3 || form.value.title.length > 50) {
       errorMessage.value = "Title must be at least 3 characters and cannot exceed 50";
       return false
     }
-  
+
     if (!form.value.description || form.value.description.length < 20 ||form.value.description.length > 1000) {
       errorMessage.value = "Description must be at least 20 characters and cannot exceed 1000";
       return false
     }
-  
+
     if (!form.value.price || isNaN(Number(form.value.price)) || Number(form.value.price) < 10 || Number(form.value.price) > 10000000) {
       errorMessage.value = "Price must be a valid number between 10 and 10.000.000";
       return false;
     }
-  
+
     if (!form.value.longitude || isNaN(Number(form.value.longitude))
         || Number(form.value.longitude) < -180 || Number(form.value.longitude) > 180) {
       errorMessage.value = "Longitude must be a valid number between -180 and 180";
       return false;
     }
-  
+
     if (!form.value.latitude || isNaN(Number(form.value.latitude))
         || Number(form.value.latitude) < -90 || Number(form.value.latitude) > 90) {
       errorMessage.value = "Latitude must be a valid number between -90 and 90";
       return false;
     }
-  
+
     return true;
   };
-  
+
   const onImagesChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
     if (!target.files) {
       return;
     }
+    if (form.value.images.length + target.files.length > 5) {
+      errorMessage.value = "You can only upload up to 5 images.";
+      return;
+    }
     const files = Array.from(target.files);
-    form.value.images = files;
-    images.value = files.map((file) => ({ url: URL.createObjectURL(file), name: file.name }));
+    form.value.images = [...form.value.images, ...files];
+    images.value = [...images.value, ...files.map((file) => ({ url: URL.createObjectURL(file), name: file.name }))];
   };
-  
+
   const removeImage = (image: { url: string; name: string }) => {
     const index = images.value.findIndex((img) => img.url === image.url);
     images.value.splice(index, 1);
     form.value.images.splice(index, 1);
   };
-  
+
   const fetchIcon = async (chosenCategory: any) => {
     try {
       const response = await axiosInstance.get(`/api/${chosenCategory}/icon`);
@@ -152,14 +161,26 @@ import type { Category } from "@/types/CategoryType";
     form.value.latitude = props.item.latitude;
     form.value.longitude = props.item.longitude;
     selectedCategory.value = props.item.categoryId;
-    form.value.images = props.item.images.map((image) => {
-        const file = new File([image.data], "image_", {type : image.contentType});
-        return file;
-    });
-    images.value = form.value.images.map((file) => ({ url: URL.createObjectURL(file), name: file.name }));
-    console.log(form.value.images);
+    form.value.images = convertToFiles(props.item.images);
+    images.value = props.item.images.map((image) => ({ url: image.data.toString(), name: "image" }));
 }
-  
+
+  function convertToFiles(images: any[]) {
+    return images.map((image) => {
+      const byteString = atob(image.data.split(',')[1]);
+      const arrayBuffer = new ArrayBuffer(byteString.length);
+      const uint8Array = new Uint8Array(arrayBuffer);
+      for (let i = 0; i < byteString.length; i++) {
+        uint8Array[i] = byteString.charCodeAt(i);
+      }
+      const blob = new Blob([arrayBuffer], { type: image.contentType });
+      const file = new File([blob], `image.${image.contentType.split("/")[1]}`, {
+        type: image.contentType,
+      });
+      return file;
+    });
+  }
+
   onMounted(async () => {
     await fetchIcon(itemStore.getNewListingCategory);
     try {
@@ -170,7 +191,7 @@ import type { Category } from "@/types/CategoryType";
     console.error(error);
   }
   loadForm();
-  
+
 
   });
 
@@ -180,7 +201,6 @@ import type { Category } from "@/types/CategoryType";
   }
   try {
     const formData = new FormData();
-    console.log(props.item.id);
     formData.append("id", props.item.id.toString());
     formData.append("title", form.value.title);
     formData.append("description", form.value.description);
@@ -222,10 +242,10 @@ import type { Category } from "@/types/CategoryType";
   }
 };
   </script>
-  
+
   <style scoped>
-  
-  
+
+
   #changeCategoryBtn {
     cursor: pointer;
   }
@@ -234,7 +254,31 @@ import type { Category } from "@/types/CategoryType";
     align-items: center;
     justify-content: center;
   }
-  
+
+  .image-wrapper {
+    padding-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .image-wrapper img {
+    max-width: 100%;
+    height: auto;
+    max-height: 200px;
+    margin-bottom: 10px;
+  }
+
+  .image-wrapper button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
   .category h3 {
     margin-right: 10px;
     cursor: default;
@@ -245,21 +289,21 @@ import type { Category } from "@/types/CategoryType";
     font-size: 40px;
     font-weight: 300;
   }
-  
+
   h3{
     color: white;
     text-align: center;
     font-size: 20px;
     font-weight: 300;
   }
-  
+
   h4{
     color: white;
     text-align: center;
     font-size: 15px;
     font-weight: 300;
   }
-  
+
   textarea{
     resize: none;
     margin-top: 20px;
@@ -273,8 +317,8 @@ import type { Category } from "@/types/CategoryType";
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-  
-  
+
+
   .input-container {
     margin-top: 40px;
     height: 50px;
@@ -282,67 +326,30 @@ import type { Category } from "@/types/CategoryType";
     width: 100%;
     margin-bottom: 20px;
   }
-  
-  .input{
-    background-color: rgb(92, 88, 88);
-    border-radius: 12px;
-    border: 0;
-    box-sizing: border-box;
-    color: #eee;
-    font-size: 18px;
-    height: 100%;
-    outline: 0;
-    padding: 4px 20px 0;
-    width: 100%;
-  }
-  
-  .cut{
-    background-color: rgba(92, 88, 88,0);
-    border-radius: 10px;
-    height: 20px;
-    left: 20px;
-    position: absolute;
-    top: -20px;
-    transform: translateY(0);
-    transition: transform 200ms;
-    width: 76px;
-  }
-  
+
   .input:focus ~ .cut,
   .input:not(:placeholder-shown) ~ .cut {
     transform: translateY(8px);
     background-color: rgba(92, 88, 88,1);
   }
-  
-  .placeholder {
-    color: white;
-    font-family: sans-serif;
-    left: 20px;
-    line-height: 14px;
-    pointer-events: none;
-    position: absolute;
-    transform-origin: 0 50%;
-    transition: transform 200ms, color 200ms;
-    top: 20px;
-  }
-  
+
   ::placeholder {
     color: white;
   }
-  
+
   .input:focus ~ .placeholder,
   .input:not(:placeholder-shown) ~ .placeholder {
     transform: translateY(-30px) translateX(10px) scale(0.75);
   }
-  
+
   .input:not(:placeholder-shown) ~ .placeholder {
     color: #808097;
   }
-  
+
   .input:focus ~ .placeholder {
     color: white;
   }
-  
+
   #button {
     background: linear-gradient(45deg, #FC466B, #3F5EFB);
     border: 0;
@@ -356,11 +363,11 @@ import type { Category } from "@/types/CategoryType";
     width: 100%;
     transition: transform 200ms;
   }
-  
+
   #button:hover {
     transform: scale(1.05);
   }
-  
+
   #button:disabled{
     cursor: initial;
     transform: scale(1);
@@ -376,7 +383,7 @@ import type { Category } from "@/types/CategoryType";
     user-select: none;
     left: 50%;
   }
-  
+
   /* The actual popup */
   .popup .popuptext {
     visibility: hidden;
@@ -394,7 +401,7 @@ import type { Category } from "@/types/CategoryType";
     margin-bottom: -35px;
     cursor: default;
   }
-  
+
   /* Popup arrow */
   .popup .popuptext::after {
     content: "";
@@ -406,35 +413,35 @@ import type { Category } from "@/types/CategoryType";
     border-style: solid;
     border-color: #555 transparent transparent transparent;
   }
-  
+
   /* Toggle this class - hide and show the popup */
   .popup .show {
     visibility: visible;
     -webkit-animation: fadeIn 1s;
     animation: fadeIn 1s;
   }
-  
+
   /* Add animation (fade in the popup) */
   @-webkit-keyframes fadeIn {
     from {opacity: 0;}
     to {opacity: 1;}
   }
-  
+
   @keyframes fadeIn {
     from {opacity: 0;}
     to {opacity:1 ;}
   }
-  
+
   .text{
     color: white;
     font-size: 15px;
   }
-  
+
   .link{
     color: white;
     font-size: 15px;
   }
-  
+
   .link:hover{
     color: white;
     font-size: 15px;
@@ -460,46 +467,46 @@ import type { Category } from "@/types/CategoryType";
   color: #333333;
   margin-bottom: 5%;
 }
-  
+
   @media screen and (max-width: 768px) {
     .form {
       width: 90%;
       padding: 30px;
     }
-  
+
     h1 {
       font-size: 30px;
     }
-  
+
     h3 {
       font-size: 18px;
     }
-  
+
     h4 {
       font-size: 12px;
     }
-  
+
     .input {
       font-size: 16px;
     }
-  
+
     #button {
       font-size: 16px;
       height: 40px;
     }
-  
+
     .input-container {
       margin-top: 30px;
       height: 40px;
     }
-  
+
     .cut {
       width: 60px;
     }
-  
+
     .placeholder {
       font-size: 12px;
     }
   }
-  
+
   </style>

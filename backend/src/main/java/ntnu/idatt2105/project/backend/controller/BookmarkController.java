@@ -12,18 +12,22 @@ import ntnu.idatt2105.project.backend.exceptions.UnauthorizedException;
 import ntnu.idatt2105.project.backend.exceptions.UserNotFoundException;
 import ntnu.idatt2105.project.backend.model.Bookmark;
 import ntnu.idatt2105.project.backend.model.User;
+import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.repository.BookmarkRepository;
 import ntnu.idatt2105.project.backend.repository.UserRepository;
 import ntnu.idatt2105.project.backend.service.BookmarkService;
 import ntnu.idatt2105.project.backend.service.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -154,4 +158,60 @@ public class BookmarkController {
         logger.info("User found, returning bookmarks for user with email: " + email);
         return ResponseEntity.ok(bookmarks);
     }
+
+    /**
+     * Returns a page of bookmarked items for the user with the given email address.
+     *
+     * @param pageNumber    The page number to return.
+     * @param size          The number of items per page.
+     * @param jwtToken      JWT token containing the user's information.
+     * @return ResponseEntity containing a page of bookmarked items for the user.
+     * @throws UserNotFoundException if the user is not found.
+     * @throws UnauthorizedException if the user is not authorized.
+     */
+    @Operation(summary = "Gets the bookmarked items for a user",
+            description = "Retrieves bookmarked items for a user based on page number and size",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Bookmark items retrieved successfully",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Page.class))),
+                    @ApiResponse(responseCode = "401", description = "When authentication fails.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = UnauthorizedException.class))),
+            })
+    @GetMapping("/user/items")
+    public ResponseEntity<?> getBookmarkedItems(
+            @RequestParam final Integer pageNumber,
+            @RequestParam final Integer size,
+            @CookieValue(value = "myMarketPlaceAccessToken") String jwtToken) throws UserNotFoundException, UnauthorizedException{
+        logger.info("Received get bookmarked items request");
+        String email = jwtService.extractUsername(jwtToken);
+        logger.info("Getting bookmarked items for user with email: " + email + "jwtToken: " + jwtToken);
+
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            logger.info("User with email: " + email + " not found");
+            throw new UserNotFoundException("User with email: " + email + " not found");
+        }
+
+        Page<ItemDTO> items = bookmarkService.getBookmarkedItemsPage(pageNumber, size, user.get());
+        logger.info("User found, returning bookmarked items for user with email: " + email);
+        return ResponseEntity.ok(generateResponse(items));
+
+    }
+
+    /**
+     * Generates a response containing information about the page being returned. It maps them to a hashmap.
+     * @param page
+     * @return response containing information about the page being returned.
+     */
+    private Map<String, Object> generateResponse(final Page<ItemDTO> page){
+        Map<String, Object> response = new HashMap<>();
+        response.put("items", page.getContent());
+        response.put("current-page", page.getNumber());
+        response.put("total-items", page.getTotalElements());
+        response.put("total-pages", page.getTotalPages());
+        return response;
+    }
+
 }
