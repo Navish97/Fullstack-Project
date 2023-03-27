@@ -116,6 +116,17 @@ public class ProfileController {
     }
 
 
+
+    /**
+
+     Handles a request to edit the user's name and email.
+
+     @param userProfileDTO A DTO representing the user's updated name and email.
+
+     @param request The HTTP request.
+
+     @return A ResponseEntity containing either the updated UserProfileDTO if the request was successful, or an ErrorResponse if there was an error.
+     */
     @PostMapping("/my-profile/edit")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> editMyProfile(@RequestBody UserProfileDTO userProfileDTO, HttpServletRequest request) {
@@ -136,6 +147,17 @@ public class ProfileController {
         }
     }
 
+
+    /**
+
+     Handles a request to change the user's password.
+
+     @param passwordChangeDTO A DTO representing the user's old and new passwords.
+
+     @param request The HTTP request.
+
+     @return A ResponseEntity containing either a SuccessResponse if the password was changed successfully, or an ErrorResponse if there was an error.
+     */
     @PostMapping("/my-profile/change-password")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDTO passwordChangeDTO, HttpServletRequest request) {

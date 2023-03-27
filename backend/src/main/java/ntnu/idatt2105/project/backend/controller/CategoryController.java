@@ -21,27 +21,40 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+
+/**
+
+ The CategoryController class handles incoming requests related to categories.
+ It allows the retrieval of all categories, deletion of categories by ID, and creation of new categories.
+ */
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class CategoryController {
 
+    /**
+     * The CategoryService instance used to handle category data.
+     */
     private final CategoryService categoryService;
 
+    /**
+     * The logger instance for the class.
+     */
     Logger logger = Logger.getLogger(ProfileController.class.getName());
 
     /**
-     * Gets all categories. Checks first if the user is authenticated by using the @PreAuthorize annotation.
+     * Retrieves a list of all categories that can be used for items.
+     * Checks first if the user is authenticated by using the @PreAuthorize annotation.
      *
-     * @param request The HttpServletRequest
-     * @return List of categories
+     * @param request The HttpServletRequest.
+     * @return List of categories.
      */
     @Operation(summary = "Get all categories",
             description = "Retrieve a list of all categories that can be used for items",
             responses = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of categories"),
-            @ApiResponse(responseCode = "404", description = "No categories found")}
-    )
+                    @ApiResponse(responseCode = "200", description = "Successfully retrieved list of categories"),
+                    @ApiResponse(responseCode = "404", description = "No categories found")
+            })
     @GetMapping("/categories")
     public ResponseEntity<?> getMyCategories(HttpServletRequest request) {
         List<Category> categories = categoryService.getAllCategories();
@@ -56,11 +69,11 @@ public class CategoryController {
     }
 
     /**
-     * Gets the image that belongs to a category.
+     * Retrieves the image that belongs to a category by ID.
      * Checks first if the user is authenticated by using the @PreAuthorize annotation.
      *
-     * @param id The id of the category
-     * @return The image path of the category
+     * @param id The ID of the category.
+     * @return The image path of the category.
      */
     @Operation(summary = "Get category icon by ID",
             description = "Retrieve the icon URL for a category by ID",
@@ -84,6 +97,21 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
 
+
+    /**
+
+     The deleteCategoryById method handles the deletion of a category by its ID.
+
+     The method is accessible only by authenticated users with an ADMIN role.
+
+     @param id The ID of the category to be deleted.
+
+     @return ResponseEntity with a SuccessResponse containing a message indicating successful deletion if
+
+     the category was successfully deleted, or a ResponseEntity with an ErrorResponse containing a message
+
+     indicating failure to delete if the category was not found.
+     */
     @Operation(summary = "Delete category by ID",
             description = "Delete a category by its ID",
             parameters = {
@@ -108,6 +136,21 @@ public class CategoryController {
         }
     }
 
+
+    /**
+
+     The createCategory method handles the creation of a new category.
+
+     The method is accessible only by authenticated users with an ADMIN role.
+
+     @param newCategoryRequest The request body containing the new category information.
+
+     @return ResponseEntity with a SuccessResponse containing a message indicating successful creation if
+
+     the category was successfully created, or a ResponseEntity with an ErrorResponse containing a message
+
+     indicating a failure to create if the request body was invalid.
+     */
     @Operation(summary = "Create new category",
             description = "Create a new category",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Category object",
