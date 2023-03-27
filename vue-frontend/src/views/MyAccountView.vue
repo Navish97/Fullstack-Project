@@ -97,6 +97,12 @@ function closeItems() {
 </script>
 
 <style scoped>
+@media screen and (max-width: 1000px) {
+  .wave-container {
+    display: none /* adjust this value as needed */
+  }
+}
+
 .overlay {
   position: fixed;
   top: 0;

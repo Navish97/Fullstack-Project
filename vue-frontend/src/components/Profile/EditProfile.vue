@@ -13,13 +13,8 @@
       </div>
         <button @click="route('/my-profile')" class="update-btn">Cancel</button>
       <div class="submitDiv">
-        <button @click="updateAccount" class="update-btn">Update Account</button>
+        <button @click="updateAccount" id="update" class="update-btn">Update Account</button>
       </div>
-
-
-    </div>
-    <div class="profile-picture-container">
-      <img src="https://i.imgur.com/8Km9tLL.png" alt="profile" class="profile-picture" />
     </div>
   </div>
 </template>
