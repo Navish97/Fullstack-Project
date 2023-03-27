@@ -7,6 +7,20 @@ Our solution was built using Vue for the frontend and Spring Boot Maven for the 
 
 The application was designed while keeping both PC and Phone formats in mind.
 
+There are two already pre-created accounts with some dummy data.
+
+User account:
+
+email: user@localhost
+
+password: user
+
+Admin account: admin@localhost
+
+password: admin
+
+
+
 ## Content
 1. [Documentation](#documentation)
 2. [Database](#database)
@@ -55,6 +69,10 @@ When deployed on server it connects to a MySQLv8 database which is set up throug
 
 As mentioned earlier, this database is setup as a h2 database when run locally, but as a mysql database using MySQLv8.
 The local h2 database is saved in the backend project folder inside a database folder.
+
+The local h2 database is stored inside the backend project folder and the h2 console can be accessed here:
+
+http://localhost:8080/h2-ui/
 
 ## Installation and Setup
 
@@ -105,7 +123,7 @@ Furthermore for safety reasons, environment variables were also used in place of
 
 ## API Documentation
 For this project, Swagger 3 was used for documenting the api.
-This documentation can be accessed locally if you run the backend database first.
+This documentation can be accessed locally if you run the backend spring boot maven project first.
 The url for the local swagger api documentation site is:
 
 http://localhost:3000/
@@ -138,7 +156,7 @@ https://fullstack-project-xt5ws57jza-lz.a.run.app
 
 For the front end server, a custom domain was also mapped for the front-end server to make the url cleaner, the domain is this:
 
-(https://myserverprojects.store/)
+https://myserverprojects.store/
 
 As mentioned earlier, these servers will most likely be taken down over the course of April 2023 due to cost. They have served their purpose and have helped us gain experience.
 
