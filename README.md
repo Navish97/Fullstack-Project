@@ -107,9 +107,11 @@ Furthermore for safety reasons, environment variables were also used in place of
 For this project, Swagger 3 was used for documenting the api.
 This documentation can be accessed locally if you run the backend database first.
 The url for the local swagger api documentation site is:
+
 http://localhost:3000/
 
 For the backend google cloud run server, the swagger docs can be accessed here:
+
 https://fullstack-project-xt5ws57jza-lz.a.run.app/swagger-ui/index.html
 
 
@@ -127,12 +129,15 @@ The yml file was configured inside the .github/workflows folder, which runs the 
 For CD we made use of Google Cloud Run's inbuilt feature for monitoring the github project repository. This was set to auto deploy and run the respective dockerfiles for both front-end and back-end whenever anything is pushed, either directly or through a pull request, into the main branch.
 
 The front-end cloud run url is this:
+
 https://mymarketplace-xt5ws57jza-lz.a.run.app
 
 The back-end is this:
+
 https://fullstack-project-xt5ws57jza-lz.a.run.app
 
 For the front end server, a custom domain was also mapped for the front-end server to make the url cleaner, the domain is this:
+
 (https://myserverprojects.store/)
 
 As mentioned earlier, these servers will most likely be taken down over the course of April 2023 due to cost. They have served their purpose and have helped us gain experience.
