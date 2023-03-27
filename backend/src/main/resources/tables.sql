@@ -89,8 +89,8 @@ CREATE TABLE IF NOT EXISTS messages (
 --have to insert id manually to use in other tables
 --admin password is admin
 --user password is user
-INSERT INTO users (id, name, email, password, role) VALUES ('26033564-1b1b-4b41-a61d-21d3bfbbbf65', 'admin', 'admin@localhost', '$2a$12$oQRQsS8Kq8y1y1bdeyyZTeMZKcrFbEqj2aGq79puw42/BTihbA/r2', 'ADMIN');
-INSERT INTO users (id, name, email, password, role) VALUES ('69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', 'user', 'user@localhost', '$2a$12$/cCPUTL8kaPTdH6dxvSrVO2vLD0aWTprTilMH0eXdXtYkhFEXshri', 'USER');
+INSERT INTO users (id, name, email, password, role) VALUES ('26033564-1b1b-4b41-a61d-21d3bfbbbf65', 'admin', 'admin@localhost.com', '$2a$12$oQRQsS8Kq8y1y1bdeyyZTeMZKcrFbEqj2aGq79puw42/BTihbA/r2', 'ADMIN');
+INSERT INTO users (id, name, email, password, role) VALUES ('69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', 'user', 'user@localhost.com', '$2a$12$/cCPUTL8kaPTdH6dxvSrVO2vLD0aWTprTilMH0eXdXtYkhFEXshri', 'USER');
 
 --category
 INSERT INTO category (id, type, icon_url) VALUES
