@@ -28,5 +28,7 @@ public class CategoryService {
         return true;
     }
 
-
+    public void createCategory(Category newCategory) {
+        categoryRepository.save(newCategory);
+    }
 }
