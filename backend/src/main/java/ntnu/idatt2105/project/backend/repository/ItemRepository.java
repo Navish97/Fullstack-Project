@@ -15,11 +15,35 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+/**
+ * JPARepository class for Item elements.
+ */
 public interface ItemRepository extends JpaRepository<Item, Long> {
+    /**
+     * Finds an item based on the item id.
+     * @param aLong
+     * @return
+     */
     @Override
     Optional<Item> findById(Long aLong);
+
+    /**
+     * Finds a page of item based on the user id.
+     * @param userId
+     * @param pageable
+     * @return
+     */
     Page<Item> findByUserId(String userId, Pageable pageable);
 
+    /**
+     * Queries the database for items, with the specified filter. Returns a page of filtered items.
+     * @param minPrice
+     * @param maxPrice
+     * @param category_id
+     * @param search
+     * @param pageable
+     * @return
+     */
     @Query(value = "SELECT i FROM Item i \n" +
             "WHERE (\n" +
             "    (:minPrice IS NULL AND :maxPrice IS NULL) OR \n" +
@@ -34,6 +58,11 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             ")")
     Page<Item> getItemsFiltered(int minPrice, int maxPrice, long category_id, String search, final Pageable pageable);
 
+    /**
+     * Get a page of unfiltered items.
+     * @param pageable
+     * @return
+     */
     @Query(value = "SELECT i FROM Item i")
     Page<Item> getItems(final Pageable pageable);
 

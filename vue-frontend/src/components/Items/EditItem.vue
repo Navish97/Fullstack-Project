@@ -139,11 +139,11 @@
     images.value = [...images.value, ...files.map((file) => ({ url: URL.createObjectURL(file), name: file.name }))];
   };
 
-  const removeImage = (image: { url: string; name: string }) => {
-    const index = images.value.findIndex((img) => img.url === image.url);
+  const removeImage = (index: number) => {
     images.value.splice(index, 1);
     form.value.images.splice(index, 1);
   };
+
 
   const fetchIcon = async (chosenCategory: any) => {
     try {

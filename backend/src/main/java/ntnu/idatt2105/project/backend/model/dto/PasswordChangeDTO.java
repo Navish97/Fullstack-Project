@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data transfer object returned when user changes password.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

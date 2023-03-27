@@ -8,8 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * JPARepository for interacting with database. Only uses standard JPA methods.
+ */
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-
-
 }
