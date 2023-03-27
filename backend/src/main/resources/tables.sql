@@ -126,6 +126,13 @@ INSERT INTO bookmarks (user_id, item_id) VALUES
 --chats
 INSERT INTO chats (user_one, user_two, item_id) VALUES
     ('26033564-1b1b-4b41-a61d-21d3bfbbbf65', '69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', 1),
-    ('26033564-1b1b-4b41-a61d-21d3bfbbbf65', '69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', 2),
-    ('69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', '26033564-1b1b-4b41-a61d-21d3bfbbbf65', 1),
     ('69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', '26033564-1b1b-4b41-a61d-21d3bfbbbf65', 2);
+
+INSERT INTO messages (sender_id, receiver_id, message, chat_id) VALUES
+    ('26033564-1b1b-4b41-a61d-21d3bfbbbf65', '69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', 'Hey there!', 1),
+    ('69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', '26033564-1b1b-4b41-a61d-21d3bfbbbf65', 'Hi!', 1),
+    ('26033564-1b1b-4b41-a61d-21d3bfbbbf65', '69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', 'How are you?', 1),
+    ('69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', '26033564-1b1b-4b41-a61d-21d3bfbbbf65', 'I am doing well, thanks!', 1),
+    ('26033564-1b1b-4b41-a61d-21d3bfbbbf65', '69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', 'Have you seen the new Harry Potter book?', 2),
+    ('69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', '26033564-1b1b-4b41-a61d-21d3bfbbbf65', 'No, I haven''t. Is it good?', 2),
+    ('26033564-1b1b-4b41-a61d-21d3bfbbbf65', '69b1f16a-b0c3-4efb-b0f6-a78f500cf3bb', 'Yes, it is. I would recommend it.', 2);
