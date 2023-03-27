@@ -24,7 +24,7 @@
       <div class="right-column">
         <div id="add-category-form">
           <BaseInput label="Category name" v-model="newCategoryType"  />
-          <IconPicker @select="selectIcon"/>
+          <IconPicker v-if="notChosenCategory" @select="selectIcon" :selected-category="selectedCategory"/>
           <button id="addCategoryBtn" @click="addCategory">Add Category</button>
           <button style="margin-top: 50px" id="addCategoryBtn" @click="router.back()">Back</button>
         </div>
@@ -35,7 +35,7 @@
 
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import {ref, onMounted, computed} from 'vue';
 import axiosInstance from '@/service/AxiosInstance';
 import { useItemStore } from '@/stores/Item';
 import router from '@/router/index';
@@ -74,12 +74,15 @@ const showDeleteConfirm = (categoryId: number) => {
 const categories = ref<Category[]>([]);
 
 const itemStore = useItemStore();
+let notChosenCategory = computed(() => itemStore.getNewListingCategory === 0);
+let selectedCategory = ref("");
 
 const newCategoryType = ref("");
 let selectedIcon = ref("");
 
 const selectIcon = (icon: any) => {
   selectedIcon.value = icon;
+  selectedCategory.value = icon.iconName;
 };
 
 
@@ -110,6 +113,7 @@ onMounted(async () => {
   } catch (error) {
     console.error(error);
   }
+  console.log(useItemStore().getNewListingCategory);
 });
 
 </script>

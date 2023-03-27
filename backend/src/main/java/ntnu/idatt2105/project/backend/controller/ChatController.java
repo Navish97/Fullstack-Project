@@ -136,6 +136,7 @@ public class ChatController {
                             content = @Content)
             })
     @PostMapping("/send-message")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> sendMessage(HttpServletRequest request, @RequestBody Map<String, Object> requestBody){
         logger.info("Received request for sending message");
         String jwtToken = cookieService.extractTokenFromCookie(request);

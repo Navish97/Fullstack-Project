@@ -31,7 +31,7 @@ function chatClicked(chat : Chat) {
 }
 </script>
 
-<style>
+<style scoped>
 .convo-wrapper{
     display: flex;
     flex-direction: column;
