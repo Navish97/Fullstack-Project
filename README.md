@@ -126,6 +126,7 @@ During the entire development process security has continuously been a big focus
 It might be one of the most important things to focus on for developers.
 As of right now we've utilized jwt tokens for authentication, these are sent to the browser as cookies to ensure better security.
 All authenticated API calls that relate to a user getting their own information, the cookies are always verified by the filter first.
+We made sure to use an "onlyHTTP" cookie, to ensure maximum security when heandling the jwt token. This prevents 
 
 Once the token is verified, the user identification is extracted from the token instead of it being passed as a parameter.
 This also ensures that tokens from normal users can't be used to get access to information that isn't related to their user account.
