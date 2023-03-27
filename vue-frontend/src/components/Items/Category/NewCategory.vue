@@ -23,8 +23,8 @@
       </div>
       <div class="right-column">
         <div id="add-category-form">
-          <BaseInput label="Category name" v-model="newCategoryType" placeholder="Enter category name" />
-          <IconPicker @select="selectIcon" />
+          <BaseInput label="Category name" v-model="newCategoryType"  />
+          <IconPicker @select="selectIcon"/>
           <button id="addCategoryBtn" @click="addCategory">Add Category</button>
           <button style="margin-top: 50px" id="addCategoryBtn" @click="router.back()">Back</button>
         </div>
@@ -75,30 +75,28 @@ const categories = ref<Category[]>([]);
 
 const itemStore = useItemStore();
 
-const selectCategory = (categoryId: number) => {
-  itemStore.setNewListingCategory(categoryId);
-  router.push('/new-listing');
-};
-
 const newCategoryType = ref("");
-const selectedIcon = ref("");
+let selectedIcon = ref("");
 
-const selectIcon = (icon) => {
+const selectIcon = (icon: any) => {
   selectedIcon.value = icon;
 };
 
+
 const addCategory = async () => {
   try {
-    const response = await axiosInstance.post("/api/categories", {
+    // @ts-ignore
+    let iconUrl = "fs-regular" + " " + "fa-" + selectedIcon.value.iconName;
+    const response = await axiosInstance.post("/api/categories/new", {
       type: newCategoryType.value,
-      iconUrl: selectedIcon.value,
+      icon_url: iconUrl,
     });
-
-    const newCategory: Category = response.data;
-    categories.value.push(newCategory);
-
-    newCategoryType.value = "";
-    selectedIcon.value = "";
+    if (response.status === 200){
+      newCategoryType.value = "";
+      selectedIcon.value = "";
+      const categoriesResponse = await axiosInstance.get('/api/categories');
+      categories.value = categoriesResponse.data;
+    }
   } catch (error) {
     console.error(error);
   }
@@ -108,7 +106,6 @@ onMounted(async () => {
   try {
     const response = await axiosInstance.get('/api/categories');
     categories.value = response.data;
-    console.log(categories.value);
 
   } catch (error) {
     console.error(error);

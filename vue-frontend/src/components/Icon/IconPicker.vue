@@ -18,14 +18,12 @@
 import { computed, ref } from "vue";
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from "@fortawesome/free-solid-svg-icons";
-import { fab } from "@fortawesome/free-brands-svg-icons";
 import BaseInput from "@/components/Form/BaseInput.vue";
 
 const search = ref("");
 const regularIcons = Object.values(far);
 const solidIcons = Object.values(fas);
-const brandIcons = Object.values(fab);
-const icons = [...solidIcons, ...brandIcons, ...regularIcons];
+const icons = [...solidIcons, ...regularIcons];
 
 const filteredIcons = computed(() => {
   if (search.value === "") {
