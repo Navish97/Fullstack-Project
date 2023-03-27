@@ -4,8 +4,8 @@
       <ProfileBox />
       <div class="grid">
         <InfoBox @click="route('my-profile/edit')" :icon="faUser" title="My account" content="View and edit my account details"/>
-        <InfoBox :icon="faTag" title="My listings" @click="loadItems" content="View all my listings"/>
-        <InfoBox :icon="faBookmark" title="My bookmarks" content="View all my bookmarks"/>
+        <InfoBox :icon="faTag" title="My listings" @click="callLoadItems" content="View all my listings"/>
+        <InfoBox :icon="faBookmark" title="My bookmarks" @click="loadBookmarkedItems" content="View all my bookmarks"/>
       </div>
     </div>
     <div class="wave-container">
@@ -45,7 +45,8 @@ import {useItemStore} from "@/stores/Item";
 import {useUserStore} from "@/stores/User";
 import PaginationComponent from "@/components/Items/PaginationComponent.vue";
 import router from '@/router/index';
-import EditProfile from "@/components/Profile/EditProfile.vue";
+import type { Item } from '@/types/ItemType';
+import {getBookmarkedItemsPage} from '@/service/BookmarkService';
 
 const itemStore = useItemStore();
 const userStore = useUserStore();
@@ -53,6 +54,7 @@ const userStore = useUserStore();
 const currentPage = ref(1);
 const totalPages = ref(1);
 const showItems = ref(false);
+let showingBookmarks = false;
 
 const pages = computed(() => {
   const pageArray = [];
@@ -61,6 +63,22 @@ const pages = computed(() => {
   }
   return pageArray;
 });
+
+
+
+async function loadBookmarkedItems(){
+  showItems.value = true;
+  showingBookmarks = true;
+  await getBookmarkedItemsPage(currentPage.value - 1, itemStore.pageSize)
+  .then((response) => {
+    itemStore.setLists(response.data.items);
+    currentPage.value = response.data["current-page"] + 1;
+    totalPages.value = response.data["total-pages"];
+  })
+  .catch((error) => {
+    console.log("Error loading bookmarked items", error.message);
+  })
+}
 
 function callPage(direction : number){
   if(direction > 0){
@@ -83,10 +101,18 @@ function setPage(page : number){
   currentPage.value = page;
   loadItems();
 }
+
+function callLoadItems(){
+  showingBookmarks = false;
+  loadItems();
+}
 async function loadItems() {
   showItems.value = true;
-
-  await getMyItems(currentPage.value - 1, itemStore.pageSize)
+  if(showingBookmarks){
+    loadBookmarkedItems();
+  }
+  else{
+    await getMyItems(currentPage.value - 1, itemStore.pageSize)
       .then((response) => {
         itemStore.setLists(response.data.items);
         currentPage.value = response.data["current-page"] + 1;
@@ -95,10 +121,12 @@ async function loadItems() {
       .catch((error) => {
         console.log(error);
       });
+  }
 }
 
 function closeItems() {
   showItems.value = false;
+  currentPage.value = 1;
 }
 </script>
 
