@@ -2,6 +2,8 @@ package ntnu.idatt2105.project.backend.repository;
 
 import ntnu.idatt2105.project.backend.model.Bookmark;
 import ntnu.idatt2105.project.backend.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,6 +19,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     @Query(value = "SELECT b FROM Bookmark b WHERE b.user.id = :userId")
     List<Bookmark> findAllBookmarksByUserId(String userId);
+    Page<Bookmark> findBookmarkPageByUserId(String userId, Pageable pageable);
 
     Optional<Bookmark> findByUserIdAndItemId(String userId, Long itemId);
 }
