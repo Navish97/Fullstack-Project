@@ -93,15 +93,32 @@ Once the dependencies are installed you can run the project with:
 mvn spring-boot:run
 ```
 
+To run unit tests in backend:
+```
+mvn test
+```
+
+
 ### Frontend
 Open the root directory again and cd into the vue-frontend directory.
 Once inside the frontend directory, install the necessary modules with:
 ```
 npm install
 ```
+
 Once the modules finished installing, you can run the local dev server with:
 ```
 npm run dev
+```
+
+To run vitest tests in frontend:
+```
+npm run test
+```
+
+To run cypress tests in frontend:
+```
+npm run cypress:open
 ```
 
 ## Security
