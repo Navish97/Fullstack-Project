@@ -159,6 +159,26 @@ public class BookmarkController {
         return ResponseEntity.ok(bookmarks);
     }
 
+    /**
+     * Returns a page of bookmarked items for the user with the given email address.
+     *
+     * @param pageNumber    The page number to return.
+     * @param size          The number of items per page.
+     * @param jwtToken      JWT token containing the user's information.
+     * @return ResponseEntity containing a page of bookmarked items for the user.
+     * @throws UserNotFoundException if the user is not found.
+     * @throws UnauthorizedException if the user is not authorized.
+     */
+    @Operation(summary = "Gets the bookmarked items for a user",
+            description = "Retrieves bookmarked items for a user based on page number and size",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Bookmark items retrieved successfully",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Page.class))),
+                    @ApiResponse(responseCode = "401", description = "When authentication fails.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = UnauthorizedException.class))),
+            })
     @GetMapping("/user/items")
     public ResponseEntity<?> getBookmarkedItems(
             @RequestParam final Integer pageNumber,
