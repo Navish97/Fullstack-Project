@@ -1,4 +1,6 @@
-n:
+name: Build and Test
+
+on:
   push:
     branches:
       - dev
