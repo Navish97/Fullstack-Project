@@ -8,7 +8,7 @@ describe('Login', () => {
     })
 
     it('Shows an error message for password mismatch', () => {
-        cy.get('#inpEmail').type('erik.skjellevik@lyse.net')
+        cy.get('#inpEmail').type('admin@localhost')
         cy.get('#inpPassword').type('wrong password')
         cy.get('#button').click()
 
@@ -17,8 +17,8 @@ describe('Login', () => {
     })
 
     it('Login successful', () => {
-        cy.get('#inpEmail').type('erik.skjellevik@lyse.net')
-        cy.get('#inpPassword').type('1')
+        cy.get('#inpEmail').type('admin@localhost')
+        cy.get('#inpPassword').type('$2a$12$oQRQsS8Kq8y1y1bdeyyZTeMZKcrFbEqj2aGq79puw42/BTihbA/r2')
         cy.get('#button').click()
 
         //assert that the user is redirected to the home page, and that the url does not contain anything after the base url
