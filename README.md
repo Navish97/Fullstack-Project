@@ -22,14 +22,37 @@ password: admin
 
 
 ## Content
-1. [Documentation](#documentation)
-2. [Database](#database)
-3. [Installation and Setup](#installation-and-setup)
-4. [Security](#security)
-5. [API Documentation](#api-documentation) 
-6. [Server](#server)
-7. [CI/CD](#cicd)
-8. [Contributors](#contributors)
+1. [App Features](#app-features)
+2. [Documentation](#documentation)
+3. [Database](#database)
+4. [Installation and Setup](#installation-and-setup)
+5. [Security](#security)
+6. [API Documentation](#api-documentation) 
+7. [Server](#server)
+8. [CI/CD](#cicd)
+9. [Contributors](#contributors)
+
+## App Features
+
+User:
+- List item
+- Delete item
+- Edit item
+- Bookmark Item
+- View Bookmarks
+- View Listings
+- Chat
+- Edit password
+- Edit name and email
+- View maps
+- Select map coordinates when listing item
+
+Admin has additional privileges like:
+- Edit access to all items
+- Delete access to all items
+- Add category
+- Delete category
+
 
 ## Documentation
 
