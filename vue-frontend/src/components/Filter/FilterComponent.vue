@@ -84,7 +84,7 @@ const filterState = computed(() => {
       query.latitude = latitude.value.toString();
     }
     if (maxDistance.value !== null) {
-      query.maxDistance = maxDistance.value.toString();
+      query.maxDistance = (maxDistance.value/1000).toString();
     }
     
     return query;
