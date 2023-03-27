@@ -178,4 +178,5 @@ https://myserverprojects.store/
 As mentioned earlier, these servers will most likely be taken down over the course of April 2023 due to cost. They have served their purpose and have helped us gain experience.
 
 ## Contributors
+
 Daniel Skymoen, Erik Skjellevik & Navid Muradi
