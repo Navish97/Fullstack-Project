@@ -1,6 +1,4 @@
-name: Build and Test
-
-on:
+n:
   push:
     branches:
       - dev
@@ -16,14 +14,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-    - name: Build and Test Frontend
-      working-directory: ./vue-frontend
-      run: |
-        docker build -t my-frontend-image .
-        docker run my-frontend-image npm test
+      - name: Build and Test Frontend
+        working-directory: ./vue-frontend
+        run: |
+          docker build -t my-frontend-image .
+          docker run my-frontend-image npm test
 
-    - name: Build and Test Backend
-      working-directory: ./backend
-      run: |
-        docker build -t my-backend-image
-        docker run my-backend-image mvn test
+      - name: Build and Test Backend
+        working-directory: ./backend
+        run: |
+          docker build -t my-backend-image .
+          docker run my-backend-image mvn test
