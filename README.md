@@ -97,10 +97,29 @@ This also ensures that tokens from normal users can't be used to get access to i
 
 Only a certain few necessary api calls have the authentication token set as optional.
 
+The secret key for the token generation in the application was also divided between server and local context.
+When running locally on development profile a simple key saved directly in the code was used.
+When running on server, the key was set as an environment variable in the server and accessed that way for better security.
+
+Furthermore for safety reasons, environment variables were also used in place of sensitive credentials in the configuration for connecting to the MySQLv8 Cloud SQL database.
+
+## API Documentation
+For this project, Swagger 3 was used for documenting the api.
+This documentation can be accessed locally if you run the backend database first.
+The url for the local swagger api documentation site is:
+http://localhost:3000/
+
+For the backend google cloud run server, the swagger docs can be accessed here:
+https://fullstack-project-xt5ws57jza-lz.a.run.app/swagger-ui/index.html
+
 ## Server
+The servers were run as two Google Cloud Run services.
+
+The backend was setup through Google's Cloud SQL service, and the backend connects to it using the MySQL connector configuration defined in the application's production configuration. The configuration as mentioned earlier, also has the different sensitive credentials defined as environment variables so only the server has access to these credentials.
+
 
 ## CI/CD
-
+For CI 
 
 ## Contributors
 Daniel Skymoen, Erik Skjellevik & Navid Muradi
