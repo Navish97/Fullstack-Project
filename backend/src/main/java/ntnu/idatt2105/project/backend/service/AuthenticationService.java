@@ -17,14 +17,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
-
-/**
-
- The AuthenticationService class provides methods for user authentication and registration.
-
- It uses the UserRepository to access user data, PasswordEncoder to encrypt passwords, and JwtService to generate tokens.
- */
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {

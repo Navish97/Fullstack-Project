@@ -9,7 +9,9 @@ import ntnu.idatt2105.project.backend.model.Item;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * Item data transfer object. Returns only relevant non-sensitive item and user data.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
