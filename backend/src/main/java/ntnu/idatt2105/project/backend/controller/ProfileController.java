@@ -12,6 +12,7 @@ import ntnu.idatt2105.project.backend.model.dto.ErrorResponse;
 import ntnu.idatt2105.project.backend.model.dto.PasswordChangeDTO;
 import ntnu.idatt2105.project.backend.model.dto.UserProfileDTO;
 import ntnu.idatt2105.project.backend.model.dto.response.SuccessResponse;
+import ntnu.idatt2105.project.backend.model.dto.response.UserStatusResponse;
 import ntnu.idatt2105.project.backend.model.enums.AuthenticationState;
 import ntnu.idatt2105.project.backend.model.User;
 import ntnu.idatt2105.project.backend.service.AuthenticationService;
@@ -102,10 +103,13 @@ public class ProfileController {
             User user = userService.findByEmail(jwtService.extractUsername(jwt)); // Pass the JWT token instead of the request
             logger.info("User: " + user);
             AuthenticationState state = jwtService.getAuthenticationState(jwt, user);
+            String role = user.getRole().toString();
 
-            logger.info("User status: " + state);
+            logger.info("User status: " + state + " Role: " + role);
 
-            return ResponseEntity.ok(state);
+            UserStatusResponse userStatusResponse = new UserStatusResponse(state, role);
+
+            return ResponseEntity.ok(userStatusResponse);
         } catch (TokenExpiredException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Token expired"));
         }

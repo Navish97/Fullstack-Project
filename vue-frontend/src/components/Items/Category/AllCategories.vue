@@ -8,7 +8,7 @@
         <div class="categories-grid">
           <div v-for="category in categories" :key="category.id" class="category" @click="selectCategory(category.id)">
             <div class="icon-container">
-              <font-awesome-icon :icon="category.iconUrl" />
+              <font-awesome-icon :icon="category.icon_url" />
             </div>
             <div class="text-container">
               <span>{{ category.type }}</span>
@@ -24,11 +24,11 @@
 import { ref, onMounted } from 'vue';
 import axiosInstance from '@/service/AxiosInstance';
 import { useItemStore } from '@/stores/Item';
-import router from '@/router/index';
+import router from '@/router';
 interface Category {
   id: number;
   type: string;
-  iconUrl: string;
+  icon_url: string;
 }
 
 const categories = ref<Category[]>([]);

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.model.dto.Filter;
 import ntnu.idatt2105.project.backend.model.Item;
+import ntnu.idatt2105.project.backend.model.enums.Role;
 import ntnu.idatt2105.project.backend.repository.ItemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -71,6 +72,20 @@ public class ItemService {
 
     public Item saveItem(Item item) {
         return itemRepository.save(item);
+    }
+
+    public ItemDTO editItem(Item newItem){
+        Item oldItem = itemRepository.findById(newItem.getId()).orElse(null);
+        if(oldItem != null && (newItem.getUser() == oldItem.getUser() || newItem.getUser().getRole() == Role.ADMIN)){
+            if(newItem.getImages().size() == 0){
+                newItem.setImages(oldItem.getImages());
+            }
+            itemRepository.save(newItem);
+            return new ItemDTO(newItem);
+        }
+        return null;
+
+
     }
 
     /**

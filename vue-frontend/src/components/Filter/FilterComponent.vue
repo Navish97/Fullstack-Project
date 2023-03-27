@@ -182,10 +182,6 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.map-wrapper{
-  width: 100%;
-  height: auto;
-}
 .reset {
   border-radius: 4px;
   border: 1px solid #646464;
@@ -279,6 +275,7 @@ onMounted(() => {
         transition: transform 1s ease;
       }
       #map{
+        height: 200px;
         width: auto;
       }
     }

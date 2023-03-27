@@ -1,10 +1,8 @@
 <template>
   <div id="wrapper1">
-    <AllCategories v-if="!hasChosenCategory"></AllCategories>
-    <div id="wrapper2" v-else>
-      <NewListing></NewListing>
-    </div>
-    <button class="btn" v-if="isAdmin && !hasChosenCategory" @click="addCategory">Add Category</button>
+    <NewCategory v-if="!hasChosenCategory">
+      <button v-if="isAdmin && !isEditingCategory" class="btn" @click="addCategory">Add Category</button>
+    </NewCategory>
   </div>
 </template>
 
@@ -17,12 +15,14 @@ import NewListing from "@/components/Items/NewListing.vue";
 import IconPicker from "@/components/Icon/IconPicker.vue";
 import { useUserStore } from '@/stores/User';
 import router from '@/router/index'
+import NewCategory from "@/components/Items/Category/NewCategory.vue";
 
 const itemStore = useItemStore();
 
 const chosenCategory = computed(() => itemStore.getNewListingCategory);
 const hasChosenCategory = computed(() => chosenCategory.value !== 0);
 const isAdmin = computed(() => useUserStore().getRole === "ADMIN");
+const isEditingCategory = computed(() => window.location.hostname.includes("new-category"));
 
 function addCategory(){
   router.push('/new-listing/new-category');

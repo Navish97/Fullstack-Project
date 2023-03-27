@@ -5,8 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "category")
@@ -23,5 +22,5 @@ public class Category {
 
     @Column(name = "icon_url")
     @Schema(description = "The URL to the icon of the category")
-    private String iconUrl;
+    private String icon_url;
 }

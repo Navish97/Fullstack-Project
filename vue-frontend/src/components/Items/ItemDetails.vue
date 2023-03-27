@@ -11,6 +11,7 @@
       <div class="toolbar">
         <bookmark-component />
         <RouterLink to="/chats" v-if="showContactButton" @click="preLoadChat()" class="contact-button">Contact seller</RouterLink>
+        <RouterLink :to="{ name: 'edit-item', params: { id: item.id } }" v-if="showEditButton" class ="contact-button">Edit item</RouterLink>
       </div>
       <div class="item-info">
         <h2>{{ item.title }}</h2>
@@ -45,6 +46,10 @@ const showContactButton = computed(() => {
   return userStore.getLoggedInId !== props.item.userId
       && userStore.isLoggedIn;
 });
+
+const showEditButton = computed(() => {
+  return (userStore.getLoggedInId === props.item.userId || userStore.getRole === "ADMIN") && userStore.isLoggedIn;
+})
 
 const props = defineProps({
   item: {

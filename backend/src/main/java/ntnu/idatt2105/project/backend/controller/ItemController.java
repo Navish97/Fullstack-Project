@@ -146,6 +146,58 @@ public class ItemController {
         return objectMapper.readValue(json, Filter.class);
     }
 
+    @PostMapping("/edit-listing")
+    @Operation(summary = "Edits a existing item", description = "Edits an existing item in the database")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> editItem(
+            @RequestParam("id") long id,
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam("price") BigDecimal price,
+            @RequestParam("longitude") Double longitude,
+            @RequestParam("category_id") Long categoryId,
+            @RequestParam("latitude") Double latitude,
+            @RequestParam("images") List<MultipartFile> images,
+            HttpServletRequest request
+    ) throws IOException {
+        logger.info("Received api call for editing item " + id);
+        // Extract userID from JWT
+        String jwtToken = cookieService.extractTokenFromCookie(request);
+        String email = jwtService.extractUsername(jwtToken);
+        User user = userService.findByEmail(email);
+        logger.info("The user registering it is: " + user);
+
+        Item item = new Item();
+        logger.info("Setting item fields");
+        item.setId(id);
+        item.setTitle(title);
+        item.setDescription(description);
+        item.setPrice(price);
+        Optional<Category> categoryOptional = categoryService.getCategoryById(categoryId);
+        Category category = categoryOptional.orElseThrow(() -> new IllegalArgumentException("Invalid category ID"));
+        item.setCategory(category);
+        item.setLongitude(longitude);
+        item.setLatitude(latitude);
+        item.setUser(user);
+        if (images != null) {
+            item.setImages(new ArrayList<>());
+            for (MultipartFile image : images) {
+                ItemImage itemImage = new ItemImage();
+                itemImage.setData(image.getBytes());
+                itemImage.setContentType(image.getContentType());
+                itemImage.setItem(item);
+                item.getImages().add(itemImage);
+            }
+        }
+
+        ItemDTO itemDTO = itemService.editItem(item);
+        if(itemDTO == null){
+            return ResponseEntity.badRequest().build();
+        }
+        logger.info("Item edited, returning response");
+        return ResponseEntity.ok(HttpStatus.CREATED);
+    }
+
     @PostMapping("/new-listing")
     @Operation(summary = "Register a new item", description = "Registers a new item in the database.")
     @PreAuthorize("isAuthenticated()")

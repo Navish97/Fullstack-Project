@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -33,13 +34,14 @@ public class SecurityConfig {
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final Environment env;
     Logger logger = Logger.getLogger(SecurityConfig.class.getName());
+    private final JwTAuthenticationFilter jwTAuthenticationFilter;
 
     /**
      * Configures the security filter chain.
      *
      * @param http the HttpSecurity object to configure.
      * @return the configured SecurityFilterChain.
-     * @throws Exception
+     * @throws Exception exception thrown if an error occurs.
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -62,7 +64,7 @@ public class SecurityConfig {
                     .and()
                     .authenticationProvider(authenticationProvider)
                     .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-            ;
+                    .addFilterBefore(jwTAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         }
         else{
             logger.info("Production profile is active");
@@ -81,7 +83,7 @@ public class SecurityConfig {
                     .and()
                     .authenticationProvider(authenticationProvider)
                     .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-            ;
+                    .addFilterBefore(jwTAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         }
         return http.build();
 

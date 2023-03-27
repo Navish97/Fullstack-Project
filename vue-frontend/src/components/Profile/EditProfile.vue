@@ -275,13 +275,35 @@ p {
 }
 
 @media (max-width: 768px) {
-  .profile-picture{
-    width: 75px;
-    height: 75px;
+  .profile-picture {
+    width: 200px;
+    height: 200px;
   }
 
-  .profile-container{
-    height: 150px;
+  .edit-container {
+    flex-direction: column-reverse;
+  }
+
+  .profile-picture-container {
+    margin: auto;
+  }
+
+  .update-btn{
+    width: 100%;
+  }
+
+  .header{
+    font-size: 3rem;
+    margin: auto;
+  }
+
+  .user-details{
+    margin: auto;
+    width: 85%;
+  }
+
+  div, button{
+    margin-top: 50px;
   }
 }
 </style>
