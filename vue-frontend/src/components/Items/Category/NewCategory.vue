@@ -9,7 +9,7 @@
             <div class="categories-grid">
               <div v-for="category in categories" :key="category.id" class="category">
                 <div class="icon-container">
-                  <font-awesome-icon :icon="category.iconUrl" />
+                  <font-awesome-icon :icon="category.icon_url" />
                 </div>
                 <div class="text-container">
                   <span>{{ category.type }}</span>
@@ -44,7 +44,7 @@ import BaseInput from "@/components/Form/BaseInput.vue";
 interface Category {
   id: number;
   type: string;
-  iconUrl: string;
+  icon_url: string;
 }
 
 
