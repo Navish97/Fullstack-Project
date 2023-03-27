@@ -8,7 +8,6 @@
         <Waves />
       </div>
     </div>
-    <div class="wrapper">
       <div class="grid-container">
         <div class="listing-type">
           <ListingTypeButton />
@@ -34,7 +33,6 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -144,6 +142,7 @@ function emitLoadPage(page:number){
     width: 100%;
     flex: 1;
     min-width: 60%;
+    margin-top: 30px;
   }
 @media (min-width: 769px) {
   .filter-toggle {
@@ -252,24 +251,16 @@ function emitLoadPage(page:number){
   }
 }
 
-.wrapper {
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding-top: 4rem;
-}
-
 .grid-container {
   display: grid;
-  grid-template-columns: 250px auto;
   grid-gap: 20px;
   justify-content: center;
-  width: 80%;
+  grid-template-columns: auto 1fr;
+  margin: 50px auto auto;
 }
 
 .listing-type {
-  width: 250px;
+  width: auto;
 }
 
 

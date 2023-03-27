@@ -30,14 +30,13 @@ const props = defineProps({
 
 <style scoped>
 .item-list-container {
-  padding-top: 2rem;
   max-width: 854px;
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 1rem;
   justify-content: center;
   align-items: center;
-  padding-bottom: 3rem;
+  padding: 3rem;
 }
 
 .item-list {

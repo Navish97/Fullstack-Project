@@ -33,6 +33,8 @@ const currentListingType = computed(() => {
   display: flex;
   align-items: center;
   gap: 5px;
+  justify-content: center;
+  margin-bottom: 30px;
 }
 
 .list-button {
