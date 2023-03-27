@@ -1,5 +1,8 @@
 package ntnu.idatt2105.project.backend.model.dto;
 
+/**
+ * Error response model.
+ */
 public class ErrorResponse {
     private String message;
 

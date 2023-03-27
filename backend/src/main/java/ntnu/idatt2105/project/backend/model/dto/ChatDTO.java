@@ -6,7 +6,9 @@ import lombok.Setter;
 import ntnu.idatt2105.project.backend.model.Chat;
 import ntnu.idatt2105.project.backend.model.Item;
 import ntnu.idatt2105.project.backend.model.User;
-
+/**
+ * Chat data transfer object. Returns only the relevant non-sensitive user details.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

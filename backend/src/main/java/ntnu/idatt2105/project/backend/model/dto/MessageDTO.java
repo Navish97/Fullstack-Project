@@ -6,6 +6,9 @@ import lombok.Setter;
 import ntnu.idatt2105.project.backend.model.Message;
 import ntnu.idatt2105.project.backend.model.User;
 
+/**
+ * MessageDTO. Holds all non-sensitive message data.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

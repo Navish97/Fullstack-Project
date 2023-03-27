@@ -33,6 +33,11 @@ public class ItemService {
     private final ItemImageRepository itemImageRepository;
     private final ChatRepository chatRepository;
 
+    /**
+     * Finds a possible item based on the id and maps it to a ItemDTO object. Throws exception if item not found.
+     * @param id
+     * @return
+     */
     public ItemDTO getItemById(Long id) {
         Optional<Item> optionalItem = itemRepository.findById(id);
         if (optionalItem.isEmpty()) {
@@ -42,6 +47,12 @@ public class ItemService {
         return new ItemDTO(item);
     }
 
+    /**
+     * Deletes an item. Verifies that user is owner of item and then deletes all connected entities.
+     * @param id
+     * @param user
+     * @return
+     */
     public ItemDTO deleteItem(Long id, User user){
         Optional<Item> optionalItem = itemRepository.findById(id);
         if (optionalItem.isEmpty()) {
@@ -93,14 +104,30 @@ public class ItemService {
         return page;
     }
 
+    /**
+     * Gets a page of unfiltered items.
+     * @param userId
+     * @param pageable
+     * @return
+     */
     public Page<Item> getItemsByUserIdPageable(String userId, Pageable pageable) {
         return itemRepository.findByUserId(userId, pageable);
     }
 
+    /**
+     * Saves a given item to the repository.
+     * @param item
+     * @return
+     */
     public Item saveItem(Item item) {
         return itemRepository.save(item);
     }
 
+    /**
+     * Fetches the to be edited item, modifies it and saves it to repository again.
+     * @param newItem
+     * @return
+     */
     public ItemDTO editItem(Item newItem){
         Item oldItem = itemRepository.findById(newItem.getId()).orElse(null);
         if(oldItem != null && (newItem.getUser() == oldItem.getUser() || newItem.getUser().getRole() == Role.ADMIN)){

@@ -31,7 +31,6 @@ public class AuthenticationService {
 
     Logger logger = LoggerFactory.getLogger(ItemController.class);
 
-
     public AuthenticationResponse register(RegisterRequest request) throws UserAlreadyExistsException {
         var user = User.builder()
                 .id(String.valueOf(java.util.UUID.randomUUID()))

@@ -5,6 +5,9 @@ import ntnu.idatt2105.project.backend.model.ItemImage;
 
 import java.util.Base64;
 
+/**
+ * ItemImageDTO. This object is a connector entity between items and their images.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
