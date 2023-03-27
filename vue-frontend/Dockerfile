@@ -6,6 +6,12 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
+# unit test stage
+FROM build-stage as unit-test-stage
+WORKDIR /app
+COPY --from=build-stage /app ./
+RUN npm run test
+
 # production stage
 FROM node:lts-alpine as production-stage
 WORKDIR /app
