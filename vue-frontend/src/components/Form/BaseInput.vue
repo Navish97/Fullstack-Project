@@ -35,7 +35,6 @@ export default {
 
 <style scoped>
 .input-container {
-  margin-top: 40px;
   height: 50px;
   position: relative;
   width: 100%;

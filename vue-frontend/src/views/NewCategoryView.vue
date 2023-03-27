@@ -1,8 +1,9 @@
 <template>
   <div id="wrapper1">
-    <NewCategory v-if="!hasChosenCategory"></NewCategory>
-    </div>
-    <button class="btn" v-if="isAdmin && !hasChosenCategory" @click="addCategory">Add Category</button>
+    <NewCategory v-if="!hasChosenCategory">
+      <button v-if="isAdmin && !isEditingCategory" class="btn" @click="addCategory">Add Category</button>
+    </NewCategory>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -21,6 +22,7 @@ const itemStore = useItemStore();
 const chosenCategory = computed(() => itemStore.getNewListingCategory);
 const hasChosenCategory = computed(() => chosenCategory.value !== 0);
 const isAdmin = computed(() => useUserStore().getRole === "ADMIN");
+const isEditingCategory = computed(() => window.location.hostname.includes("new-category"));
 
 function addCategory(){
   router.push('/new-listing/new-category');

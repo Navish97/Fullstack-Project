@@ -3,33 +3,44 @@
     <div id="header">
       <h1>Manage categories</h1>
     </div>
-    <div class="categories-container">
-      <div class="categories-wrapper">
-        <div class="categories-grid">
-          <div v-for="category in categories" :key="category.id" class="category">
-            <div class="icon-container">
-              <font-awesome-icon :icon="category.iconUrl" />
+    <div class="content">
+      <div class="left-column">
+        <div class="categories-container">
+            <div class="categories-grid">
+              <div v-for="category in categories" :key="category.id" class="category">
+                <div class="icon-container">
+                  <font-awesome-icon :icon="category.iconUrl" />
+                </div>
+                <div class="text-container">
+                  <span>{{ category.type }}</span>
+                </div>
+                <div class="action-container">
+                  <font-awesome-icon icon="trash-alt" @click="showDeleteConfirm(category.id)" />
+                </div>
+              </div>
             </div>
-            <div class="text-container">
-              <span>{{ category.type }}</span>
-            </div>
-            <div class="action-container">
-              <font-awesome-icon icon="plus" @click="addCategory(category.id)" />
-              <font-awesome-icon icon="trash-alt" @click="showDeleteConfirm(category.id)" />
-            </div>
-          </div>
+        </div>
+      </div>
+      <div class="right-column">
+        <div id="add-category-form">
+          <BaseInput label="Category name" v-model="newCategoryType" placeholder="Enter category name" />
+          <IconPicker @select="selectIcon" />
+          <button id="addCategoryBtn" @click="addCategory">Add Category</button>
+          <button style="margin-top: 50px" id="addCategoryBtn" @click="router.back()">Back</button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import axiosInstance from '@/service/AxiosInstance';
 import { useItemStore } from '@/stores/Item';
 import router from '@/router/index';
-import { Modal } from 'ant-design-vue';
+import IconPicker from "@/components/Icon/IconPicker.vue";
+import BaseInput from "@/components/Form/BaseInput.vue";
 interface Category {
   id: number;
   type: string;
@@ -60,10 +71,6 @@ const showDeleteConfirm = (categoryId: number) => {
 }
 
 
-const addCategory = (categoryId: number) => {
-  // Implement adding category logic here
-};
-
 const categories = ref<Category[]>([]);
 
 const itemStore = useItemStore();
@@ -71,6 +78,30 @@ const itemStore = useItemStore();
 const selectCategory = (categoryId: number) => {
   itemStore.setNewListingCategory(categoryId);
   router.push('/new-listing');
+};
+
+const newCategoryType = ref("");
+const selectedIcon = ref("");
+
+const selectIcon = (icon) => {
+  selectedIcon.value = icon;
+};
+
+const addCategory = async () => {
+  try {
+    const response = await axiosInstance.post("/api/categories", {
+      type: newCategoryType.value,
+      iconUrl: selectedIcon.value,
+    });
+
+    const newCategory: Category = response.data;
+    categories.value.push(newCategory);
+
+    newCategoryType.value = "";
+    selectedIcon.value = "";
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 onMounted(async () => {
@@ -87,28 +118,40 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+
+#addCategoryBtn{
+  width: 60%;
+  padding: 6px;
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  color: black;
+  font-weight: 300;
+  cursor: pointer;
+  margin: auto;
+  font-size: 1.5rem;
+}
 .wrapper {
-  width: 55%;
+  width: 80%;
   margin: 95px auto;
   height: fit-content;
-}
-.categories-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  color: white;
 }
 
-.categories-wrapper {
+.content {
   display: flex;
-  justify-content: center;
-  font-size: 2rem;
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .categories-grid {
   display: grid;
-  /*grid-template-columns: 1fr 3fr;*/
   gap: 1rem;
+  width: 100%;
+  height: fit-content;
 }
 
 .category {
@@ -116,28 +159,65 @@ onMounted(async () => {
   align-items: center;
   font-weight: bold;
   cursor: pointer;
+  padding: 0.5rem 1rem;
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.action-container {
+  font-size: 1.5rem;
+  position: absolute;
+  right: 1rem;
+}
+
+.left-column{
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.right-column {
+  flex: 1;
+}
+
+.categories-container {
+  overflow-y: auto;
+  color: white;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 1.5rem;
+  width: 80%;
 }
 
 .icon-container {
-  width: 60px;
-  text-align: center;
-}
-
-.text-container {
-  width: 100%;
-}
-
-.category > .text-container > span {
-  margin-left: 1rem;
-}
-
-#header {
+  width: 40px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 70%;
+}
+
+.text-container {
+  flex-grow: 1;
+}
+
+#add-category-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 50%;
   margin: auto;
-  font-size: 30px;
+}
+
+
+input {
+  width: 100%;
+  padding: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 5px;
   color: white;
 }
 
@@ -146,7 +226,8 @@ onMounted(async () => {
     width: 100%;
   }
   .categories-container {
-    width: 100%;
+    width: 80%;
+    margin: auto;
   }
   .categories-wrapper {
     font-size: 2rem;
@@ -161,6 +242,14 @@ onMounted(async () => {
     width: 80%;
     font-size: 20px;
     padding-bottom: 20px;
+    text-align: center;
+  }
+
+  #add-category-form {
+    width: 80%;
+  }
+  .content{
+    flex-direction: column-reverse;
   }
 }
 </style>
