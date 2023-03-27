@@ -57,7 +57,6 @@
     }
   })
 
-
   const errorMessage = ref("");
 
   interface Form {
@@ -129,6 +128,10 @@
   const onImagesChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
     if (!target.files) {
+      return;
+    }
+    if (form.value.images.length + target.files.length > 5) {
+      errorMessage.value = "You can only upload up to 5 images.";
       return;
     }
     const files = Array.from(target.files);
@@ -253,15 +256,27 @@
   }
 
   .image-wrapper {
-    display: grid;
-    grid-template-rows: 1fr;
+    padding-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .image-wrapper img {
-    padding-top: 3rem;
     max-width: 100%;
     height: auto;
     max-height: 200px;
+    margin-bottom: 10px;
+  }
+
+  .image-wrapper button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
   }
 
   .category h3 {
