@@ -1,7 +1,7 @@
 <template>
     <div class="parent">
       <div class = "details">
-        <ChatDetails :chat="props.chat" />
+        <ChatDetails :chat="chat" />
       </div>
       <div class="message-wrapper">
         <div class="messages">
