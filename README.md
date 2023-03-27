@@ -123,7 +123,7 @@ Furthermore for safety reasons, environment variables were also used in place of
 
 ## API Documentation
 For this project, Swagger 3 was used for documenting the api.
-This documentation can be accessed locally if you run the backend database first.
+This documentation can be accessed locally if you run the backend spring boot maven project first.
 The url for the local swagger api documentation site is:
 
 http://localhost:3000/
