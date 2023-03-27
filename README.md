@@ -7,6 +7,15 @@ Our solution was built using Vue for the frontend and Spring Boot Maven for the 
 
 The application was designed while keeping both PC and Phone formats in mind.
 
+## Content
+1. [Documentation](#documentation)
+2. [Database](#database)
+3. [Installation and Setup](#installation-and-setup)
+4. [Security](#security)
+5. [API Documentation](#api-documentation) 
+6. [Server](#server)
+7. [CI/CD](#cicd)
+8. [Contributors](#contributors)
 
 ## Documentation
 
@@ -63,7 +72,7 @@ mvn clean install
 
 Once the dependencies are installed you can run the project with:
 ```
-mvn run
+mvn spring-boot:run
 ```
 
 ### Frontend
@@ -77,7 +86,21 @@ Once the modules finished installing, you can run the local dev server with:
 npm run dev
 ```
 
+## Security
+During the entire development process security has continuously been a big focus for the team.
+It might be one of the most important things to focus on for developers.
+As of right now we've utilized jwt tokens for authentication, these are sent to the browser as cookies to ensure better security.
+All authenticated API calls that relate to a user getting their own information, the cookies are always verified by the filter first.
+
+Once the token is verified, the user identification is extracted from the token instead of it being passed as a parameter.
+This also ensures that tokens from normal users can't be used to get access to information that isn't related to their user account.
+
+Only a certain few necessary api calls have the authentication token set as optional.
+
+## Server
+
+## CI/CD
 
 
-Contributors
+## Contributors
 Daniel Skymoen, Erik Skjellevik & Navid Muradi
