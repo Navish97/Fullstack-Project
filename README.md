@@ -23,7 +23,7 @@ For our frontend, we used a set of libraries and modules to enable ease of use.
 - Leaflet for displaying DD coordinates in maps
 
 
-## Back-end
+### Back-end
 Our backend runs on Spring Boot Maven 3.
 During the project, we put a lot of emphasis on simplifying the use of different databases between production and development stages.
 Therefore the backend project runs on different databases depending on if it's deployed on server or runs locally.
@@ -44,22 +44,39 @@ When deployed on server it connects to a MySQLv8 database which is set up throug
 ## Database
 ![ERDiagram](https://github.com/Navish97/Fullstack-Project/blob/dev/ER%20Diagram.png?raw=true)
 
+As mentioned earlier, this database is setup as a h2 database when run locally, but as a mysql database using MySQLv8.
+The local h2 database is saved in the backend project folder inside a database folder.
+
 ## Installation and Setup
 
 ### Clone the repo
 First step to getting the project running locally is by actually cloning the repo to local.
 
 
-Backend
-Open the backend directory in your preferred IDE
-Run the application
+### Backend
+Once you've got a local repository you can start running the project.
+Before running the backend, you have to first cd into the backend folder directory.
+Once inside the backend directory you have to first install the dependencies from the pom file.
+```
+mvn clean install
+```
 
-Frontend
-Open the frontend directory in your preferred code editor
-Install dependencies by running npm install
-Start the development server by running npm run dev
+Once the dependencies are installed you can run the project with:
+```
+mvn run
+```
 
-Usage
+### Frontend
+Open the root directory again and cd into the vue-frontend directory.
+Once inside the frontend directory, install the necessary modules with:
+```
+npm install
+```
+Once the modules finished installing, you can run the local dev server with:
+```
+npm run dev
+```
+
 
 
 Contributors
