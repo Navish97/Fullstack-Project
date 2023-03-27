@@ -17,6 +17,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
+
+/**
+
+ The AuthenticationService class provides methods for user authentication and registration.
+
+ It uses the UserRepository to access user data, PasswordEncoder to encrypt passwords, and JwtService to generate tokens.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -32,6 +40,17 @@ public class AuthenticationService {
     Logger logger = LoggerFactory.getLogger(ItemController.class);
 
 
+
+    /**
+
+     Registers a new user and returns an authentication token.
+
+     @param request a RegisterRequest object containing the user's email, name, and password
+
+     @return an AuthenticationResponse object containing an authentication token
+
+     @throws UserAlreadyExistsException if the email is already in use
+     */
     public AuthenticationResponse register(RegisterRequest request) throws UserAlreadyExistsException {
         var user = User.builder()
                 .id(String.valueOf(java.util.UUID.randomUUID()))
@@ -48,6 +67,14 @@ public class AuthenticationService {
         return AuthenticationResponse.builder().token(jwToken).build();
     }
 
+
+    /**
+
+     Authenticates a user and returns an authentication token.
+     @param request an AuthenticationRequest object containing the user's email and password
+     @return an AuthenticationResponse object containing an authentication token
+     @throws InvalidCredentialsException if the user credentials are invalid
+     */
     public AuthenticationResponse authenticate(AuthenticationRequest request) throws InvalidCredentialsException {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail() , request.getPassword()));
