@@ -11,11 +11,11 @@ There are two already pre-created accounts with some dummy data.
 
 User account:
 
-email: user@localhost.com
+email: user@localhost
 
 password: user
 
-Admin account: admin@localhost.com
+Admin account: admin@localhost
 
 password: admin
 
