@@ -5,24 +5,36 @@ import ntnu.idatt2105.project.backend.exceptions.BookmarkAlreadyExistsException;
 import ntnu.idatt2105.project.backend.model.Bookmark;
 import ntnu.idatt2105.project.backend.model.Item;
 import ntnu.idatt2105.project.backend.model.dto.BookmarkDTO;
+import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.repository.BookmarkRepository;
+import ntnu.idatt2105.project.backend.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 import ntnu.idatt2105.project.backend.model.User;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
+    private final ItemRepository itemRepository;
 
     public boolean isItemBookmarkedByUser(String userId, Long itemId) {
         return bookmarkRepository.findByUserIdAndItemId(userId, itemId).isPresent();
     }
 
     public List<BookmarkDTO> getAllBookmarksForUser(User user) {
-        return bookmarkRepository.findAllBookmarksByUserId(user.getId());
+        return bookmarkRepository.findAllBookmarkDTOsByUserId(user.getId());
+    }
+
+    public List<ItemDTO> getAllBookmarkedItems(User user) {
+        List<Bookmark> bookmarks = bookmarkRepository.findAllBookmarksByUserId(user.getId());
+        List<ItemDTO> items = bookmarks.stream()
+                .map(bookmark -> new ItemDTO(bookmark.getItem()))
+                .collect(Collectors.toList());
+        return items;
     }
 
     public void addBookmark(String userId, Long itemId) throws BookmarkAlreadyExistsException {

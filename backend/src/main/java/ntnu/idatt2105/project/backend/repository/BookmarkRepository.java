@@ -13,7 +13,10 @@ import java.util.Optional;
 @Repository
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     @Query(value = "SELECT new ntnu.idatt2105.project.backend.model.dto.BookmarkDTO(b.id, b.user.id, b.item.id) FROM Bookmark b WHERE b.user.id = :userId")
-    List<BookmarkDTO> findAllBookmarksByUserId(String userId);
+    List<BookmarkDTO> findAllBookmarkDTOsByUserId(String userId);
+
+    @Query(value = "SELECT b FROM Bookmark b WHERE b.user.id = :userId")
+    List<Bookmark> findAllBookmarksByUserId(String userId);
 
     Optional<Bookmark> findByUserIdAndItemId(String userId, Long itemId);
 }

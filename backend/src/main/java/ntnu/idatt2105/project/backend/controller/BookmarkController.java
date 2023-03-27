@@ -12,6 +12,7 @@ import ntnu.idatt2105.project.backend.exceptions.UnauthorizedException;
 import ntnu.idatt2105.project.backend.exceptions.UserNotFoundException;
 import ntnu.idatt2105.project.backend.model.Bookmark;
 import ntnu.idatt2105.project.backend.model.User;
+import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.repository.BookmarkRepository;
 import ntnu.idatt2105.project.backend.repository.UserRepository;
 import ntnu.idatt2105.project.backend.service.BookmarkService;
@@ -153,5 +154,23 @@ public class BookmarkController {
         List<BookmarkDTO> bookmarks = bookmarkService.getAllBookmarksForUser(user.get());
         logger.info("User found, returning bookmarks for user with email: " + email);
         return ResponseEntity.ok(bookmarks);
+    }
+
+    @GetMapping("/user/items")
+    public ResponseEntity<?> getBookmarkedItems(@CookieValue(value = "myMarketPlaceAccessToken") String jwtToken) throws UserNotFoundException, UnauthorizedException{
+        logger.info("Received get bookmarked items request");
+        String email = jwtService.extractUsername(jwtToken);
+        logger.info("Getting bookmarked items for user with email: " + email + "jwtToken: " + jwtToken);
+
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            logger.info("User with email: " + email + " not found");
+            throw new UserNotFoundException("User with email: " + email + " not found");
+        }
+
+        List<ItemDTO> items = bookmarkService.getAllBookmarkedItems(user.get());
+        logger.info("User found, returning bookmarked items for user with email: " + email);
+        return ResponseEntity.ok(items);
+
     }
 }
