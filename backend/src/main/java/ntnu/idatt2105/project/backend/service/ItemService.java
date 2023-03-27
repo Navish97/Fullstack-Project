@@ -55,7 +55,7 @@ public class ItemService {
         bookmarks.forEach(bookmarkRepository::delete);
         List<ItemImage> itemImages = itemImageRepository.findAllByItemId(id);
         itemImages.forEach(itemImageRepository::delete);
-        List<Chat> chats = chatRepository.findAllByItemId(item.getId());
+        List<Chat> chats = chatRepository.findAllByItemId(id);
         chats.forEach(chatRepository::delete);
 
         itemRepository.delete(item);
