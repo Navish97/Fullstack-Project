@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE IF NOT EXISTS users (
-    id VARCHAR(36) DEFAULT uuid(),
+    id VARCHAR(36) DEFAULT UUID(),
     name VARCHAR(255),
     email VARCHAR(255),
     password VARCHAR(255),
