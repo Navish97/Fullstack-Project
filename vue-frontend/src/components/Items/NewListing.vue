@@ -55,8 +55,8 @@ const form = ref<Form>({
   title: "",
   description: "",
   price: "",
-  longitude: 60,
-  latitude: 10,
+  longitude: 10,
+  latitude: 60,
   images: [],
 });
 
