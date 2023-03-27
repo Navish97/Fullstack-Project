@@ -146,33 +146,51 @@ public class ItemController {
         return objectMapper.readValue(json, Filter.class);
     }
 
+    @PostMapping("/delete/{itemId}")
+    @Operation(summary = "Deletes an existing item", description = "Delete the item passed in parameter")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> deleteItem(@PathVariable Long itemId, @CookieValue(value = "myMarketPlaceAccessToken", required = true) String jwtToken){
+        logger.info("Received delete item request item:" + itemId);
+        User user = userService.findByEmail(jwtService.extractUsername(jwtToken));
+        ItemDTO item;
+        try {
+            item = itemService.deleteItem(itemId, user);
+        }catch(Exception e){
+            logger.info("Error occured while deleting item" + e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+        logger.info("Deleted item with ok response code");
+        return ResponseEntity.ok(item);
+
+    }
 
     /**
 
-     Edits an existing item in the database.
+         Edits an existing item in the database.
 
-     @param id the ID of the item to edit
+         @param id the ID of the item to edit
 
-     @param title the new title of the item
+         @param title the new title of the item
 
-     @param description the new description of the item
+         @param description the new description of the item
 
-     @param price the new price of the item
+         @param price the new price of the item
 
-     @param longitude the new longitude of the item
+         @param longitude the new longitude of the item
 
-     @param categoryId the new category ID of the item
+         @param categoryId the new category ID of the item
 
-     @param latitude the new latitude of the item
+         @param latitude the new latitude of the item
 
-     @param images the new images of the item
+         @param images the new images of the item
 
-     @param request the HTTP servlet request
+         @param request the HTTP servlet request
 
-     @return the HTTP response indicating success or failure of the operation
+         @return the HTTP response indicating success or failure of the operation
 
-     @throws IOException if an I/O error occurs
-     */
+         @throws IOException if an I/O error occurs
+         */
+
     @PostMapping("/edit-listing")
     @Operation(summary = "Edits a existing item", description = "Edits an existing item in the database")
     @PreAuthorize("isAuthenticated()")
@@ -225,21 +243,6 @@ public class ItemController {
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
-
-    /**
-
-     Registers a new item in the database.
-     @param title the title of the item
-     @param description the description of the item
-     @param price the price of the item
-     @param longitude the longitude of the item
-     @param categoryId the category ID of the item
-     @param latitude the latitude of the item
-     @param images the images of the item
-     @param request the HTTP servlet request
-     @return the HTTP response indicating success or failure of the operation
-     @throws IOException if an I/O error occurs
-     */
     @PostMapping("/new-listing")
     @Operation(summary = "Register a new item", description = "Registers a new item in the database.")
     @PreAuthorize("isAuthenticated()")

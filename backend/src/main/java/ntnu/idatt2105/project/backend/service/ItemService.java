@@ -1,10 +1,14 @@
 package ntnu.idatt2105.project.backend.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import ntnu.idatt2105.project.backend.model.*;
 import ntnu.idatt2105.project.backend.model.dto.ItemDTO;
 import ntnu.idatt2105.project.backend.model.dto.Filter;
-import ntnu.idatt2105.project.backend.model.Item;
 import ntnu.idatt2105.project.backend.model.enums.Role;
+import ntnu.idatt2105.project.backend.repository.BookmarkRepository;
+import ntnu.idatt2105.project.backend.repository.ChatRepository;
+import ntnu.idatt2105.project.backend.repository.ItemImageRepository;
 import ntnu.idatt2105.project.backend.repository.ItemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,6 +29,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemService {
     private final ItemRepository itemRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final ItemImageRepository itemImageRepository;
+    private final ChatRepository chatRepository;
 
     public ItemDTO getItemById(Long id) {
         Optional<Item> optionalItem = itemRepository.findById(id);
@@ -32,6 +39,26 @@ public class ItemService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid item id, item not found");
         }
         Item item = optionalItem.get();
+        return new ItemDTO(item);
+    }
+
+    public ItemDTO deleteItem(Long id, User user){
+        Optional<Item> optionalItem = itemRepository.findById(id);
+        if (optionalItem.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid item id, item not found");
+        }
+        Item item = optionalItem.get();
+        if(item.getUser().getId() != user.getId() && user.getRole() != Role.ADMIN){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is not owner of item or admin");
+        }
+        List<Bookmark> bookmarks = bookmarkRepository.findAllByItemId(id);
+        bookmarks.forEach(bookmarkRepository::delete);
+        List<ItemImage> itemImages = itemImageRepository.findAllByItemId(id);
+        itemImages.forEach(itemImageRepository::delete);
+        List<Chat> chats = chatRepository.findAllByItemId(item.getId());
+        chats.forEach(chatRepository::delete);
+
+        itemRepository.delete(item);
         return new ItemDTO(item);
     }
 
